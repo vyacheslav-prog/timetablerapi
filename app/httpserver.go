@@ -6,8 +6,9 @@ import (
 )
 
 func main() {
+	storage := newStorage()
 	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		fmt.Fprintln(w, "Hello, world!")
+		fmt.Fprintln(w, storage.getDashboardTitle())
 	})
 	fmt.Println("Timetablerapi server for http listen 8080 port")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
