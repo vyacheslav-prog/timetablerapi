@@ -7,7 +7,7 @@ import (
 )
 
 func TestListens8080PortForHttpServer(t *testing.T) {
-	s := newServer(newStorage())
+	s := newServer(nil)
 	req, w := httptest.NewRequest("GET", "http://localhost:8080/", nil), httptest.NewRecorder()
 	s.ServeHTTP(w, req)
 	resp := w.Result()
@@ -17,7 +17,7 @@ func TestListens8080PortForHttpServer(t *testing.T) {
 }
 
 func TestMissesUnknownPathWith404Status(t *testing.T) {
-	s, url := newServer(newStorage()), "/some_unknown_path"
+	s, url := newServer(nil), "/some_unknown_path"
 	req, w := httptest.NewRequest("GET", url, nil), httptest.NewRecorder()
 	s.ServeHTTP(w, req)
 	resp := w.Result()

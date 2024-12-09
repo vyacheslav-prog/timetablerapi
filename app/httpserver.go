@@ -7,12 +7,11 @@ import (
 
 func newServer(storage *Storage) *http.ServeMux {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.NotFound(w, r)
+		}
 		fmt.Fprintln(w, storage.getDashboardTitle())
-	})
-	mux.HandleFunc("/404", func(w http.ResponseWriter, _ *http.Request) {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintln(w, "Page not found")
 	})
 	return mux
 }
