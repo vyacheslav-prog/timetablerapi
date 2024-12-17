@@ -11,9 +11,9 @@ func TestFindsNoPeriodForEmptyAvailablePeriods(t *testing.T) {
 }
 
 func TestFindsFirstAvailablePeriod(t *testing.T) {
-	p := &performer{[]period{period{}}}
+	p := &performer{[]period{period{'06:00', '07:00'}}}
 	result := p.findAvailablePeriod()
-	if result == nil {
+	if result == nil || result.from != '06:00' {
 		t.Errorf("Result must be not nil for not empty available periods, actual is [%v]", result)
 	}
 }
