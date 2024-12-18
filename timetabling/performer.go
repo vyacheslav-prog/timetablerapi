@@ -4,7 +4,9 @@ type performer struct {
 	emptyPeriods []period
 }
 
-type period struct{}
+type period struct {
+	from, to string
+}
 
 func (p *performer) findAvailablePeriod() *period {
 	if p.emptyPeriods != nil {
