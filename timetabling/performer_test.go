@@ -17,3 +17,11 @@ func TestFindsFirstAvailablePeriod(t *testing.T) {
 		t.Errorf("Result must be not nil for not empty available periods, actual is [%v]", result)
 	}
 }
+
+func TestFindsNoPeriodWhenRequestedPeriodIsTooLong(t *testing.T) {
+	p, r := &performer{[]period{period{"08:00", "10:00"}}}, &periodRequest{"09:00", "12:00"}
+	result := p.findAvailablePeriod(r)
+	if result != nil {
+		t.Errorf("Result must be nil for too long request [%v], actual is [%v]", r, result)
+	}
+}
