@@ -1,7 +1,13 @@
 package overview
 
-type performer struct{}
+type performer struct {
+	openSlots []slot
+}
 
-func (p *performer) getSlots() []int {
+type slot struct {
+	from, to string
+}
+
+func (p *performer) getSlots() []slot {
 	return nil
 }
