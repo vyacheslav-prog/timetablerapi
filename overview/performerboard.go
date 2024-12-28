@@ -9,5 +9,5 @@ type slot struct {
 }
 
 func (p *performer) getSlots() []slot {
-	return nil
+	return p.openSlots
 }
