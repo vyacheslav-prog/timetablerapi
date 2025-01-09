@@ -17,3 +17,12 @@ func TestShowsPerformerBoardWithOpenSlots(t *testing.T) {
 		t.Errorf("Result must have two slots with first slot on [%v], actual slots is [%v]", expectedFirstFrom, result)
 	}
 }
+
+func TestShowsPerformerBoardWithPersonalTitle(t *testing.T) {
+	pn := "John Doe"
+	p := &performer{pn}
+	result := p.viewBoard()
+	if expected := "Board for John Doe"; expected != result {
+		t.Errorf("Board title must be [%v] for performer [%v], actual is [%v]", expected, pn, result)
+	}
+}
