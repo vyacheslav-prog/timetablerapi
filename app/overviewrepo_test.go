@@ -2,7 +2,7 @@ package main
 
 import "testing"
 
-func TestFetchsPerformerBoard(t *testing.T) {
+func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 	sut := newOverviewRepo()
 	result := sut.fetchPerformerBoard()
 	if nil != result {
