@@ -1,6 +1,7 @@
 package main
 
 type services struct {
+	overview overviewService
 	storage storage
 }
 

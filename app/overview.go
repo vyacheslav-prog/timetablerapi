@@ -10,3 +10,7 @@ func (r *overviewRepo) fetchPerformerBoard() *int {
 func newOverviewRepo() *overviewRepo {
 	return nil
 }
+
+type overviewService struct {
+	repo overviewRepo
+}
