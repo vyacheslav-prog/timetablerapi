@@ -29,3 +29,13 @@ func TestMissesUnknownPathWith404Status(t *testing.T) {
 		t.Errorf("Result for GET [%v] must be [%v], actual is [%v]", url, expected, resp.Status)
 	}
 }
+
+func TestHandlesGetForPerformerBoard(t *testing.T) {
+	s, path := newStubbedServer(), "/perfomer-boards/1"
+	req, w := httptest.NewRequest("GET", path, nil), httptest.NewRecorder()
+	s.ServeHTTP(w, req)
+	res := w.Result()
+	if expected := http.StatusOK; expected != res.StatusCode {
+		t.Errorf("Result for GET [%v] must be [%v], actual is [%v]", path, expected, res.Status)
+	}
+}
