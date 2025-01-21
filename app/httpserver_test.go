@@ -31,7 +31,7 @@ func TestMissesUnknownPathWith404Status(t *testing.T) {
 }
 
 func TestHandlesGetForPerformerBoard(t *testing.T) {
-	s, path := newStubbedServer(), "/perfomer-boards/1"
+	s, path := newStubbedServer(), "/performer-boards/1"
 	req, w := httptest.NewRequest("GET", path, nil), httptest.NewRecorder()
 	s.ServeHTTP(w, req)
 	res := w.Result()

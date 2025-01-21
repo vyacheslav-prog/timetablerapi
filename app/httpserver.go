@@ -13,6 +13,8 @@ func newServer(services *services) *http.ServeMux {
 		}
 		fmt.Fprintln(w, services.storage.getDashboardTitle())
 	})
+	mux.HandleFunc("GET /performer-boards/{boardId}", func(w http.ResponseWriter, r *http.Request) {
+	})
 	return mux
 }
 
