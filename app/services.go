@@ -2,7 +2,7 @@ package main
 
 type services struct {
 	overview overviewService
-	storage storage
+	storage  storage
 }
 
 type storage struct {
