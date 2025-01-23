@@ -7,10 +7,7 @@ import (
 
 func newServer(services *services) *http.ServeMux {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/" {
-			http.NotFound(w, r)
-		}
+	mux.HandleFunc("/{$}", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, services.storage.getDashboardTitle())
 	})
 	mux.HandleFunc("GET /performer-boards/{boardId}", func(w http.ResponseWriter, r *http.Request) {
