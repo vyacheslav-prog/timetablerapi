@@ -7,7 +7,9 @@ import (
 )
 
 func newStubbedServer() *http.ServeMux {
-	return newServer(&services{})
+	mux, services := http.NewServeMux(), &services{}
+	registerHandlers(mux, services)
+	return mux
 }
 
 func TestListens8080PortForHttpServer(t *testing.T) {
