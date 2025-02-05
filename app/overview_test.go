@@ -27,3 +27,7 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 		t.Errorf("Result must be not nil for [%v] performer board id, actual is [%v]", id, result)
 	}
 }
+
+func seedFakePerformerBoard(boardId string) bool {
+	return false
+}
