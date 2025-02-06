@@ -28,6 +28,8 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 	}
 }
 
-func seedFakePerformerBoard(boardId string) bool {
-	return false
+func seedFakePerformerBoard(db *sql.DB, boardId string) bool {
+	query := "insert into performer_boards (id) values ($1)"
+	result, err := db.Exec(query, boardId)
+	return 1 == result.RowsAffected()
 }
