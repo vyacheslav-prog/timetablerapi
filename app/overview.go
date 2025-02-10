@@ -3,7 +3,7 @@ package main
 type overviewRepo struct {
 }
 
-func (r *overviewRepo) fetchPerformerBoard() *int {
+func (r *overviewRepo) fetchPerformerBoard(id string) *int {
 	return nil
 }
 
