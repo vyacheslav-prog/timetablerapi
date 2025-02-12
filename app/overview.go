@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type overviewRepo struct {
 }
 
@@ -14,8 +16,8 @@ func (r *overviewRepo) fetchPerformerBoard(id string) *int {
 	return nil
 }
 
-func newOverviewRepo() *overviewRepo {
-	return nil
+func newOverviewRepo() (*overviewRepo, error) {
+	return nil, fmt.Errorf("not connection for server")
 }
 
 type overviewService struct {

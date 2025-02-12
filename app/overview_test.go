@@ -7,7 +7,10 @@ import (
 )
 
 func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
-	sut := newOverviewRepo()
+	sut, err := newOverviewRepo()
+	if err != nil {
+		t.Errorf("failed init overview repo: %v", err)
+	}
 	result := sut.fetchPerformerBoard("")
 	if nil != result {
 		t.Errorf("Result must be nil for empty performer request")
@@ -22,7 +25,11 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 		t.Fatalf("Failed to connect to database [%v]", connStr)
 	}
 	defer db.Close()
-	sut, isSown := newOverviewRepo(), seedFakePerformerBoard(nil, id)
+	sut, err := newOverviewRepo()
+	if err != nil {
+		t.Errorf("failed init overview repo: %v", err)
+	}
+	isSown := seedFakePerformerBoard(nil, id)
 	if isSown != true {
 		t.Error("Could not be seed a fake performer board")
 	}
