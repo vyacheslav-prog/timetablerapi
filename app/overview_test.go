@@ -1,3 +1,5 @@
+//go:build testdb
+
 package main
 
 import (
@@ -7,7 +9,8 @@ import (
 )
 
 func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
-	sut, err := newOverviewRepo()
+	db := openDBConnect(t)
+	sut, err := newOverviewRepo(db)
 	if err != nil {
 		t.Errorf("failed init overview repo: %v", err)
 	}
@@ -19,13 +22,9 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 
 func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 	t.Skip()
-	connStr, id := os.Getenv("DATABASE_URL"), "2861ff45-526f-4618-9b7a-09e581cb2113"
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		t.Fatalf("Failed to connect to database [%v]", connStr)
-	}
+	db, id := openDBConnect(t), "2861ff45-526f-4618-9b7a-09e581cb2113"
 	defer db.Close()
-	sut, err := newOverviewRepo()
+	sut, err := newOverviewRepo(nil)
 	if err != nil {
 		t.Errorf("failed init overview repo: %v", err)
 	}
@@ -37,6 +36,15 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 	if nil == result {
 		t.Errorf("Result must be not nil for [%v] performer board id, actual is [%v]", id, result)
 	}
+}
+
+func openDBConnect(t *testing.T) *sql.DB {
+	connStr := os.Getenv("DATABASE_URL")
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		t.Fatalf("failed to connect to database")
+	}
+	return db
 }
 
 func seedFakePerformerBoard(db *sql.DB, boardId string) bool {

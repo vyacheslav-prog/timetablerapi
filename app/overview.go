@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"database/sql"
+	"fmt"
+)
 
 type overviewRepo struct {
 }
@@ -16,8 +19,11 @@ func (r *overviewRepo) fetchPerformerBoard(id string) *int {
 	return nil
 }
 
-func newOverviewRepo() (*overviewRepo, error) {
-	return nil, fmt.Errorf("not connection for server")
+func newOverviewRepo(db *sql.DB) (*overviewRepo, error) {
+	if db == nil {
+		return nil, fmt.Errorf("not connection for server")
+	}
+	return nil, nil
 }
 
 type overviewService struct {
