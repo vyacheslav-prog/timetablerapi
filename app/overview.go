@@ -1,11 +1,13 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 )
 
 type overviewRepo struct {
+	db *sql.DB
 }
 
 const performerBoardsSchema = `
@@ -19,11 +21,32 @@ func (r *overviewRepo) fetchPerformerBoard(id string) *int {
 	return nil
 }
 
-func newOverviewRepo(db *sql.DB) (*overviewRepo, error) {
+func newOverviewRepo(ctx context.Context, db *sql.DB) (*overviewRepo, error) {
 	if db == nil {
 		return nil, fmt.Errorf("not connection for server")
 	}
-	return nil, nil
+	tx, err := db.Begin()
+	if err != nil {
+		return nil, fmt.Errorf("init transaction is failed: [%w]", err)
+	}
+	defer tx.Rollback()
+	var existsResult sql.Result
+	existsResult, err = tx.ExecContext(ctx, "select count(*) from information_schema where type='table' and name='?';", "performer_boards")
+	if err != nil {
+		return nil, fmt.Errorf("check table existence is failed: [%w]", err)
+	}
+	tableExists, _ := existsResult.RowsAffected()
+	if 0 == tableExists {
+		_, err = tx.ExecContext(ctx, performerBoardsSchema)
+		if err != nil {
+			return nil, fmt.Errorf("create schema for table is failed: [%w]", err)
+		}
+	}
+	err = tx.Commit()
+	if err != nil {
+		return nil, fmt.Errorf("init transaction is failed: [%w]", err)
+	}
+	return &overviewRepo{db: db}, nil
 }
 
 type overviewService struct {
