@@ -31,7 +31,7 @@ func newOverviewRepo(ctx context.Context, db *sql.DB) (*overviewRepo, error) {
 	}
 	defer tx.Rollback()
 	var existsResult sql.Result
-	existsResult, err = tx.ExecContext(ctx, "select count(*) from information_schema where type='table' and name='?';", "performer_boards")
+	existsResult, err = tx.ExecContext(ctx, "select count(*) from information_schema.tables where type_schema like 'public' and table_type like 'BASE TABLE' and table_name = '?';", "performer_boards")
 	if err != nil {
 		return nil, fmt.Errorf("check table existence is failed: [%w]", err)
 	}
