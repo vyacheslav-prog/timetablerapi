@@ -6,17 +6,19 @@ import (
 	"database/sql"
 	"os"
 	"testing"
+
+	_ "github.com/lib/pq"
 )
 
 func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 	db := openDBConnect(t)
 	sut, err := newOverviewRepo(t.Context(), db)
 	if err != nil {
-		t.Errorf("failed init overview repo: %v", err)
+		t.Error("failed init overview repo:", err)
 	}
 	result := sut.fetchPerformerBoard("")
 	if nil != result {
-		t.Errorf("Result must be nil for empty performer request")
+		t.Error("Result must be nil for empty performer request")
 	}
 }
 
@@ -42,7 +44,7 @@ func openDBConnect(t *testing.T) *sql.DB {
 	connStr := os.Getenv("DATABASE_URL")
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		t.Fatalf("failed to connect to database")
+		t.Error("failed connection to database:", err)
 	}
 	return db
 }
