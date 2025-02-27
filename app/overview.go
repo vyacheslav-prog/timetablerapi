@@ -30,12 +30,12 @@ func newOverviewRepo(ctx context.Context, db *sql.DB) (*overviewRepo, error) {
 		return nil, fmt.Errorf("init transaction is failed: [%w]", err)
 	}
 	defer tx.Rollback()
-	var existsResult sql.Result
-	existsResult, err = tx.ExecContext(ctx, "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = 'performer_boards';")
+	existsRow := tx.QueryRowContext(ctx, "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = 'performer_boards';")
+	var tableExists int
+	err = existsRow.Scan(&tableExists)
 	if err != nil {
 		return nil, fmt.Errorf("check table existence is failed: [%w]", err)
 	}
-	tableExists, _ := existsResult.RowsAffected()
 	if 0 == tableExists {
 		_, err = tx.ExecContext(ctx, performerBoardsSchema)
 		if err != nil {
