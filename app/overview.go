@@ -13,7 +13,7 @@ type overviewRepo struct {
 const performerBoardsSchema = `
 	create table if not exists performer_boards (
 		id text primary key,
-		created_at datetime default current_timestamp,
+		created_at timestamp default current_timestamp
 	);
 `
 
