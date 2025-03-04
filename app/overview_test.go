@@ -12,6 +12,7 @@ import (
 
 func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 	db := openDBConnect(t)
+	defer db.Close()
 	sut, err := newOverviewRepo(t.Context(), db)
 	if err != nil {
 		t.Error("failed init overview repo:", err)
@@ -23,16 +24,15 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 }
 
 func TestFetchsPerformerBoardByIdentity(t *testing.T) {
-	t.Skip()
 	db, id := openDBConnect(t), "2861ff45-526f-4618-9b7a-09e581cb2113"
 	defer db.Close()
-	sut, err := newOverviewRepo(t.Context(), nil)
+	sut, err := newOverviewRepo(t.Context(), db)
 	if err != nil {
-		t.Errorf("failed init overview repo: %v", err)
+		t.Error("failed init overview repo:", err)
 	}
-	isSown := seedFakePerformerBoard(nil, id)
-	if isSown != true {
-		t.Error("Could not be seed a fake performer board")
+	err = seedFakePerformerBoard(db, id)
+	if err != nil {
+		t.Error("Could not be seed a fake performer board:", err)
 	}
 	result := sut.fetchPerformerBoard(id)
 	if nil == result {
@@ -49,9 +49,8 @@ func openDBConnect(t *testing.T) *sql.DB {
 	return db
 }
 
-func seedFakePerformerBoard(db *sql.DB, boardId string) bool {
+func seedFakePerformerBoard(db *sql.DB, boardId string) error {
 	query := "insert into performer_boards (id) values ($1)"
-	result, _ := db.Exec(query, boardId)
-	touchedRows, _ := result.RowsAffected()
-	return 1 == touchedRows
+	_, err := db.Exec(query, boardId)
+	return err
 }
