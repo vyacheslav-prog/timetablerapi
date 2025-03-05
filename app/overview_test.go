@@ -17,7 +17,7 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 	if err != nil {
 		t.Error("failed init overview repo:", err)
 	}
-	result := sut.fetchPerformerBoard("")
+	result, _, _ := sut.fetchPerformerBoard("")
 	if nil != result {
 		t.Error("Result must be nil for empty performer request")
 	}
@@ -34,7 +34,11 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 	if err != nil {
 		t.Error("Could not be seed a fake performer board:", err)
 	}
-	result := sut.fetchPerformerBoard(id)
+	var result *string
+	result, _, err = sut.fetchPerformerBoard(id)
+	if err != nil {
+		t.Error("Could not fetch a performer board:", err)
+	}
 	if nil == result {
 		t.Errorf("Result must be not nil for [%v] performer board id, actual is [%v]", id, result)
 	}

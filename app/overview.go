@@ -17,8 +17,9 @@ const performerBoardsSchema = `
 	);
 `
 
-func (r *overviewRepo) fetchPerformerBoard(id string) *int {
-	return nil
+func (r *overviewRepo) fetchPerformerBoard(id string) (rowCreatedAt, rowId *string, err error) {
+	err = r.db.QueryRow("select created_at, id from performer_boards where id = $1;", id).Scan(&rowCreatedAt, &rowId)
+	return
 }
 
 func newOverviewRepo(ctx context.Context, db *sql.DB) (*overviewRepo, error) {
