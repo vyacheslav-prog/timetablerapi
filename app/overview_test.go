@@ -34,6 +34,7 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 	if err != nil {
 		t.Error("Could not be seed a fake performer board:", err)
 	}
+	defer deleteFakePerformerBoard(db, id)
 	var result *string
 	result, _, err = sut.fetchPerformerBoard(id)
 	if err != nil {
@@ -53,8 +54,13 @@ func openDBConnect(t *testing.T) *sql.DB {
 	return db
 }
 
+func deleteFakePerformerBoard(db *sql.DB, boardId string) {
+	query := "delete from performer_boards where id = $1;"
+	db.Exec(query, boardId)
+}
+
 func seedFakePerformerBoard(db *sql.DB, boardId string) error {
-	query := "insert into performer_boards (id) values ($1)"
+	query := "insert into performer_boards (id) values ($1);"
 	_, err := db.Exec(query, boardId)
 	return err
 }
