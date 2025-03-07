@@ -30,11 +30,12 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 	if err != nil {
 		t.Error("failed init overview repo:", err)
 	}
-	err = seedFakePerformerBoard(db, id)
+	var deleteBoard func()
+	deleteBoard, err = seedFakePerformerBoard(db, id)
 	if err != nil {
 		t.Error("Could not be seed a fake performer board:", err)
 	}
-	defer deleteFakePerformerBoard(db, id)
+	defer deleteBoard()
 	var result *string
 	result, _, err = sut.fetchPerformerBoard(id)
 	if err != nil {
@@ -54,13 +55,9 @@ func openDBConnect(t *testing.T) *sql.DB {
 	return db
 }
 
-func deleteFakePerformerBoard(db *sql.DB, boardId string) {
-	query := "delete from performer_boards where id = $1;"
-	db.Exec(query, boardId)
-}
-
-func seedFakePerformerBoard(db *sql.DB, boardId string) error {
-	query := "insert into performer_boards (id) values ($1);"
-	_, err := db.Exec(query, boardId)
-	return err
+func seedFakePerformerBoard(db *sql.DB, boardId string) (func(), error) {
+	_, err := db.Exec("insert into performer_boards (id) values ($1);", boardId)
+	return func() {
+		db.Exec("delete from performer_boards where id = $1;", boardId)
+	}, err
 }
