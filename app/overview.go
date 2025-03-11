@@ -10,6 +10,10 @@ type overviewRepo struct {
 	db *sql.DB
 }
 
+type performerBoard struct {
+	createdAt, id string
+}
+
 const performerBoardsSchema = `
 	create table if not exists performer_boards (
 		id text primary key,
@@ -17,8 +21,12 @@ const performerBoardsSchema = `
 	);
 `
 
-func (r *overviewRepo) fetchPerformerBoard(id string) (rowCreatedAt, rowId *string, err error) {
+func (r *overviewRepo) fetchPerformerBoard(id string) (result *performerBoard, err error) {
+	var rowCreatedAt, rowId *string
 	err = r.db.QueryRow("select created_at, id from performer_boards where id = $1;", id).Scan(&rowCreatedAt, &rowId)
+	if err != nil {
+		result = &performerBoard{*rowCreatedAt, *rowId}
+	}
 	return
 }
 
