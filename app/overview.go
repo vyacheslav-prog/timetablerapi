@@ -22,10 +22,10 @@ const performerBoardsSchema = `
 `
 
 func (r *overviewRepo) fetchPerformerBoard(id string) (result *performerBoard, err error) {
-	var rowCreatedAt, rowId *string
+	var rowCreatedAt, rowId string
 	err = r.db.QueryRow("select created_at, id from performer_boards where id = $1;", id).Scan(&rowCreatedAt, &rowId)
-	if err != nil {
-		result = &performerBoard{*rowCreatedAt, *rowId}
+	if rowId != "" {
+		result = &performerBoard{rowCreatedAt, rowId}
 	}
 	return
 }

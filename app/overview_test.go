@@ -19,7 +19,7 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 	}
 	result, _ := sut.fetchPerformerBoard("")
 	if nil != result {
-		t.Error("Result must be nil for empty performer request")
+		t.Errorf("Result must be nil for empty performer request, actual is [%v]", *result)
 	}
 }
 
@@ -36,7 +36,7 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 		t.Error("Could not be seed a fake performer board:", err)
 	}
 	defer deleteBoard()
-	var result *string
+	var result *performerBoard
 	result, err = sut.fetchPerformerBoard(id)
 	if err != nil {
 		t.Error("Could not fetch a performer board:", err)
