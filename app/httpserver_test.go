@@ -40,4 +40,7 @@ func TestHandlesGetForPerformerBoard(t *testing.T) {
 	if expected := http.StatusOK; expected != res.StatusCode {
 		t.Errorf("Result for GET [%v] must be [%v], actual is [%v]", path, expected, res.Status)
 	}
+	if contentType, expected := res.Header.Get("Content-Type"), "application/json"; expected != contentType {
+		t.Errorf("Content for GET [%v] must be [%v], actual is [%v]", path, expected, contentType)
+	}
 }
