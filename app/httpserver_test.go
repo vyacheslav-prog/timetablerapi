@@ -6,14 +6,17 @@ import (
 	"testing"
 )
 
-func newStubbedServer() *http.ServeMux {
-	mux, services := http.NewServeMux(), &services{}
+func newStubbedServer(s *services) *http.ServeMux {
+	mux := http.NewServeMux()
+	if s == nil {
+		s = &services{}
+	}
 	registerHandlers(mux, services)
 	return mux
 }
 
 func TestListens8080PortForHttpServer(t *testing.T) {
-	s := newStubbedServer()
+	s := newStubbedServer(nil)
 	req, w := httptest.NewRequest("GET", "http://localhost:8080/", nil), httptest.NewRecorder()
 	s.ServeHTTP(w, req)
 	resp := w.Result()
@@ -23,7 +26,7 @@ func TestListens8080PortForHttpServer(t *testing.T) {
 }
 
 func TestMissesUnknownPathWith404Status(t *testing.T) {
-	s, url := newStubbedServer(), "/some_unknown_path"
+	s, url := newStubbedServer(nil), "/some_unknown_path"
 	req, w := httptest.NewRequest("GET", url, nil), httptest.NewRecorder()
 	s.ServeHTTP(w, req)
 	resp := w.Result()
@@ -33,6 +36,9 @@ func TestMissesUnknownPathWith404Status(t *testing.T) {
 }
 
 func TestHandlesGetForPerformerBoard(t *testing.T) {
+	services := &services{overview: struct {
+		viewPerformerBoard: func(id string) string { return id }
+	}}
 	s, path := newStubbedServer(), "/performer-boards/1"
 	req, w := httptest.NewRequest("GET", path, nil), httptest.NewRecorder()
 	s.ServeHTTP(w, req)
