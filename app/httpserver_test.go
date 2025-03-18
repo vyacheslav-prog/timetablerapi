@@ -8,10 +8,11 @@ import (
 
 func newStubbedServer(s *services) *http.ServeMux {
 	mux := http.NewServeMux()
-	if s == nil {
-		s = &services{}
+	if s != nil {
+		registerHandlers(mux, s)
+	} else {
+		registerHandlers(mux, &services{})
 	}
-	registerHandlers(mux, services)
 	return mux
 }
 
@@ -36,10 +37,10 @@ func TestMissesUnknownPathWith404Status(t *testing.T) {
 }
 
 func TestHandlesGetForPerformerBoard(t *testing.T) {
-	services := &services{overview: struct {
-		viewPerformerBoard: func(id string) string { return id }
+	services := &services{overview: struct {}{
+		viewPerformerBoard: func(id string) string { return id },
 	}}
-	s, path := newStubbedServer(), "/performer-boards/1"
+	s, path := newStubbedServer(services), "/performer-boards/1"
 	req, w := httptest.NewRequest("GET", path, nil), httptest.NewRecorder()
 	s.ServeHTTP(w, req)
 	res := w.Result()
