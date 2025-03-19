@@ -59,5 +59,5 @@ func newOverviewRepo(ctx context.Context, db *sql.DB) (*overviewRepo, error) {
 }
 
 type overviewService struct {
-	repo overviewRepo
+	viewPerformerBoard func(id string) string
 }
