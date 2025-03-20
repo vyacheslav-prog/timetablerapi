@@ -43,13 +43,16 @@ func TestHandlesGetForPerformerBoard(t *testing.T) {
 		},
 	}})
 	path := "/performer-boards/1"
-	req, w := httptest.NewRequest("GET", path, nil), httptest.NewRecorder()
-	s.ServeHTTP(w, req)
-	res := w.Result()
+	req, rr := httptest.NewRequest("GET", path, nil), httptest.NewRecorder()
+	s.ServeHTTP(rr, req)
+	res := rr.Result()
 	if expected := http.StatusOK; expected != res.StatusCode {
 		t.Errorf("Result for GET [%v] must be [%v], actual is [%v]", path, expected, res.Status)
 	}
 	if contentType, expected := res.Header.Get("Content-Type"), "application/json"; expected != contentType {
-		t.Errorf("Content for GET [%v] must be [%v], actual is [%v]", path, expected, contentType)
+		t.Errorf("Type of content for GET [%v] must be [%v], actual is [%v]", path, expected, contentType)
+	}
+	if content := rr.Body.String(); content != "1" {
+		t.Errorf("Content for GET [%v] must be 1, actual is [%v]", path, content)
 	}
 }
