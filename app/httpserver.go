@@ -20,5 +20,6 @@ func registerHandlers(mux *http.ServeMux, s *services) {
 	})
 	mux.HandleFunc("GET /performer-boards/{boardId}", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, s.overview.viewPerformerBoard(r.PathValue("boardId")))
 	})
 }
