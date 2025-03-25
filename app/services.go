@@ -1,9 +1,13 @@
 package main
 
+import "timetablerapi/overview"
+
 type services struct {
-	overview overviewService
+	overview overview.OverviewService
 }
 
 func newServices() *services {
-	return &services{}
+	return &services{
+		overview.OverviewService{},
+	}
 }

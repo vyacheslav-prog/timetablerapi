@@ -10,10 +10,6 @@ type overviewRepo struct {
 	db *sql.DB
 }
 
-type performerBoard struct {
-	createdAt, id string
-}
-
 const performerBoardsSchema = `
 	create table if not exists performer_boards (
 		id text primary key,
@@ -56,8 +52,4 @@ func newOverviewRepo(ctx context.Context, db *sql.DB) (*overviewRepo, error) {
 		return nil, fmt.Errorf("commit a migration transaction is failed: %w", err)
 	}
 	return &overviewRepo{db: db}, nil
-}
-
-type overviewService struct {
-	viewPerformerBoard func(id string) string
 }
