@@ -1,11 +1,11 @@
 package overview
 
-type performerBoard struct {
+type PerformerBoard struct {
 	createdAt, id string
 }
 
 type overviewRepo interface {
-	FetchPerformerBoard(id string) (result *performerBoard, err error)
+	FetchPerformerBoard(id string) (result *PerformerBoard, err error)
 }
 
 type overviewService struct {
@@ -13,5 +13,6 @@ type overviewService struct {
 }
 
 func (s *overviewService) viewPerformerBoard(id string) string {
-	return s.repo.fetchPerformerBoard(id)
+	result, _ := s.repo.FetchPerformerBoard(id)
+	return result.id
 }

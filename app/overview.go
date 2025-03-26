@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+
+	"timetablerapi/overview"
 )
 
 type overviewRepo struct {
@@ -17,11 +19,11 @@ const performerBoardsSchema = `
 	);
 `
 
-func (r *overviewRepo) fetchPerformerBoard(id string) (result *performerBoard, err error) {
+func (r *overviewRepo) FetchPerformerBoard(id string) (result *overview.PerformerBoard, err error) {
 	var rowCreatedAt, rowId string
 	err = r.db.QueryRow("select created_at, id from performer_boards where id = $1;", id).Scan(&rowCreatedAt, &rowId)
 	if rowId != "" {
-		result = &performerBoard{rowCreatedAt, rowId}
+		result = &overview.PerformerBoard{rowCreatedAt, rowId}
 	}
 	return
 }
