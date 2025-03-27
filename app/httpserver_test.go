@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"timetablerapi/overview"
 )
 
 func newStubbedServer(s *services) *http.ServeMux {
@@ -37,8 +39,8 @@ func TestMissesUnknownPathWith404Status(t *testing.T) {
 }
 
 func TestHandlesGetForPerformerBoard(t *testing.T) {
-	s := newStubbedServer(&services{overview: overviewService{
-		viewPerformerBoard: func(id string) string {
+	s := newStubbedServer(&services{overview: overview.OverviewService{
+		ViewPerformerBoard: func(id string) string {
 			return id
 		},
 	}})

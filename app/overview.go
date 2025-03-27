@@ -23,7 +23,7 @@ func (r *overviewRepo) FetchPerformerBoard(id string) (result *overview.Performe
 	var rowCreatedAt, rowId string
 	err = r.db.QueryRow("select created_at, id from performer_boards where id = $1;", id).Scan(&rowCreatedAt, &rowId)
 	if rowId != "" {
-		result = &overview.PerformerBoard{rowCreatedAt, rowId}
+		result = overview.NewPerformerBoard(rowCreatedAt, rowId)
 	}
 	return
 }
