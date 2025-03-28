@@ -8,15 +8,15 @@ func NewPerformerBoard(createdAt, id string) *PerformerBoard {
 	return &PerformerBoard{createdAt, id}
 }
 
-type overviewRepo interface {
+type repository interface {
 	FetchPerformerBoard(id string) (result *PerformerBoard, err error)
 }
 
-type OverviewService struct {
-	repo overviewRepo
+type Overview struct {
+	repo repository
 }
 
-func (s *OverviewService) ViewPerformerBoard(id string) string {
+func (s Overview) ViewPerformerBoard(id string) string {
 	result, _ := s.repo.FetchPerformerBoard(id)
 	return result.id
 }

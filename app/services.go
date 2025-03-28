@@ -2,12 +2,16 @@ package main
 
 import "timetablerapi/overview"
 
+type overviewService interface {
+	ViewPerformerBoard(string) string
+}
+
 type services struct {
-	overview overview.OverviewService
+	overview overviewService
 }
 
 func newServices() *services {
 	return &services{
-		overview.OverviewService{},
+		overview.Overview{},
 	}
 }

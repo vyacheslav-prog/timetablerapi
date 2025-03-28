@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"timetablerapi/overview"
 )
 
 func newStubbedServer(s *services) *http.ServeMux {
@@ -38,12 +36,14 @@ func TestMissesUnknownPathWith404Status(t *testing.T) {
 	}
 }
 
+type StubOverviewService struct{}
+
+func (sos StubOverviewService) ViewPerformerBoard(id string) string {
+	return id
+}
+
 func TestHandlesGetForPerformerBoard(t *testing.T) {
-	s := newStubbedServer(&services{overview: overview.OverviewService{
-		ViewPerformerBoard: func(id string) string {
-			return id
-		},
-	}})
+	s := newStubbedServer(&services{overview: StubOverviewService{}})
 	path := "/performer-boards/1"
 	req, rr := httptest.NewRequest("GET", path, nil), httptest.NewRecorder()
 	s.ServeHTTP(rr, req)
