@@ -24,14 +24,14 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 }
 
 func TestFetchsPerformerBoardByIdentity(t *testing.T) {
-	db, id := openDBConnect(t), "2861ff45-526f-4618-9b7a-09e581cb2113"
+	db, id, title := openDBConnect(t), "2861ff45-526f-4618-9b7a-09e581cb2113", "my board"
 	defer db.Close()
 	sut, err := newOverviewRepo(t.Context(), db)
 	if err != nil {
 		t.Error("failed init overview repo:", err)
 	}
 	var deleteBoard func()
-	deleteBoard, err = seedFakePerformerBoard(db, id)
+	deleteBoard, err = seedFakePerformerBoard(db, id, title)
 	if err != nil {
 		t.Error("Could not be seed a fake performer board:", err)
 	}
@@ -41,8 +41,8 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 	if err != nil {
 		t.Error("Could not fetch a performer board:", err)
 	}
-	if nil == result {
-		t.Errorf("Result must be not nil for [%v] performer board id, actual is [%v]", id, result)
+	if title != result.title {
+		t.Errorf("Result for board fetching must have title [%v], actual board is [%v]", title, result)
 	}
 }
 
@@ -55,8 +55,8 @@ func openDBConnect(t *testing.T) *sql.DB {
 	return db
 }
 
-func seedFakePerformerBoard(db *sql.DB, boardId string) (func(), error) {
-	_, err := db.Exec("insert into performer_boards (id) values ($1);", boardId)
+func seedFakePerformerBoard(db *sql.DB, boardId, title string) (func(), error) {
+	_, err := db.Exec("insert into performer_boards (id, title) values ($1, $2);", boardId, title)
 	return func() {
 		db.Exec("delete from performer_boards where id = $1;", boardId)
 	}, err
