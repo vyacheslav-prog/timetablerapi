@@ -8,6 +8,8 @@ import (
 	"testing"
 
 	_ "github.com/lib/pq"
+
+	"timetablerapi/overview"
 )
 
 func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
@@ -17,7 +19,7 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 	if err != nil {
 		t.Error("failed init overview repo:", err)
 	}
-	result, _ := sut.fetchPerformerBoard("")
+	result, _ := sut.FetchPerformerBoard("")
 	if nil != result {
 		t.Errorf("Result must be nil for empty performer request, actual is [%v]", *result)
 	}
@@ -36,12 +38,12 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 		t.Error("Could not be seed a fake performer board:", err)
 	}
 	defer deleteBoard()
-	var result *performerBoard
-	result, err = sut.fetchPerformerBoard(id)
+	var result *overview.PerformerBoard
+	result, err = sut.FetchPerformerBoard(id)
 	if err != nil {
 		t.Error("Could not fetch a performer board:", err)
 	}
-	if title != result.title {
+	if title != result.Title() {
 		t.Errorf("Result for board fetching must have title [%v], actual board is [%v]", title, result)
 	}
 }

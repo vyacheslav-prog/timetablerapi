@@ -1,11 +1,15 @@
 package overview
 
 type PerformerBoard struct {
-	createdAt, id string
+	createdAt, id, title string
+}
+
+func (pb *PerformerBoard) Title() string {
+	return pb.title
 }
 
 func NewPerformerBoard(createdAt, id string) *PerformerBoard {
-	return &PerformerBoard{createdAt, id}
+	return &PerformerBoard{createdAt, id, ""}
 }
 
 type repository interface {
