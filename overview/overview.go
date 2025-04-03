@@ -8,8 +8,8 @@ func (pb *PerformerBoard) Title() string {
 	return pb.title
 }
 
-func NewPerformerBoard(createdAt, id string) *PerformerBoard {
-	return &PerformerBoard{createdAt, id, ""}
+func NewPerformerBoard(createdAt, id, title string) *PerformerBoard {
+	return &PerformerBoard{createdAt, id, title}
 }
 
 type repository interface {
