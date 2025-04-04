@@ -1,5 +1,17 @@
 package overview
 
+type PerformerBoard struct {
+	createdAt, id, title string
+}
+
+func (pb *PerformerBoard) Title() string {
+	return pb.title
+}
+
+func NewPerformerBoard(createdAt, id, title string) *PerformerBoard {
+	return &PerformerBoard{createdAt, id, title}
+}
+
 type performer struct {
 	name      string
 	openSlots []slot
