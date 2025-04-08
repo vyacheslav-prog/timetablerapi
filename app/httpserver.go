@@ -6,7 +6,11 @@ import (
 )
 
 func main() {
-	mux, services := http.NewServeMux(), newServices()
+	services, err := newServices()
+	if err != nil {
+		fmt.Println("Unable initalization for services:", err)
+	}
+	mux := http.NewServeMux()
 	registerHandlers(mux, services)
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		fmt.Println("Error for server startup:", err)

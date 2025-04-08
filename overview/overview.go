@@ -5,10 +5,10 @@ type repository interface {
 }
 
 type Overview struct {
-	repo repository
+	Repo repository
 }
 
 func (s Overview) ViewPerformerBoard(id string) string {
-	result, _ := s.repo.FetchPerformerBoard(id)
+	result, _ := s.Repo.FetchPerformerBoard(id)
 	return result.id
 }

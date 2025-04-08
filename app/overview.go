@@ -20,7 +20,7 @@ const performerBoardsSchema = `
 	);
 `
 
-func (r *overviewRepo) FetchPerformerBoard(id string) (result *overview.PerformerBoard, err error) {
+func (r overviewRepo) FetchPerformerBoard(id string) (result *overview.PerformerBoard, err error) {
 	var rowCreatedAt, rowId, rowTitle string
 	err = r.db.QueryRow("select created_at, id, title from performer_boards where id = $1;", id).Scan(&rowCreatedAt, &rowId, &rowTitle)
 	if rowId != "" {
