@@ -3,12 +3,14 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 )
 
 func main() {
 	services, err := newServices()
 	if err != nil {
 		fmt.Println("Unable initalization for services:", err)
+		os.Exit(1)
 	}
 	mux := http.NewServeMux()
 	registerHandlers(mux, services)
