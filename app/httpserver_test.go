@@ -21,8 +21,8 @@ func TestListens8080PortForHttpServer(t *testing.T) {
 	req, rr := httptest.NewRequest("GET", "http://localhost:8080/", nil), httptest.NewRecorder()
 	s.ServeHTTP(rr, req)
 	resp := rr.Result()
-	if http.StatusOK != resp.StatusCode {
-		t.Errorf("Result for GET / must be [%v], actual is [%v]", http.StatusOK, resp.Status)
+	if expected := http.StatusOK; expected != resp.StatusCode {
+		t.Errorf("Result for GET / must be [%v], actual is [%v]", expected, resp.Status)
 	}
 }
 
