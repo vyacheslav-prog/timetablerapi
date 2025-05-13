@@ -12,7 +12,7 @@ func TestPlansZeroSlotsForNoPerformers(t *testing.T) {
 func TestPlansFirstSlotForSingleTaskAndSinglePerformer(t *testing.T) {
 	p, tasks := []performer{performer{[]period{period{"06:00", "07:00"}}}}, []task{task{"discuss nature"}}
 	result := plan(p, tasks)
-	if 1 != len(result) {
+	if 1 != len(result) || "06:00" != result[0].From() {
 		t.Errorf("Result must be a single job for single available performer, actual is [%v]", result)
 	}
 }
