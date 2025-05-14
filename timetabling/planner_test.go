@@ -16,3 +16,11 @@ func TestPlansFirstSlotForSingleTaskAndSinglePerformer(t *testing.T) {
 		t.Errorf("Result must be a single job for single available performer, actual is [%v]", result)
 	}
 }
+
+func TestPlansZeroSlotsWhenPerformerDoesntHaveOpenPeriod(t *testing.T) {
+	p, tasks := []performer{performer{}}, []task{task{"discuss stones"}}
+	result := plan(p, tasks)
+	if 0 != len(result) {
+		t.Errorf("Result must be zero slots for no performers, actual is [%v]", result)
+	}
+}
