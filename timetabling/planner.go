@@ -8,10 +8,10 @@ type task struct {
 	title string
 }
 
-func plan(p []performer, t []task) []job {
-	if 0 != len(p) {
-		for _, p := range p[0].emptyPeriods {
-			return []job{job{p.from}}
+func plan(performers []performer, tasks []task) []job {
+	for _, p := range plist {
+		for _, ep := range p.emptyPeriods {
+			return []job{job{ep.from}}
 		}
 	}
 	return nil
