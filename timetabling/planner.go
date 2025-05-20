@@ -9,7 +9,7 @@ type task struct {
 }
 
 func plan(performers []performer, tasks []task) []job {
-	for _, p := range plist {
+	for _, p := range performers {
 		for _, ep := range p.emptyPeriods {
 			return []job{job{ep.from}}
 		}
