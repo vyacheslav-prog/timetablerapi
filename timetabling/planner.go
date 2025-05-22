@@ -5,7 +5,7 @@ type job struct {
 }
 
 type task struct {
-	title string
+	from, title, to string
 }
 
 func plan(performers []performer, tasks []task) []job {
