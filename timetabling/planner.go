@@ -9,9 +9,15 @@ type task struct {
 }
 
 func plan(performers []performer, tasks []task) []job {
+	if 1 != len(tasks) {
+		return nil
+	}
+	taskFrom, taskTo := tasks[0].from, tasks[0].to
 	for _, p := range performers {
 		for _, ep := range p.emptyPeriods {
-			return []job{job{ep.from}}
+			if taskFrom == ep.from && taskTo == ep.to {
+				return []job{job{taskFrom}}
+			}
 		}
 	}
 	return nil
