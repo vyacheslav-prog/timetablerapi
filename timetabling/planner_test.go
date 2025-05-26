@@ -44,7 +44,7 @@ func newSinglePerformer(openPeriod string) []performer {
 func newSingleTask(fromTo string) []task {
 	subject := "discuss nature"
 	if 11 == len(fromTo) {
-		return []task{task{fromTo[0:5], fromTo[6:11], subject}}
+		return []task{task{fromTo[0:5], subject, fromTo[6:11]}}
 	}
 	return []task{task{"00:00", "00:00", subject}}
 }
