@@ -9,18 +9,17 @@ type task struct {
 }
 
 func plan(performers []performer, tasks []task) []job {
-	if 1 != len(tasks) {
-		return nil
-	}
-	taskFrom, taskTo := tasks[0].from, tasks[0].to
-	for _, p := range performers {
-		for _, ep := range p.emptyPeriods {
-			if taskFrom == ep.from && taskTo == ep.to {
-				return []job{job{taskFrom}}
+	var result []job
+	for _, t := range tasks {
+		for _, p := range performers {
+			for _, ep := range p.emptyPeriods {
+				if t.from == ep.from && t.to == ep.to {
+					result = append(result, job{t.from})
+				}
 			}
 		}
 	}
-	return nil
+	return result
 }
 
 func (j *job) From() string {
