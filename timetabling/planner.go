@@ -13,7 +13,7 @@ func plan(performers []performer, tasks []task) []job {
 	for _, t := range tasks {
 		for _, p := range performers {
 			for _, ep := range p.emptyPeriods {
-				if t.from == ep.from && t.to == ep.to {
+				if ep.from <= t.from && t.to <= ep.to {
 					result = append(result, job{t.from})
 				}
 			}
