@@ -12,7 +12,7 @@ func TestPlansZeroSlotsForNoPerformers(t *testing.T) {
 func TestPlansFirstSlotForSingleTaskAndSinglePerformer(t *testing.T) {
 	p, tasks := newSinglePerformer("06:00-07:00"), newSingleTask("06:00-07:00")
 	result := plan(p, tasks)
-	if 1 != len(result) || "06:00" != result[0].From() {
+	if 1 != len(result) || "06:00" != result[0].startAt() {
 		t.Errorf("Result must be a single job for single available performer, actual is [%v]", result)
 	}
 }
@@ -36,7 +36,7 @@ func TestPlansZeroSlotsWhenTaskIsNotFitIntoPeriod(t *testing.T) {
 func TestPlansSingleJobWhenPerformerPeriodIsLongerThanTaskPeriod(t *testing.T) {
 	p, tasks := newSinglePerformer("06:00-07:00"), newSingleTask("06:30-07:00")
 	result := plan(p, tasks)
-	if 1 != len(result) || "06:30" != result[0].From() {
+	if 1 != len(result) || "06:30" != result[0].startAt() {
 		t.Errorf("Result must be a single job for single available performer, actual is [%v]", result)
 	}
 }
