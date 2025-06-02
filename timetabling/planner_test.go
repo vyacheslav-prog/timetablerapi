@@ -41,12 +41,24 @@ func TestPlansSingleJobWhenPerformerPeriodIsLongerThanTaskPeriod(t *testing.T) {
 	}
 }
 
-func newSinglePerformer(openPeriod string) []performer {
+func TestPlansSingleJobForTwoPerformersWithSameOpenPeriod(t *testing.T) {
+	p, tasks := []performer{newPerformer("06:00-07:00"), newPerformer("06:00-07:00")}, newSingleTask("06:00-07:00")
+	result := plan(p, tasks)
+	if 1 != len(result) {
+		t.Errorf("Result must be a single job for many performers, actual is [%v]", result)
+	}
+}
+
+func newPerformer(openPeriod string) performer {
 	openPeriods := []period{}
 	if 11 == len(openPeriod) {
 		openPeriods = append(openPeriods, period{openPeriod[0:5], openPeriod[6:11]})
 	}
-	return []performer{performer{openPeriods}}
+	return performer{openPeriods}
+}
+
+func newSinglePerformer(openPeriod string) []performer {
+	return []performer{newPerformer(openPeriod)}
 }
 
 func newSingleTask(fromTo string) []task {
