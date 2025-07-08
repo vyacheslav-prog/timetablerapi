@@ -14,11 +14,13 @@ func (t *task) fit(p period) bool {
 
 func plan(performers []performer, tasks []task) []job {
 	var result []job
+planning:
 	for _, t := range tasks {
 		for _, p := range performers {
 			for _, ep := range p.emptyPeriods {
 				if t.fit(ep) {
 					result = append(result, job{t.from})
+					break planning
 				}
 			}
 		}
