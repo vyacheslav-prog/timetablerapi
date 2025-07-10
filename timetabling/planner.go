@@ -12,8 +12,9 @@ func plan(performers []performer, tasks []task) []job {
 	var result []job
 planning:
 	for _, t := range tasks {
+		tp := t.period()
 		for _, p := range performers {
-			ap := p.findAvailablePeriod(&period{t.from, t.to})
+			ap := p.findAvailablePeriod(tp)
 			if nil != ap {
 				result = append(result, job{t.from})
 				break planning
@@ -21,6 +22,10 @@ planning:
 		}
 	}
 	return result
+}
+
+func (t *task) period() *period {
+	return &period{t.from, t.to}
 }
 
 func (j *job) startAt() string {
