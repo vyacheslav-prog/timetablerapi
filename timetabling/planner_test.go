@@ -49,6 +49,14 @@ func TestPlansSingleJobForTwoPerformersWithSameOpenPeriod(t *testing.T) {
 	}
 }
 
+func TestPlansTwoJobsForSinglePerfromerWithoutOverlap(t *testing.T) {
+	p, tasks := newSinglePerformer("09:00-15:00"), append(newSingleTask("09:00-10:00"), newSingleTask("14:00-15:00")[0])
+	result := plan(p, tasks)
+	if 2 != len(result) {
+		t.Errorf("Result must contain two job for performers [%v] and tasks [%v], actual is [%v]", p, tasks, result)
+	}
+}
+
 func newPerformer(openPeriod string) performer {
 	openPeriods := []period{}
 	if 11 == len(openPeriod) {
