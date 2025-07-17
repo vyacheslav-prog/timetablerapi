@@ -42,7 +42,7 @@ func TestPlansSingleJobWhenPerformerPeriodIsLongerThanTaskPeriod(t *testing.T) {
 }
 
 func TestPlansSingleJobForTwoPerformersWithSameOpenPeriod(t *testing.T) {
-	p, tasks := []performer{newPerformer("06:00-07:00"), newPerformer("06:00-07:00")}, newSingleTask("06:00-07:00")
+	p, tasks := []performer{newPerformer("Dave", "06:00-07:00"), newPerformer("Kate", "06:00-07:00")}, newSingleTask("06:00-07:00")
 	result := plan(p, tasks)
 	if 1 != len(result) {
 		t.Errorf("Result must be a single job for many performers, actual is [%v]", result)
@@ -57,16 +57,25 @@ func TestPlansTwoJobsForSinglePerfromerWithoutOverlap(t *testing.T) {
 	}
 }
 
-func newPerformer(openPeriod string) performer {
+func TestPlansTwoSameTimeJobsForTwoPerformers(t *testing.T) {
+	p := []performer{newPerformer("Dave", "06:00-07:00"), newPerformer("Kate", "06:00-07:00")}
+	tasks := append(newSingleTask("06:00-07:00"), newSingleTask("06:00-07:00")[0])
+	result := plan(p, tasks)
+	if 2 != len(result) || result[0].performer == result[1].performer {
+		t.Errorf("Result must contain two different job for performers [%v] and tasks [%v], actual is [%v]", p, tasks, result)
+	}
+}
+
+func newPerformer(id, openPeriod string) performer {
 	openPeriods := []period{}
 	if 11 == len(openPeriod) {
 		openPeriods = append(openPeriods, period{openPeriod[0:5], openPeriod[6:11]})
 	}
-	return performer{openPeriods}
+	return performer{id, openPeriods}
 }
 
 func newSinglePerformer(openPeriod string) []performer {
-	return []performer{newPerformer(openPeriod)}
+	return []performer{newPerformer("John", openPeriod)}
 }
 
 func newSingleTask(fromTo string) []task {
