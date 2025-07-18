@@ -71,11 +71,11 @@ func newPerformer(id, openPeriod string) performer {
 	if 11 == len(openPeriod) {
 		openPeriods = append(openPeriods, period{openPeriod[0:5], openPeriod[6:11]})
 	}
-	return performer{id, openPeriods}
+	return performer{openPeriods, id}
 }
 
 func newSinglePerformer(openPeriod string) []performer {
-	return []performer{newPerformer("John", openPeriod)}
+	return []performer{newPerformer(openPeriod, "John")}
 }
 
 func newSingleTask(fromTo string) []task {

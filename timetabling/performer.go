@@ -2,6 +2,7 @@ package timetabling
 
 type performer struct {
 	emptyPeriods []period
+	name         string
 }
 
 func (p *performer) findAvailablePeriod(r *period) *period {

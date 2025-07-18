@@ -1,7 +1,7 @@
 package timetabling
 
 type job struct {
-	from string
+	from, performer string
 }
 
 type task struct {
@@ -14,7 +14,7 @@ func plan(performers []performer, tasks []task) []job {
 		tp := t.period()
 		for _, p := range performers {
 			if ap := p.findAvailablePeriod(tp); nil != ap {
-				result = append(result, job{tp.from})
+				result = append(result, job{tp.from, p.name})
 				break
 			}
 		}
