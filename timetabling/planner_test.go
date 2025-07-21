@@ -75,7 +75,7 @@ func newPerformer(id, openPeriod string) performer {
 }
 
 func newSinglePerformer(openPeriod string) []performer {
-	return []performer{newPerformer(openPeriod, "John")}
+	return []performer{newPerformer("John", openPeriod)}
 }
 
 func newSingleTask(fromTo string) []task {
