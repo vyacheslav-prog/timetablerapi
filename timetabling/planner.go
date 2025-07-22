@@ -10,12 +10,16 @@ type task struct {
 
 func plan(performers []performer, tasks []task) []job {
 	var result []job
+	busyPerformers := make(map[string]int)
 	for _, t := range tasks {
 		tp := t.period()
 		for _, p := range performers {
+			if _, isBusy := busyPerformers[p.name]; isBusy {
+				break
+			}
 			if ap := p.findAvailablePeriod(tp); nil != ap {
 				result = append(result, job{tp.from, p.name})
-				break
+				busyPerformers[p.name] = 1
 			}
 		}
 	}
