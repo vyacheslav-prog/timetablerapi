@@ -10,17 +10,16 @@ type task struct {
 
 func plan(performers []performer, tasks []task) []job {
 	var result []job
-	busyPerformers := make(map[string]int)
 	for _, t := range tasks {
 		tp := t.period()
-		for _, p := range performers {
-			if _, isBusy := busyPerformers[p.name]; isBusy {
-				break
+		candidate := ""
+		for pIndex := 0; len(performers) != pIndex && candidate == ""; pIndex += 1 {
+			if ap := performers[pIndex].findAvailablePeriod(tp); nil != ap {
+				candidate = performers[pIndex].name
 			}
-			if ap := p.findAvailablePeriod(tp); nil != ap {
-				result = append(result, job{tp.from, p.name})
-				busyPerformers[p.name] = 1
-			}
+		}
+		if "" != candidate {
+			result = append(result, job{tp.from, candidate})
 		}
 	}
 	return result
