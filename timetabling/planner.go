@@ -8,18 +8,17 @@ type task struct {
 	from, title, to string
 }
 
-func plan(performers []performer, tasks []task) []job {
+func plan(recipients []performer, tasks []task) []job {
 	var result []job
 	for _, t := range tasks {
-		tp := t.period()
-		candidate := ""
-		for pIndex := 0; len(performers) != pIndex && candidate == ""; pIndex += 1 {
-			if ap := performers[pIndex].findAvailablePeriod(tp); nil != ap {
-				candidate = performers[pIndex].name
+		perf, tp := "", t.period()
+		for rIndex := 0; len(recipients) != rIndex && perf == ""; rIndex += 1 {
+			if r := recipients[rIndex]; nil != r.findAvailablePeriod(tp) {
+				perf = r.name
 			}
 		}
-		if "" != candidate {
-			result = append(result, job{tp.from, candidate})
+		if "" != perf {
+			result = append(result, job{tp.from, perf})
 		}
 	}
 	return result
