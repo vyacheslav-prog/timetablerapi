@@ -14,11 +14,12 @@ func plan(recipients []performer, tasks []task) []job {
 	for _, t := range tasks {
 		perf, tp := "", t.period()
 		for rIndex := 0; len(recipients) != rIndex && perf == ""; rIndex += 1 {
-			if r := recipients[rIndex]; nil != r.findAvailablePeriod(tp) {
-				if busyFrom, isBusy := busyPerformers[r.name]; true != isBusy || busyFrom != t.from {
-					perf = r.name
-					busyPerformers[perf] = t.from
-				}
+			r := recipients[rIndex]
+			busyFrom, isBusy := busyPerformers[r.name]
+			isNotBusy := true != isBusy || busyFrom != t.from
+			if isNotBusy && nil != r.findAvailablePeriod(tp) {
+				perf = r.name
+				busyPerformers[perf] = t.from
 			}
 		}
 		if "" != perf {
