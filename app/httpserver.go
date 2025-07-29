@@ -15,7 +15,7 @@ func main() {
 	mux := http.NewServeMux()
 	registerHandlers(mux, services)
 	if err := http.ListenAndServe(":8080", mux); err != nil {
-		fmt.Println("error for server startup:", err)
+		fmt.Println("failed serve for http-server:", err)
 	}
 	fmt.Println("timetablerapi server for http listen 8080 port")
 }
