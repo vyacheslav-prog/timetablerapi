@@ -58,3 +58,14 @@ func TestHandlesGetForPerformerBoard(t *testing.T) {
 		t.Errorf("Content for GET [%v] must be 1, actual is [%v]", path, content)
 	}
 }
+
+func TestHandlesPostForPerformer(t *testing.T) {
+	s := newStubbedServer(nil)
+	path := "/performers"
+	req, rr := httptest.NewRequest("POST", path, nil), httptest.NewRecorder()
+	s.ServeHTTP(rr, req)
+	res := rr.Result()
+	if expected := http.StatusCreated; expected != res.StatusCode {
+		t.Errorf("Result for POST [%v] must have [%v] status, actual is [%v]", path, expected, res.Status)
+	}
+}
