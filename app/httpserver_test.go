@@ -68,4 +68,7 @@ func TestHandlesPostForPerformer(t *testing.T) {
 	if expected := http.StatusCreated; expected != res.StatusCode {
 		t.Errorf("Result for POST [%v] must have [%v] status, actual is [%v]", path, expected, res.Status)
 	}
+	if contentType, expected := res.Header.Get("Content-Type"), "application/json"; expected != contentType {
+		t.Errorf("Type of content for POST [%v] must be [%v], actual is [%v]", path, expected, contentType)
+	}
 }
