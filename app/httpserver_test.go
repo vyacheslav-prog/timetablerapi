@@ -71,4 +71,7 @@ func TestHandlesPostForPerformer(t *testing.T) {
 	if contentType, expected := res.Header.Get("Content-Type"), "application/json"; expected != contentType {
 		t.Errorf("Type of content for POST [%v] must be [%v], actual is [%v]", path, expected, contentType)
 	}
+	if content := rr.Body.String(); content != "{\"performer_id\": \"a-a-a-a\"}" {
+		t.Errorf("Content for GET [%v] must be json with performer id, actual is [%v]", path, content)
+	}
 }
