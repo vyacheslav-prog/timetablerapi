@@ -13,8 +13,16 @@ type overviewService interface {
 	ViewPerformerBoard(string) string
 }
 
+type timetablingService struct {
+}
+
+func (ts *timetablingService) AddPerformer() string {
+	return "{\"performer_id\": \"a-a-a-a\"}"
+}
+
 type services struct {
 	overview overviewService
+	timetabling timetablingService
 }
 
 func newServices() (*services, error) {
@@ -31,5 +39,6 @@ func newServices() (*services, error) {
 		overview.Overview{
 			overviewRepo{db},
 		},
+		timetablingService{},
 	}, nil
 }
