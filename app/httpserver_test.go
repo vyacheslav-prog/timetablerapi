@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -62,7 +63,7 @@ func TestHandlesGetForPerformerBoard(t *testing.T) {
 func TestHandlesPostForPerformer(t *testing.T) {
 	s := newStubbedServer(nil)
 	path := "/performers"
-	req, rr := httptest.NewRequest("POST", path, nil), httptest.NewRecorder()
+	req, rr := httptest.NewRequest("POST", path, bytes.NewBufferString("{\"name\":\"John\"}")), httptest.NewRecorder()
 	s.ServeHTTP(rr, req)
 	res := rr.Result()
 	if expected := http.StatusCreated; expected != res.StatusCode {
