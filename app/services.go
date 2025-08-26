@@ -16,7 +16,7 @@ type overviewService interface {
 type timetablingService struct {
 }
 
-func (ts *timetablingService) AddPerformer() string {
+func (ts *timetablingService) AddPerformer(name string) string {
 	return "{\"performer_id\": \"a-a-a-a\"}"
 }
 
