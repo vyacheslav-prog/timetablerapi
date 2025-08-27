@@ -30,6 +30,6 @@ func registerHandlers(mux *http.ServeMux, s *services) {
 	mux.HandleFunc("POST /performers", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		fmt.Fprint(w, s.timetabling.AddPerformer())
+		fmt.Fprint(w, s.timetabling.AddPerformer("John"))
 	})
 }
