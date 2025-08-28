@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 )
@@ -20,6 +22,10 @@ func main() {
 	fmt.Println("timetablerapi server for http listen 8080 port")
 }
 
+type performerCreatingRequest struct {
+	name string
+}
+
 func registerHandlers(mux *http.ServeMux, s *services) {
 	mux.HandleFunc("/{$}", func(w http.ResponseWriter, r *http.Request) {
 	})
@@ -28,8 +34,16 @@ func registerHandlers(mux *http.ServeMux, s *services) {
 		fmt.Fprint(w, s.overview.ViewPerformerBoard(r.PathValue("boardId")))
 	})
 	mux.HandleFunc("POST /performers", func(w http.ResponseWriter, r *http.Request) {
+		body, readBodyErr := io.ReadAll(r.Body)
+		if readBodyErr != nil {
+			fmt.Fprint(w, "failed body read:", readBodyErr)
+		}
+		var data performerCreatingRequest
+		if unmarshallErr := json.Unmarshal(body, &data); unmarshallErr != nil {
+			fmt.Fprint(w, "failed body decoding:", unmarshallErr)
+		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		fmt.Fprint(w, s.timetabling.AddPerformer("John"))
+		fmt.Fprint(w, s.timetabling.AddPerformer(data.name))
 	})
 }
