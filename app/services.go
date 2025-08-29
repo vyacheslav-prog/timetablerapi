@@ -21,7 +21,7 @@ func (ts *timetablingService) AddPerformer(name string) string {
 }
 
 type services struct {
-	overview overviewService
+	overview    overviewService
 	timetabling timetablingService
 }
 
