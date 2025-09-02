@@ -60,8 +60,13 @@ func TestHandlesGetForPerformerBoard(t *testing.T) {
 	}
 }
 
+type StubRegistrarService struct{}
+
+func (s StubRegistrarService) AddPerformer(name string) {
+}
+
 func TestHandlesPostForPerformer(t *testing.T) {
-	s := newStubbedServer(nil)
+	s := newStubbedServer(&services{registrar: StubRegistrarService{}})
 	path := "/performers"
 	req, rr := httptest.NewRequest("POST", path, bytes.NewBufferString("{\"name\":\"John\"}")), httptest.NewRecorder()
 	s.ServeHTTP(rr, req)
