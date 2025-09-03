@@ -62,7 +62,8 @@ func TestHandlesGetForPerformerBoard(t *testing.T) {
 
 type StubRegistrarService struct{}
 
-func (s StubRegistrarService) AddPerformer(name string) {
+func (s StubRegistrarService) AddPerformer(name string) string {
+	return "{\"performer_id\": \"a-a-a-a\"}"
 }
 
 func TestHandlesPostForPerformer(t *testing.T) {

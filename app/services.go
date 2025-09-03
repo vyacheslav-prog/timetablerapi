@@ -15,7 +15,7 @@ type overviewService interface {
 }
 
 type registrarService interface {
-	AddPerformer(string)
+	AddPerformer(string) string
 }
 
 type services struct {

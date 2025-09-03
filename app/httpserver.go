@@ -44,7 +44,6 @@ func registerHandlers(mux *http.ServeMux, s *services) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		s.registrar.AddPerformer(data.name)
-		fmt.Fprint(w, "{\"performer_id\": \"a-a-a-a\"}")
+		fmt.Fprint(w, s.registrar.AddPerformer(data.name))
 	})
 }
