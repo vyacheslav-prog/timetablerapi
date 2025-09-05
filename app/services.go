@@ -25,13 +25,12 @@ type services struct {
 
 func newServices() (*services, error) {
 	dbConn, dbMode := os.Getenv("DATABASE_URL"), os.Getenv("DATABASE_MODE")
-	db, err := sql.Open(dbMode, dbConn)
-	if err != nil {
-		return nil, err
+	db, openErr := sql.Open(dbMode, dbConn)
+	if openErr != nil {
+		return nil, openErr
 	}
-	err = db.Ping()
-	if err != nil {
-		return nil, err
+	if pingErr := db.Ping(); pingErr != nil {
+		return nil, pingErr
 	}
 	return &services{
 		overview.Overview{
