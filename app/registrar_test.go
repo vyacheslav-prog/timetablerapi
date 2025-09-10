@@ -8,8 +8,11 @@ import (
 
 func TestIdentifiesPerformerForAdding(t *testing.T) {
 	repo := registrarRepo{}
-	_, repoErr := repo.SaveAndIdentifyPerformer("John")
+	id, repoErr := repo.SaveAndIdentifyPerformer("John")
 	if repoErr != nil {
-		t.Error("Couldn't identify new performer", repoErr)
+		t.Error("Couldn't identify new performer:", repoErr)
+	}
+	if "" == id {
+		t.Error("Identity must be not empty string")
 	}
 }
