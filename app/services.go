@@ -36,6 +36,8 @@ func newServices() (*services, error) {
 		overview.Overview{
 			overviewRepo{db},
 		},
-		registrar.Registrar{},
+		registrar.Registrar{
+			registrarRepo{db},
+		},
 	}, nil
 }

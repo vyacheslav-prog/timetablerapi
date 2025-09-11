@@ -5,10 +5,10 @@ type repository interface {
 }
 
 type Registrar struct {
-	repo repository
+	Repo repository
 }
 
 func (r Registrar) AddPerformer(name string) string {
-	identity, _ := r.repo.SaveAndIdentifyPerformer(name)
+	identity, _ := r.Repo.SaveAndIdentifyPerformer(name)
 	return identity
 }
