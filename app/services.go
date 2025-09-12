@@ -19,8 +19,8 @@ type registrarService interface {
 }
 
 type services struct {
-	overview    overviewService
-	registrar   registrarService
+	overview  overviewService
+	registrar registrarService
 }
 
 func newServices() (*services, error) {
