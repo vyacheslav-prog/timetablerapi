@@ -19,6 +19,6 @@ func TestIdentifiesPerformerForAdding(t *testing.T) {
 	}
 	existsRow := dbConn.QueryRowContext(t.Context(), "select id from performers where id = $1", id)
 	if rowErr := existsRow.Err(); rowErr != nil {
-		t.Error("Couldn't check existing for a saved performer:", repoErr)
+		t.Error("Couldn't check existing for a saved performer:", rowErr)
 	}
 }
