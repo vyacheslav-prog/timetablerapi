@@ -1,6 +1,10 @@
 package main
 
-import "database/sql"
+import (
+	"context"
+	"database/sql"
+	"fmt"
+)
 
 const performersSchema = `
 	create table if not exists performers (
