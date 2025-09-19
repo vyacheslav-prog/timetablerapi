@@ -9,7 +9,7 @@ import (
 func TestIdentifiesPerformerForAdding(t *testing.T) {
 	dbConn := openDBConnect(t)
 	defer dbConn.Close()
-	repo := registrarRepo{dbConn}
+	repo := newRegistrarRepo(t.Context(), dbConn)
 	id, repoErr := repo.SaveAndIdentifyPerformer("John")
 	if repoErr != nil {
 		t.Error("Couldn't identify new performer:", repoErr)
