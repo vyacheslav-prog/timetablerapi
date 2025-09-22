@@ -12,13 +12,13 @@ func TestIdentifiesPerformerForAdding(t *testing.T) {
 	repo := newRegistrarRepo(t.Context(), dbConn)
 	id, repoErr := repo.SaveAndIdentifyPerformer("John")
 	if repoErr != nil {
-		t.Error("Couldn't identify new performer:", repoErr)
+		t.Error("couldn't identify new performer:", repoErr)
 	}
 	if "" == id {
-		t.Error("Identity must be not empty string")
+		t.Error("identity must be not empty string")
 	}
 	existsRow := dbConn.QueryRowContext(t.Context(), "select id from performers where id = $1", id)
 	if rowErr := existsRow.Err(); rowErr != nil {
-		t.Error("Couldn't check existing for a saved performer:", rowErr)
+		t.Error("couldn't check existing for a saved performer:", rowErr)
 	}
 }
