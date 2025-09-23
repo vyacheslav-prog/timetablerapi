@@ -26,26 +26,24 @@ func newRegistrarRepo(ctx context.Context, db *sql.DB) (*registrarRepo, error) {
 	if db == nil {
 		return nil, fmt.Errorf("not connection for server")
 	}
-	tx, err := db.Begin()
-	if err != nil {
-		return nil, fmt.Errorf("init a migration transaction is failed: %w", err)
+	tx, txBeginErr := db.Begin()
+	if txBeginErr != nil {
+		return nil, fmt.Errorf("init a migration transaction is failed: %w", txBeginErr)
 	}
 	defer tx.Rollback()
 	existsRow := tx.QueryRowContext(ctx, "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = 'performers';")
 	var tableExists int
-	err = existsRow.Scan(&tableExists)
-	if err != nil {
-		return nil, fmt.Errorf("check table existence is failed: %w", err)
+	if checkTableErr := existsRow.Scan(&tableExists); checkTableErr != nil {
+		return nil, fmt.Errorf("check table existence is failed: %w", checkTableErr)
 	}
 	if 0 == tableExists {
-		_, err = tx.ExecContext(ctx, performersSchema)
-		if err != nil {
-			return nil, fmt.Errorf("create schema for table is failed: %w", err)
+		_, migrateErr := tx.ExecContext(ctx, performersSchema)
+		if migrateErr != nil {
+			return nil, fmt.Errorf("create schema for table is failed: %w", migrateErr)
 		}
 	}
-	err = tx.Commit()
-	if err != nil {
-		return nil, fmt.Errorf("commit a migration transaction is failed: %w", err)
+	if txCommitErr := tx.Commit(); txCommitErr != nil {
+		return nil, fmt.Errorf("commit a migration transaction is failed: %w", txCommitErr)
 	}
 	return &registrarRepo{db: db}, nil
 }
