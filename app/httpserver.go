@@ -9,15 +9,15 @@ import (
 )
 
 func main() {
-	services, err := newServices()
-	if err != nil {
-		fmt.Println("unable initalization for services:", err)
+	services, initErr := newServices()
+	if initErr != nil {
+		fmt.Println("unable initalization for services:", initErr)
 		os.Exit(1)
 	}
 	mux := http.NewServeMux()
 	registerHandlers(mux, services)
-	if err := http.ListenAndServe(":8080", mux); err != nil {
-		fmt.Println("failed serve for http-server:", err)
+	if serveErr := http.ListenAndServe(":8080", mux); serveErr != nil {
+		fmt.Println("failed serve for http-server:", serveErr)
 	}
 	fmt.Println("timetablerapi server for http listen 8080 port")
 }
