@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 )
@@ -31,19 +32,25 @@ func registerHandlers(mux *http.ServeMux, s *services) {
 	})
 	mux.HandleFunc("GET /performer-boards/{boardId}", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		fmt.Fprint(w, s.overview.ViewPerformerBoard(r.PathValue("boardId")))
+		_, respErr := fmt.Fprint(w, s.overview.ViewPerformerBoard(r.PathValue("boardId")))
+		if respErr != nil {
+			log.Print("can not to write a response:", respErr)
+		}
 	})
 	mux.HandleFunc("POST /performers", func(w http.ResponseWriter, r *http.Request) {
 		body, readBodyErr := io.ReadAll(r.Body)
 		if readBodyErr != nil {
-			fmt.Fprint(w, "failed body read:", readBodyErr)
+			log.Print("failed body read:", readBodyErr)
 		}
 		var data performerCreatingRequest
 		if unmarshallErr := json.Unmarshal(body, &data); unmarshallErr != nil {
-			fmt.Fprint(w, "failed body decoding:", unmarshallErr)
+			log.Print("failed body decoding:", unmarshallErr)
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		fmt.Fprint(w, s.registrar.AddPerformer(data.name))
+		_, respErr := fmt.Fprint(w, s.registrar.AddPerformer(data.name))
+		if respErr != nil {
+			log.Print("can not to write a response:", respErr)
+		}
 	})
 }
