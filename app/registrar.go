@@ -36,7 +36,7 @@ func newRegistrarRepo(ctx context.Context, db *sql.DB) (*registrarRepo, error) {
 	if checkTableErr := existsRow.Scan(&tableExists); checkTableErr != nil {
 		return nil, fmt.Errorf("check table existence is failed: %w", checkTableErr)
 	}
-	if 0 == tableExists {
+	if tableExists == 0 {
 		_, migrateErr := tx.ExecContext(ctx, performersSchema)
 		if migrateErr != nil {
 			return nil, fmt.Errorf("create schema for table is failed: %w", migrateErr)

@@ -43,7 +43,7 @@ func newOverviewRepo(ctx context.Context, db *sql.DB) (*overviewRepo, error) {
 	if existenceErr := existsRow.Scan(&tableExists); existenceErr != nil {
 		return nil, fmt.Errorf("check table existence is failed: %w", existenceErr)
 	}
-	if 0 == tableExists {
+	if tableExists == 0 {
 		_, createSchemaErr := tx.ExecContext(ctx, performerBoardsSchema)
 		if createSchemaErr != nil {
 			return nil, fmt.Errorf("create schema for table is failed: %w", createSchemaErr)
