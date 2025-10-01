@@ -4,7 +4,7 @@ import "testing"
 
 func TestPlansZeroSlotsForNoPerformers(t *testing.T) {
 	result := plan(nil, nil)
-	if 0 != len(result) {
+	if len(result) != 0 {
 		t.Errorf("Result must be zero slots for no performers, actual is [%v]", result)
 	}
 }
@@ -12,7 +12,7 @@ func TestPlansZeroSlotsForNoPerformers(t *testing.T) {
 func TestPlansFirstSlotForSingleTaskAndSinglePerformer(t *testing.T) {
 	p, tasks := newSinglePerformer("06:00-07:00"), newSingleTask("06:00-07:00")
 	result := plan(p, tasks)
-	if 1 != len(result) || "06:00" != result[0].startAt() {
+	if len(result) != 1 || result[0].startAt() != "06:00" {
 		t.Errorf("Result must be a single job for single available performer, actual is [%v]", result)
 	}
 }
@@ -20,7 +20,7 @@ func TestPlansFirstSlotForSingleTaskAndSinglePerformer(t *testing.T) {
 func TestPlansZeroSlotsWhenPerformerDoesntHaveOpenPeriod(t *testing.T) {
 	p, tasks := newSinglePerformer(""), newSingleTask("")
 	result := plan(p, tasks)
-	if 0 != len(result) {
+	if len(result) != 0 {
 		t.Errorf("Result must be zero slots for no performers, actual is [%v]", result)
 	}
 }
@@ -28,7 +28,7 @@ func TestPlansZeroSlotsWhenPerformerDoesntHaveOpenPeriod(t *testing.T) {
 func TestPlansZeroSlotsWhenTaskIsNotFitIntoPeriod(t *testing.T) {
 	p, tasks := newSinglePerformer("08:00-08:15"), newSingleTask("08:00-08:45")
 	result := plan(p, tasks)
-	if 0 != len(result) {
+	if len(result) != 0 {
 		t.Errorf("Result must be zero slots for no performers, actual is [%v]", result)
 	}
 }
@@ -36,7 +36,7 @@ func TestPlansZeroSlotsWhenTaskIsNotFitIntoPeriod(t *testing.T) {
 func TestPlansSingleJobWhenPerformerPeriodIsLongerThanTaskPeriod(t *testing.T) {
 	p, tasks := newSinglePerformer("06:00-07:00"), newSingleTask("06:30-07:00")
 	result := plan(p, tasks)
-	if 1 != len(result) || "06:30" != result[0].startAt() {
+	if len(result) != 1 || result[0].startAt() != "06:30" {
 		t.Errorf("Result must be a single job for single available performer, actual is [%v]", result)
 	}
 }
@@ -44,7 +44,7 @@ func TestPlansSingleJobWhenPerformerPeriodIsLongerThanTaskPeriod(t *testing.T) {
 func TestPlansSingleJobForTwoPerformersWithSameOpenPeriod(t *testing.T) {
 	p, tasks := []performer{newPerformer("Dave", "06:00-07:00"), newPerformer("Kate", "06:00-07:00")}, newSingleTask("06:00-07:00")
 	result := plan(p, tasks)
-	if 1 != len(result) {
+	if len(result) != 1 {
 		t.Errorf("Result must be a single job for many performers, actual is [%v]", result)
 	}
 }
@@ -52,7 +52,7 @@ func TestPlansSingleJobForTwoPerformersWithSameOpenPeriod(t *testing.T) {
 func TestPlansTwoJobsForSinglePerfromerWithoutOverlap(t *testing.T) {
 	p, tasks := newSinglePerformer("09:00-15:00"), append(newSingleTask("09:00-10:00"), newSingleTask("14:00-15:00")[0])
 	result := plan(p, tasks)
-	if 2 != len(result) {
+	if len(result) != 2 {
 		t.Errorf("Result must contain two job for performers [%v] and tasks [%v], actual is [%v]", p, tasks, result)
 	}
 }
@@ -61,14 +61,14 @@ func TestPlansTwoSameTimeJobsForTwoPerformers(t *testing.T) {
 	p := []performer{newPerformer("Dave", "06:00-07:00"), newPerformer("Kate", "06:00-07:00")}
 	tasks := append(newSingleTask("06:00-07:00"), newSingleTask("06:00-07:00")[0])
 	result := plan(p, tasks)
-	if 2 != len(result) || result[0].performer == result[1].performer {
+	if len(result) != 2 || result[0].performer == result[1].performer {
 		t.Errorf("Result must contain two different job for performers [%v] and tasks [%v], actual is [%v]", p, tasks, result)
 	}
 }
 
 func newPerformer(id, openPeriod string) performer {
 	openPeriods := []period{}
-	if 11 == len(openPeriod) {
+	if len(openPeriod) == 11 {
 		openPeriods = append(openPeriods, period{openPeriod[0:5], openPeriod[6:11]})
 	}
 	return performer{openPeriods, id}
@@ -80,7 +80,7 @@ func newSinglePerformer(openPeriod string) []performer {
 
 func newSingleTask(fromTo string) []task {
 	subject := "discuss nature"
-	if 11 == len(fromTo) {
+	if len(fromTo) == 11 {
 		return []task{task{fromTo[0:5], subject, fromTo[6:11]}}
 	}
 	return []task{task{"00:00", "00:00", subject}}

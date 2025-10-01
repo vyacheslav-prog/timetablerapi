@@ -16,13 +16,13 @@ func plan(recipients []performer, tasks []task) []job {
 		for rIndex := 0; len(recipients) != rIndex && perf == ""; rIndex += 1 {
 			r := recipients[rIndex]
 			busyFrom, isBusy := busyPerformers[r.name]
-			isNotBusy := true != isBusy || busyFrom != t.from
+			isNotBusy := !isBusy || busyFrom != t.from
 			if isNotBusy && nil != r.findAvailablePeriod(tp) {
 				perf = r.name
 				busyPerformers[perf] = t.from
 			}
 		}
-		if "" != perf {
+		if perf != "" {
 			result = append(result, job{tp.from, perf})
 		}
 	}
