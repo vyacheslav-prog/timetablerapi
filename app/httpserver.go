@@ -24,7 +24,7 @@ func main() {
 }
 
 type performerCreatingRequest struct {
-	name string
+	Name string
 }
 
 func registerHandlers(mux *http.ServeMux, s *services) {
@@ -48,7 +48,7 @@ func registerHandlers(mux *http.ServeMux, s *services) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		_, respErr := fmt.Fprint(w, s.registrar.AddPerformer(data.name))
+		_, respErr := fmt.Fprint(w, s.registrar.AddPerformer(data.Name))
 		if respErr != nil {
 			log.Print("can not to write a response:", respErr)
 		}

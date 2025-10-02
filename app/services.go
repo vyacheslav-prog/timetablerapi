@@ -34,10 +34,10 @@ func newServices() (*services, error) {
 	}
 	return &services{
 		overview.Overview{
-			overviewRepo{db},
+			Repo: overviewRepo{db},
 		},
 		registrar.Registrar{
-			registrarRepo{db},
+			Repo: registrarRepo{db},
 		},
 	}, nil
 }
