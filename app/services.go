@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"os"
 
@@ -23,7 +24,7 @@ type services struct {
 	registrar registrarService
 }
 
-func newServices() (*services, error) {
+func newServices(ctx context.Context) (*services, error) {
 	dbConn, dbMode := os.Getenv("DATABASE_URL"), os.Getenv("DATABASE_MODE")
 	db, openErr := sql.Open(dbMode, dbConn)
 	if openErr != nil {
@@ -32,12 +33,16 @@ func newServices() (*services, error) {
 	if pingErr := db.Ping(); pingErr != nil {
 		return nil, pingErr
 	}
+	or, orErr := newOverviewRepo(ctx, db)
+	if orErr != nil {
+		return nil, orErr
+	}
+	rr, rrErr := newRegistrarRepo(ctx, db)
+	if rrErr != nil {
+		return nil, rrErr
+	}
 	return &services{
-		overview.Overview{
-			Repo: overviewRepo{db},
-		},
-		registrar.Registrar{
-			Repo: registrarRepo{db},
-		},
+		overview.Overview{Repo: or},
+		registrar.Registrar{Repo: rr},
 	}, nil
 }

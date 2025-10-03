@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,7 +11,8 @@ import (
 )
 
 func main() {
-	services, initErr := newServices()
+	ctx := context.Background()
+	services, initErr := newServices(ctx)
 	if initErr != nil {
 		fmt.Println("unable initalization for services:", initErr)
 		os.Exit(1)
