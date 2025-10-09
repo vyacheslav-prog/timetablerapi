@@ -19,7 +19,7 @@ func newStubbedServer(s *services) *http.ServeMux {
 
 func TestListens8080PortForHttpServer(t *testing.T) {
 	s := newStubbedServer(nil)
-	req, rr := httptest.NewRequest("GET", "http://localhost:8080/", nil), httptest.NewRecorder()
+	req, rr := httptest.NewRequest(http.MethodGet, "http://localhost:8080/", nil), httptest.NewRecorder()
 	s.ServeHTTP(rr, req)
 	resp := rr.Result()
 	if expected := http.StatusOK; expected != resp.StatusCode {
@@ -29,7 +29,7 @@ func TestListens8080PortForHttpServer(t *testing.T) {
 
 func TestMissesUnknownPathWith404Status(t *testing.T) {
 	s, url := newStubbedServer(nil), "/some_unknown_path"
-	req, rr := httptest.NewRequest("GET", url, nil), httptest.NewRecorder()
+	req, rr := httptest.NewRequest(http.MethodGet, url, nil), httptest.NewRecorder()
 	s.ServeHTTP(rr, req)
 	resp := rr.Result()
 	if expected := http.StatusNotFound; expected != resp.StatusCode {
@@ -46,7 +46,7 @@ func (sos StubOverviewService) ViewPerformerBoard(id string) string {
 func TestHandlesGetForPerformerBoard(t *testing.T) {
 	s := newStubbedServer(&services{overview: StubOverviewService{}})
 	path := "/performer-boards/1"
-	req, rr := httptest.NewRequest("GET", path, nil), httptest.NewRecorder()
+	req, rr := httptest.NewRequest(http.MethodGet, path, nil), httptest.NewRecorder()
 	s.ServeHTTP(rr, req)
 	res := rr.Result()
 	if expected := http.StatusOK; expected != res.StatusCode {
@@ -69,7 +69,7 @@ func (s StubRegistrarService) AddPerformer(name string) string {
 func TestHandlesPostForPerformer(t *testing.T) {
 	s := newStubbedServer(&services{registrar: StubRegistrarService{}})
 	path := "/performers"
-	req, rr := httptest.NewRequest("POST", path, bytes.NewBufferString("{\"name\":\"John\"}")), httptest.NewRecorder()
+	req, rr := httptest.NewRequest(http.MethodPost, path, bytes.NewBufferString("{\"name\":\"John\"}")), httptest.NewRecorder()
 	s.ServeHTTP(rr, req)
 	res := rr.Result()
 	if expected := http.StatusCreated; expected != res.StatusCode {

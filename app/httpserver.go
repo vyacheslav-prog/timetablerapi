@@ -14,7 +14,7 @@ func main() {
 	ctx := context.Background()
 	services, initErr := newServices(ctx)
 	if initErr != nil {
-		fmt.Println("unable initalization for services:", initErr)
+		fmt.Println("unable initialization for services:", initErr)
 		os.Exit(1)
 	}
 	mux := http.NewServeMux()

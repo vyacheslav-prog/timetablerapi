@@ -1,3 +1,11 @@
 version: "2"
 linters:
-  default: fast
+  enable:
+    - dupl
+    - errcheck
+    - govet
+    - ineffassign
+    - misspell
+    - staticcheck
+    - unused
+    - usestdlibvars
