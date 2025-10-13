@@ -1,6 +1,14 @@
 version: "2"
 linters:
   enable:
+    - asciicheck
+    - bidichk
+    - bodyclose
+    - canonicalheader
+    - contextcheck
+    - copyloopvar
+    - cyclop
+    - decorder
     - dupl
     - errcheck
     - govet
