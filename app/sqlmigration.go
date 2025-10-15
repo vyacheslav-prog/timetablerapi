@@ -3,24 +3,31 @@ package main
 import (
 	"context"
 	"database/sql"
-	"fmt"
+	"errors"
+)
+
+var (
+	errMigrationCheckTable = errors.New("check table existence is failed")
+	errMigrationCreateScheme = errors.New("create schema for table is failed")
+	errMigrationNotConnection = errors.New("not connection for server")
+	errMigrationTransactionIsFailed = errors.New("init a migration transaction is failed")
 )
 
 func execSQLMigrationByScheme(scm, tbl string, ctx context.Context, db *sql.DB) (err error) {
 	if db == nil {
-		err = fmt.Errorf("not connection for server")
+		err = errMigrationNotConnection
 		return
 	}
 	tx, txBeginErr := db.Begin()
 	if txBeginErr != nil {
-		err = fmt.Errorf("init a migration transaction is failed: %v", txBeginErr)
+		err = errors.Join(errMigrationTransactionIsFailed, txBeginErr)
 		return
 	}
 	defer func() {
 		if txErr := tx.Rollback(); txErr != nil {
-			txErr = fmt.Errorf("failed for `%v` migration: %v", tbl, txErr)
+			txErr = errors.Join(errMigrationTransactionIsFailed, txErr)
 			if err != nil {
-				err = fmt.Errorf("%v, also %v", err, txErr)
+				err = errors.Join(err, txErr)
 			} else {
 				err = txErr
 			}
@@ -29,18 +36,18 @@ func execSQLMigrationByScheme(scm, tbl string, ctx context.Context, db *sql.DB) 
 	existsRow := tx.QueryRowContext(ctx, "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = '$1';", tbl)
 	var tableExists int
 	if checkTableErr := existsRow.Scan(&tableExists); checkTableErr != nil {
-		err = fmt.Errorf("check table existence is failed: %v", checkTableErr)
+		err = errors.Join(errMigrationCheckTable, checkTableErr)
 		return
 	}
 	if tableExists == 0 {
 		_, migrateErr := tx.ExecContext(ctx, scm)
 		if migrateErr != nil {
-			err = fmt.Errorf("create schema for table is failed: %v", migrateErr)
+			err = errors.Join(errMigrationCreateScheme, migrateErr)
 			return
 		}
 	}
 	if txCommitErr := tx.Commit(); txCommitErr != nil {
-		err = fmt.Errorf("commit a migration transaction is failed: %v", txCommitErr)
+		err = errors.Join(errMigrationTransactionIsFailed, txCommitErr)
 		return
 	}
 	return nil
