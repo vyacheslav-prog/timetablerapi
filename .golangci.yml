@@ -1,4 +1,10 @@
 version: "2"
+linters-settings:
+  cyclop:
+    max-complexity: 2
+    package-average: 1.0
+  gocyclo:
+    min-complexity: 2
 linters:
   enable:
     - asciicheck
@@ -13,6 +19,7 @@ linters:
     - dupl
     - err113
     - errcheck
+    - gocyclo
     - govet
     - ineffassign
     - misspell
