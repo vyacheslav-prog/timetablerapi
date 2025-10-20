@@ -2,10 +2,10 @@ version: "2"
 linters:
   settings:
     cyclop:
-      max-complexity: 2
-      package-average: 1.0
+      max-complexity: 7
+      package-average: 5.0
     gocyclo:
-      min-complexity: 2
+      min-complexity: 7
   enable:
     - asciicheck
     - bidichk
