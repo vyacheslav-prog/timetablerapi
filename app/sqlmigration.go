@@ -7,9 +7,9 @@ import (
 )
 
 var (
-	errMigrationCheckTable = errors.New("check table existence is failed")
-	errMigrationCreateScheme = errors.New("create schema for table is failed")
-	errMigrationNotConnection = errors.New("not connection for server")
+	errMigrationCheckTable          = errors.New("check table existence is failed")
+	errMigrationCreateScheme        = errors.New("create schema for table is failed")
+	errMigrationNotConnection       = errors.New("not connection for server")
 	errMigrationTransactionIsFailed = errors.New("init a migration transaction is failed")
 )
 
@@ -33,22 +33,27 @@ func execSQLMigrationByScheme(scm, tbl string, ctx context.Context, db *sql.DB) 
 			}
 		}
 	}()
-	existsRow := tx.QueryRowContext(ctx, "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = '$1';", tbl)
-	var tableExists int
-	if checkTableErr := existsRow.Scan(&tableExists); checkTableErr != nil {
-		err = errors.Join(errMigrationCheckTable, checkTableErr)
+	if err = checkSQLTableExistenceOrCreate(scm, tbl, ctx, tx); err != nil {
 		return
-	}
-	if tableExists == 0 {
-		_, migrateErr := tx.ExecContext(ctx, scm)
-		if migrateErr != nil {
-			err = errors.Join(errMigrationCreateScheme, migrateErr)
-			return
-		}
 	}
 	if txCommitErr := tx.Commit(); txCommitErr != nil {
 		err = errors.Join(errMigrationTransactionIsFailed, txCommitErr)
 		return
+	}
+	return nil
+}
+
+func checkSQLTableExistenceOrCreate(scm, tbl string, ctx context.Context, tx *sql.Tx) error {
+	existsRow := tx.QueryRowContext(ctx, "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = '$1';", tbl)
+	var tableExists int
+	if checkTableErr := existsRow.Scan(&tableExists); checkTableErr != nil {
+		return errors.Join(errMigrationCheckTable, checkTableErr)
+	}
+	if tableExists == 0 {
+		_, migrateErr := tx.ExecContext(ctx, scm)
+		if migrateErr != nil {
+			return errors.Join(errMigrationCreateScheme, migrateErr)
+		}
 	}
 	return nil
 }
