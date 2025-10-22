@@ -13,13 +13,13 @@ func plan(recipients []performer, tasks []task) []job {
 	busyPerformers := make(map[string]string)
 	for _, t := range tasks {
 		perf, tp := "", t.period()
-		for rIndex := 0; len(recipients) != rIndex && perf == ""; rIndex += 1 {
-			r := recipients[rIndex]
+		for _, r := range recipients {
 			busyFrom, isBusy := busyPerformers[r.name]
 			isNotBusy := !isBusy || busyFrom != t.from
 			if isNotBusy && nil != r.findAvailablePeriod(tp) {
 				perf = r.name
 				busyPerformers[perf] = t.from
+				break
 			}
 		}
 		if perf != "" {
