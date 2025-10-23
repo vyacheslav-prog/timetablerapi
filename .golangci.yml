@@ -6,6 +6,11 @@ linters:
       package-average: 5.0
     gocyclo:
       min-complexity: 7
+    govet:
+      enable-all: true
+      settings:
+        shadow:
+          strict: true
   enable:
     - asciicheck
     - bidichk
