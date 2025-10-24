@@ -71,7 +71,7 @@ func newPerformer(id, openPeriod string) performer {
 	if len(openPeriod) == 11 {
 		openPeriods = append(openPeriods, period{openPeriod[0:5], openPeriod[6:11]})
 	}
-	return performer{openPeriods, id}
+	return performer{id, openPeriods}
 }
 
 func newSinglePerformer(openPeriod string) []performer {
