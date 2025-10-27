@@ -1,6 +1,8 @@
 version: "2"
 linters:
   settings:
+    copyloopvar:
+      check-alias: true
     cyclop:
       max-complexity: 7
       package-average: 5.0
@@ -16,14 +18,17 @@ linters:
     - bidichk
     - bodyclose
     - canonicalheader
+    - containedctx
     - contextcheck
     - copyloopvar
     - cyclop
     - decorder
     - dogsled
     - dupl
+    - embeddedstructfieldcheck
     - err113
     - errcheck
+    - errname
     - gocyclo
     - govet
     - ineffassign
