@@ -28,7 +28,10 @@ linters:
     - embeddedstructfieldcheck
     - err113
     - errcheck
+    - errorlint
     - errname
+    - exptostd
+    - forbidigo
     - gocyclo
     - govet
     - ineffassign
