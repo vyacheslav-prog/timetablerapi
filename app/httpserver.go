@@ -14,15 +14,15 @@ func main() {
 	ctx := context.Background()
 	services, initErr := newServices(ctx)
 	if initErr != nil {
-		fmt.Println("unable initialization for services:", initErr)
+		log.Println("unable initialization for services:", initErr)
 		os.Exit(1)
 	}
 	mux := http.NewServeMux()
 	registerHandlers(mux, services)
 	if serveErr := http.ListenAndServe(":8080", mux); serveErr != nil {
-		fmt.Println("failed serve for http-server:", serveErr)
+		log.Println("failed serve for http-server:", serveErr)
 	}
-	fmt.Println("timetablerapi server for http listen 8080 port")
+	log.Println("timetablerapi server for http listen 8080 port")
 }
 
 type performerCreatingRequest struct {
