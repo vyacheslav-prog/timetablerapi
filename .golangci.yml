@@ -6,6 +6,9 @@ linters:
     cyclop:
       max-complexity: 7
       package-average: 5.0
+    gocritic:
+      enable-checks:
+        - badLock
     gocyclo:
       min-complexity: 7
     govet:
@@ -32,6 +35,7 @@ linters:
     - errname
     - exptostd
     - forbidigo
+    - gocritic
     - gocyclo
     - govet
     - ineffassign
