@@ -5,10 +5,9 @@ import (
 	"database/sql"
 	"os"
 
+	_ "github.com/lib/pq"
 	"timetablerapi/overview"
 	"timetablerapi/registrar"
-
-	_ "github.com/lib/pq"
 )
 
 type overviewService interface {

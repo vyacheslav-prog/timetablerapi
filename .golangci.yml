@@ -43,3 +43,7 @@ linters:
     - staticcheck
     - unused
     - usestdlibvars
+formatters:
+  enable:
+    - gci
+    - gofmt
