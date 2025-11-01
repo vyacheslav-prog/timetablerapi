@@ -7,8 +7,7 @@ linters:
       max-complexity: 7
       package-average: 5.0
     gocritic:
-      enable-checks:
-        - badLock
+      enable-all: true
     gocyclo:
       min-complexity: 7
     govet:
@@ -35,6 +34,7 @@ linters:
     - errname
     - exptostd
     - forbidigo
+    - funcorder
     - gocritic
     - gocyclo
     - govet
