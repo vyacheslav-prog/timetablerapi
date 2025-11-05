@@ -16,7 +16,7 @@ func plan(recipients []performer, tasks []task) []job {
 		for _, r := range recipients {
 			busyFrom, isBusy := busyPerformers[r.name]
 			isNotBusy := !isBusy || busyFrom != t.from
-			if isNotBusy && nil != r.findAvailablePeriod(tp) {
+			if isNotBusy && r.findAvailablePeriod(tp) != nil {
 				perf = r.name
 				busyPerformers[perf] = t.from
 				break
