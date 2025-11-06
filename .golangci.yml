@@ -35,8 +35,12 @@ linters:
     - exptostd
     - forbidigo
     - funcorder
+    - gocheckcompilerdirectives
+    - goconst
     - gocritic
     - gocyclo
+    - gomodguard
+    - gosec
     - govet
     - ineffassign
     - misspell
