@@ -15,6 +15,12 @@ linters:
       settings:
         shadow:
           strict: true
+    iface:
+      enable:
+        - identical
+        - unused
+        - opaque
+        - unexported
   enable:
     - asciicheck
     - bidichk
@@ -42,6 +48,7 @@ linters:
     - gomodguard
     - gosec
     - govet
+    - iface
     - ineffassign
     - misspell
     - staticcheck
