@@ -50,6 +50,9 @@ linters:
     - govet
     - iface
     - ineffassign
+    - intrange
+    - iotamixing
+    - mirror
     - misspell
     - staticcheck
     - unused
