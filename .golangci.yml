@@ -54,6 +54,8 @@ linters:
     - iotamixing
     - mirror
     - misspell
+    - mnd
+    - modernize
     - staticcheck
     - unused
     - usestdlibvars

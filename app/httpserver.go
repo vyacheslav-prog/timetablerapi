@@ -11,13 +11,13 @@ import (
 	"time"
 )
 
-var httpSrv = &http.Server{
-	Addr:              ":8080",
-	ReadHeaderTimeout: 15 * time.Second,
-	ReadTimeout:       10 * time.Second,
-	WriteTimeout:      10 * time.Second,
-	IdleTimeout:       30 * time.Second,
-}
+const (
+	srvAddr              = ":8080"
+	srvReadHeaderTimeout = 15 * time.Second
+	srvReadTimeout       = 10 * time.Second
+	srvWriteTimeout      = 10 * time.Second
+	srvIdleTimeout       = 30 * time.Second
+)
 
 func main() {
 	ctx := context.Background()
@@ -28,6 +28,13 @@ func main() {
 	}
 	mux := http.NewServeMux()
 	registerHandlers(mux, services)
+	httpSrv := &http.Server{
+		Addr:              srvAddr,
+		ReadHeaderTimeout: srvReadHeaderTimeout,
+		ReadTimeout:       srvReadTimeout,
+		WriteTimeout:      srvWriteTimeout,
+		IdleTimeout:       srvIdleTimeout,
+	}
 	if serveErr := httpSrv.ListenAndServe(); serveErr != nil {
 		log.Println("failed serve for http-server:", serveErr)
 	}
