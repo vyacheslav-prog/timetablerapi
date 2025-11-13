@@ -56,7 +56,18 @@ linters:
     - misspell
     - mnd
     - modernize
+    - musttag
+    - nilerr
+    - nilnil
+    - noctx
+    - nosprintfhostport
+    - prealloc
+    - predeclared
+    - reassign
+    - rowserrcheck
+    - sqlclosecheck
     - staticcheck
+    - tagalign
     - unused
     - usestdlibvars
 formatters:
