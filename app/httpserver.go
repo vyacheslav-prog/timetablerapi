@@ -42,7 +42,7 @@ func main() {
 }
 
 type performerCreatingRequest struct {
-	Name string
+	Name string `json:"name"`
 }
 
 func registerHandlers(mux *http.ServeMux, s *services) {
