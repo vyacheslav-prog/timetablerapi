@@ -29,7 +29,7 @@ func newServices(ctx context.Context) (*services, error) {
 	if openErr != nil {
 		return nil, openErr
 	}
-	if pingErr := db.Ping(); pingErr != nil {
+	if pingErr := db.PingContext(ctx); pingErr != nil {
 		return nil, pingErr
 	}
 	or, orErr := newOverviewRepo(ctx, db)
