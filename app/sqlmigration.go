@@ -18,7 +18,7 @@ func execSQLMigrationByScheme(scm, tbl string, ctx context.Context, db *sql.DB) 
 		err = errMigrationNotConnection
 		return
 	}
-	tx, txBeginErr := db.BeginTx(ctx)
+	tx, txBeginErr := db.BeginTx(ctx, nil)
 	if txBeginErr != nil {
 		err = errors.Join(errMigrationTransactionIsFailed, txBeginErr)
 		return

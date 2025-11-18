@@ -50,7 +50,7 @@ func registerHandlers(mux *http.ServeMux, s *services) {
 	})
 	mux.HandleFunc("GET /performer-boards/{boardId}", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		_, respErr := fmt.Fprint(w, s.overview.ViewPerformerBoard(r.PathValue("boardId")))
+		_, respErr := fmt.Fprint(w, s.overview.ViewPerformerBoard(r.Context(), r.PathValue("boardId")))
 		if respErr != nil {
 			log.Print("can not to write a response:", respErr)
 		}
