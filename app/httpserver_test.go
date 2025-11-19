@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -39,7 +40,7 @@ func TestMissesUnknownPathWith404Status(t *testing.T) {
 
 type StubOverviewService struct{}
 
-func (sos StubOverviewService) ViewPerformerBoard(id string) string {
+func (sos StubOverviewService) ViewPerformerBoard(ctx context.Context, id string) string {
 	return id
 }
 
