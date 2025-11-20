@@ -68,8 +68,15 @@ linters:
     - sqlclosecheck
     - staticcheck
     - tagalign
+    - unconvert
+    - unparam
+    - unqueryvet
     - unused
     - usestdlibvars
+    - usetesting
+    - wastedassign
+    - whitespace
+    - wrapcheck
 formatters:
   enable:
     - gci
