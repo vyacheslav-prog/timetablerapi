@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"os"
 
 	_ "github.com/lib/pq"
@@ -23,14 +24,18 @@ type services struct {
 	registrar registrarService
 }
 
+var (
+	errInitServices = errors.New("unable init services")
+)
+
 func newServices(ctx context.Context) (*services, error) {
 	dbConn, dbMode := os.Getenv("DATABASE_URL"), os.Getenv("DATABASE_MODE")
 	db, openErr := sql.Open(dbMode, dbConn)
 	if openErr != nil {
-		return nil, openErr
+		return nil, errors.Join(errInitServices, openErr)
 	}
 	if pingErr := db.PingContext(ctx); pingErr != nil {
-		return nil, pingErr
+		return nil, errors.Join(errInitServices, pingErr)
 	}
 	or, orErr := newOverviewRepo(ctx, db)
 	if orErr != nil {
