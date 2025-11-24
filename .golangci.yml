@@ -6,6 +6,9 @@ linters:
     cyclop:
       max-complexity: 7
       package-average: 5.0
+    errcheck:
+      check-blank: true
+      check-type-assertions: true
     gocritic:
       enable-all: true
     gocyclo:
