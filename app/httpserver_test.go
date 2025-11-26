@@ -40,8 +40,8 @@ func TestMissesUnknownPathWith404Status(t *testing.T) {
 
 type StubOverviewService struct{}
 
-func (sos StubOverviewService) ViewPerformerBoard(ctx context.Context, id string) string {
-	return id
+func (sos StubOverviewService) ViewPerformerBoard(ctx context.Context, id string) (string, error) {
+	return id, nil
 }
 
 func TestHandlesGetForPerformerBoard(t *testing.T) {
@@ -63,8 +63,8 @@ func TestHandlesGetForPerformerBoard(t *testing.T) {
 
 type StubRegistrarService struct{}
 
-func (s StubRegistrarService) AddPerformer(name string) string {
-	return "{\"performer_id\": \"a-a-a-a\"}"
+func (s StubRegistrarService) AddPerformer(name string) (string, error) {
+	return "{\"performer_id\": \"a-a-a-a\"}", nil
 }
 
 func TestHandlesPostForPerformer(t *testing.T) {

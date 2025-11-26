@@ -12,11 +12,11 @@ import (
 )
 
 type overviewService interface {
-	ViewPerformerBoard(context.Context, string) string
+	ViewPerformerBoard(context.Context, string) (string, error)
 }
 
 type registrarService interface {
-	AddPerformer(string) string
+	AddPerformer(string) (string, error)
 }
 
 type services struct {

@@ -49,8 +49,17 @@ func registerHandlers(mux *http.ServeMux, s *services) {
 	mux.HandleFunc("/{$}", func(w http.ResponseWriter, r *http.Request) {
 	})
 	mux.HandleFunc("GET /performer-boards/{boardId}", func(w http.ResponseWriter, r *http.Request) {
+		res, ovErr := s.overview.ViewPerformerBoard(r.Context(), r.PathValue("boardId"))
+		if ovErr != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, respErr := w.Write([]byte(ovErr.Error()))
+			if respErr != nil {
+				log.Print("can not to write a response:", respErr)
+			}
+			return
+		}
 		w.Header().Set("Content-Type", "application/json")
-		_, respErr := fmt.Fprint(w, s.overview.ViewPerformerBoard(r.Context(), r.PathValue("boardId")))
+		_, respErr := fmt.Fprint(w, res)
 		if respErr != nil {
 			log.Print("can not to write a response:", respErr)
 		}
@@ -64,9 +73,18 @@ func registerHandlers(mux *http.ServeMux, s *services) {
 		if unmarshallErr := json.Unmarshal(body, &data); unmarshallErr != nil {
 			log.Print("failed body decoding:", unmarshallErr)
 		}
+		res, regErr := s.registrar.AddPerformer(data.Name)
+		if regErr != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, respErr := w.Write([]byte(regErr.Error()))
+			if respErr != nil {
+				log.Print("can not to write a response:", respErr)
+			}
+			return
+		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		_, respErr := fmt.Fprint(w, s.registrar.AddPerformer(data.Name))
+		_, respErr := fmt.Fprint(w, res)
 		if respErr != nil {
 			log.Print("can not to write a response:", respErr)
 		}
