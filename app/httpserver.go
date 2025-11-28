@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -57,35 +56,23 @@ func handleAddPerformer(s registrarService, w http.ResponseWriter, r *http.Reque
 	res, regErr := s.AddPerformer(data.Name)
 	if regErr != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		_, respErr := w.Write([]byte(regErr.Error()))
-		if respErr != nil {
-			log.Print("can not to write a response:", respErr)
-		}
+		writeResponse(w, []byte(regErr.Error()))
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	_, respErr := fmt.Fprint(w, res)
-	if respErr != nil {
-		log.Print("can not to write a response:", respErr)
-	}
+	writeResponse(w, []byte(res))
 }
 
 func handleViewPerformerBoard(s overviewService, w http.ResponseWriter, r *http.Request) {
 	res, ovErr := s.ViewPerformerBoard(r.Context(), r.PathValue("boardId"))
 	if ovErr != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		_, respErr := w.Write([]byte(ovErr.Error()))
-		if respErr != nil {
-			log.Print("can not to write a response:", respErr)
-		}
+		writeResponse(w, []byte(ovErr.Error()))
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	_, respErr := fmt.Fprint(w, res)
-	if respErr != nil {
-		log.Print("can not to write a response:", respErr)
-	}
+	writeResponse(w, []byte(res))
 }
 
 func registerHandlers(mux *http.ServeMux, s *services) {
@@ -97,4 +84,11 @@ func registerHandlers(mux *http.ServeMux, s *services) {
 	mux.HandleFunc("POST /performers", func(w http.ResponseWriter, r *http.Request) {
 		handleAddPerformer(s.registrar, w, r)
 	})
+}
+
+func writeResponse(w http.ResponseWriter, b []byte) {
+	_, respErr := w.Write(b)
+	if respErr != nil {
+		log.Print("can not to write a response:", respErr)
+	}
 }
