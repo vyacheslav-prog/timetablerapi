@@ -77,6 +77,7 @@ func handleViewPerformerBoard(s overviewService, w http.ResponseWriter, r *http.
 
 func registerHandlers(mux *http.ServeMux, s *services) {
 	mux.HandleFunc("/{$}", func(w http.ResponseWriter, r *http.Request) {
+		writeResponse(w, []byte("ok"))
 	})
 	mux.HandleFunc("GET /performer-boards/{boardId}", func(w http.ResponseWriter, r *http.Request) {
 		handleViewPerformerBoard(s.overview, w, r)
