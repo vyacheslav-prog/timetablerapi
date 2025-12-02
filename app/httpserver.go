@@ -22,7 +22,7 @@ func main() {
 	ctx := context.Background()
 	services, initErr := newServices(ctx)
 	if initErr != nil {
-		log.Println("unable initialization for services:", initErr)
+		log.Println("failed initialization for services:", initErr)
 		os.Exit(1)
 	}
 	mux := http.NewServeMux()
