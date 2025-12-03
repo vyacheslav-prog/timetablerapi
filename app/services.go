@@ -25,7 +25,7 @@ type services struct {
 }
 
 var (
-	errInitServices = errors.New("unable init services")
+	errInitServices = errors.New("failed init services")
 )
 
 func newServices(ctx context.Context) (*services, error) {
