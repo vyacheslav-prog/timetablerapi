@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"timetablerapi/internal/services"
 )
 
 const (
@@ -20,7 +22,7 @@ const (
 
 func main() {
 	ctx := context.Background()
-	services, initErr := newServices(ctx)
+	services, initErr := NewServices(ctx)
 	if initErr != nil {
 		log.Println("failed initialization for services:", initErr)
 		os.Exit(1)
@@ -44,7 +46,7 @@ type performerCreatingRequest struct {
 	Name string `json:"name"`
 }
 
-func handleAddPerformer(s registrarService, w http.ResponseWriter, r *http.Request) {
+func handleAddPerformer(s services.RegistrarService, w http.ResponseWriter, r *http.Request) {
 	body, readBodyErr := io.ReadAll(r.Body)
 	if readBodyErr != nil {
 		log.Print("failed body read:", readBodyErr)
@@ -64,7 +66,7 @@ func handleAddPerformer(s registrarService, w http.ResponseWriter, r *http.Reque
 	writeResponse(w, []byte(res))
 }
 
-func handleViewPerformerBoard(s overviewService, w http.ResponseWriter, r *http.Request) {
+func handleViewPerformerBoard(s services.OverviewService, w http.ResponseWriter, r *http.Request) {
 	res, ovErr := s.ViewPerformerBoard(r.Context(), r.PathValue("boardId"))
 	if ovErr != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -75,7 +77,7 @@ func handleViewPerformerBoard(s overviewService, w http.ResponseWriter, r *http.
 	writeResponse(w, []byte(res))
 }
 
-func registerHandlers(mux *http.ServeMux, s *services) {
+func registerHandlers(mux *http.ServeMux, s *services.Services) {
 	mux.HandleFunc("/{$}", func(w http.ResponseWriter, r *http.Request) {
 		writeResponse(w, []byte("ok"))
 	})
