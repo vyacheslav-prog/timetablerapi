@@ -11,24 +11,24 @@ import (
 	"timetablerapi/registrar"
 )
 
-type overviewService interface {
+type OverviewService interface {
 	ViewPerformerBoard(context.Context, string) (string, error)
 }
 
-type registrarService interface {
+type RegistrarService interface {
 	AddPerformer(string) (string, error)
 }
 
-type services struct {
-	overview  overviewService
-	registrar registrarService
+type Services struct {
+	Overview  OverviewService
+	Registrar RegistrarService
 }
 
 var (
 	errInitServices = errors.New("failed init services")
 )
 
-func NewServices(ctx context.Context) (*services, error) {
+func NewServices(ctx context.Context) (*Services, error) {
 	dbConn, dbMode := os.Getenv("DATABASE_URL"), os.Getenv("DATABASE_MODE")
 	db, openErr := sql.Open(dbMode, dbConn)
 	if openErr != nil {
@@ -45,7 +45,7 @@ func NewServices(ctx context.Context) (*services, error) {
 	if rrErr != nil {
 		return nil, rrErr
 	}
-	return &services{
+	return &Services{
 		overview.Overview{Repo: or},
 		registrar.Registrar{Repo: rr},
 	}, nil

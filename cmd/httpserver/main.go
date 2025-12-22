@@ -22,13 +22,13 @@ const (
 
 func main() {
 	ctx := context.Background()
-	services, initErr := NewServices(ctx)
+	srvs, initErr := services.NewServices(ctx)
 	if initErr != nil {
 		log.Println("failed initialization for services:", initErr)
 		os.Exit(1)
 	}
 	mux := http.NewServeMux()
-	registerHandlers(mux, services)
+	registerHandlers(mux, srvs)
 	httpSrv := &http.Server{
 		Addr:              srvAddr,
 		ReadHeaderTimeout: srvReadHeaderTimeout,
@@ -82,10 +82,10 @@ func registerHandlers(mux *http.ServeMux, s *services.Services) {
 		writeResponse(w, []byte("ok"))
 	})
 	mux.HandleFunc("GET /performer-boards/{boardId}", func(w http.ResponseWriter, r *http.Request) {
-		handleViewPerformerBoard(s.overview, w, r)
+		handleViewPerformerBoard(s.Overview, w, r)
 	})
 	mux.HandleFunc("POST /performers", func(w http.ResponseWriter, r *http.Request) {
-		handleAddPerformer(s.registrar, w, r)
+		handleAddPerformer(s.Registrar, w, r)
 	})
 }
 
