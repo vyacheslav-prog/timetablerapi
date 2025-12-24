@@ -2,8 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
-	"io"
 	"log"
 	"net/http"
 	"os"
@@ -28,7 +26,7 @@ func main() {
 		log.Println("failed initialization for services:", initErr)
 		os.Exit(1)
 	}
-	mux := httpserver.NewMux(srvs)
+	_ = httpserver.NewMux(srvs)
 	httpSrv := &http.Server{
 		Addr:              srvAddr,
 		ReadHeaderTimeout: srvReadHeaderTimeout,
