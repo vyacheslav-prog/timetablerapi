@@ -9,10 +9,9 @@ import (
 	"timetablerapi/internal/services"
 )
 
-func NewMux(srvs *services.Services) *http.ServeMux {
+func NewMux(srvs *services.Services) {
 	mux := http.NewServeMux()
 	registerHandlers(mux, srvs)
-	return mux
 }
 
 type performerCreatingRequest struct {

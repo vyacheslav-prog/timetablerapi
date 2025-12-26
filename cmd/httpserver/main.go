@@ -26,7 +26,7 @@ func main() {
 		log.Println("failed initialization for services:", initErr)
 		os.Exit(1)
 	}
-	_ = httpserver.NewMux(srvs)
+	httpserver.NewMux(srvs)
 	httpSrv := &http.Server{
 		Addr:              srvAddr,
 		ReadHeaderTimeout: srvReadHeaderTimeout,
