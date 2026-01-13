@@ -14,7 +14,7 @@ func NewMux(srvs *services.Services) {
 
 func registerHandlers(mux *http.ServeMux, s *services.Services) {
 	mux.HandleFunc("/{$}", func(w http.ResponseWriter, r *http.Request) {
-		writeResponse(w, []byte("ok"))
+		handleHome(w, r)
 	})
 	mux.HandleFunc("GET /performer-boards/{boardId}", func(w http.ResponseWriter, r *http.Request) {
 		handleViewPerformerBoard(s.Overview, w, r)
