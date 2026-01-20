@@ -1,6 +1,10 @@
 package httpserver
 
-import "net/http"
+import (
+	"net/http"
 
-func handleAddPeriod(_ http.ResponseWriter, _ *http.Request) {
+	"timetablerapi/internal/services"
+)
+
+func handleAddPeriod(s services.RegistrarService, _ http.ResponseWriter, _ *http.Request) {
 }

@@ -17,6 +17,7 @@ type OverviewService interface {
 
 type RegistrarService interface {
 	AddPerformer(string) (string, error)
+	AddPeriod(string, string) (string, error)
 }
 
 type Services struct {

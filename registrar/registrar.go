@@ -23,6 +23,6 @@ func (r Registrar) AddPerformer(name string) (string, error) {
 	return identity, nil
 }
 
-func (r Registrar) AddPeriod(from, to string) error {
-	return errors.Join(errAddPeriod, errors.New("not implemented"))
+func (r Registrar) AddPeriod(from, to string) (string, error) {
+	return "", errors.Join(errAddPeriod, errors.New("not implemented"))
 }
