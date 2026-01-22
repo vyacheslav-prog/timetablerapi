@@ -12,10 +12,19 @@ type addPeriodRequest struct {
 	from, to string
 }
 
-func handleAddPeriod(_ services.RegistrarService, _ http.ResponseWriter, r *http.Request) {
+func handleAddPeriod(s services.RegistrarService, w http.ResponseWriter, r *http.Request) {
 	var req addPeriodRequest
-	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
-		log.Print("failed body decode:", err)
+	dcdErr := json.NewDecoder(r.Body).Decode(&req)
+	if dcdErr != nil {
+		log.Print("failed body decode:", dcdErr)
 	}
+	res, regErr := s.AddPeriod(req.from, req.to)
+	if regErr != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		writeResponse(w, []byte(regErr.Error()))
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	writeResponse(w, []byte(res))
 }
