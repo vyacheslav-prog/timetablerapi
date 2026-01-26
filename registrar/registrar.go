@@ -1,6 +1,9 @@
 package registrar
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type repository interface {
 	SaveAndIdentifyPerformer(string) (string, error)
@@ -24,5 +27,5 @@ func (r Registrar) AddPerformer(name string) (string, error) {
 }
 
 func (r Registrar) AddPeriod(from, to string) (string, error) {
-	return "", errors.Join(errAddPeriod, errors.New("not implemented"))
+	return "", fmt.Errorf("%w: not implemented", errAddPeriod)
 }
