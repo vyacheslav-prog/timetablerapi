@@ -13,7 +13,7 @@ var (
 	errMigrationTransactionIsFailed = errors.New("init a migration transaction is failed")
 )
 
-func execSQLMigrationByScheme(scm, tbl string, ctx context.Context, db *sql.DB) (err error) {
+func execPgSQLMigrationByScheme(scm, tbl string, ctx context.Context, db *sql.DB) (err error) {
 	if db == nil {
 		err = errMigrationNotConnection
 		return
@@ -33,7 +33,7 @@ func execSQLMigrationByScheme(scm, tbl string, ctx context.Context, db *sql.DB) 
 			}
 		}
 	}()
-	if err = checkSQLTableExistenceOrCreate(scm, tbl, ctx, tx); err != nil {
+	if err = checkPgSQLTableExistenceOrCreate(scm, tbl, ctx, tx); err != nil {
 		return
 	}
 	if txCommitErr := tx.Commit(); txCommitErr != nil {
@@ -43,7 +43,7 @@ func execSQLMigrationByScheme(scm, tbl string, ctx context.Context, db *sql.DB) 
 	return nil
 }
 
-func checkSQLTableExistenceOrCreate(scm, tbl string, ctx context.Context, tx *sql.Tx) error {
+func checkPgSQLTableExistenceOrCreate(scm, tbl string, ctx context.Context, tx *sql.Tx) error {
 	existsRow := tx.QueryRowContext(ctx, "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = '$1';", tbl)
 	var tableExists int
 	if checkTableErr := existsRow.Scan(&tableExists); checkTableErr != nil {

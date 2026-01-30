@@ -29,7 +29,7 @@ func (r overviewRepo) FetchPerformerBoard(ctx context.Context, id string) (resul
 }
 
 func newOverviewRepo(ctx context.Context, db *sql.DB) (*overviewRepo, error) {
-	err := execSQLMigrationByScheme(performerBoardsSchema, "performer_boards", ctx, db)
+	err := execPgSQLMigrationByScheme(performerBoardsSchema, "performer_boards", ctx, db)
 	if err != nil {
 		return nil, err
 	}
