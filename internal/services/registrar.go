@@ -22,7 +22,7 @@ func (rr registrarRepo) SaveAndIdentifyPerformer(name string) (string, error) {
 }
 
 func newRegistrarRepo(ctx context.Context, db *sql.DB) (*registrarRepo, error) {
-	err := execPgSQLMigrationByScheme(performersSchema, "performers", ctx, db)
+	err := execPgSQLMigrationByScheme(ctx, performersSchema, "performers", db)
 	if err != nil {
 		return nil, err
 	}
