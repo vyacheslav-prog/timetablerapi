@@ -6,6 +6,10 @@ import (
 	"errors"
 )
 
+const (
+	pgCountTableByNameQuery = "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = '$1';"
+)
+
 var (
 	errMigrationCheckTable          = errors.New("check table existence is failed")
 	errMigrationCreateScheme        = errors.New("create schema for table is failed")
@@ -44,7 +48,7 @@ func execPgSQLMigrationByScheme(ctx context.Context, scm, tbl string, db *sql.DB
 }
 
 func checkPgSQLTableExistenceOrCreate(ctx context.Context, scm, tbl string, tx *sql.Tx) error {
-	existsRow := tx.QueryRowContext(ctx, "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = '$1';", tbl)
+	existsRow := tx.QueryRowContext(ctx, pgCountTableByNameQuery, tbl)
 	var tableExists int
 	if checkTableErr := existsRow.Scan(&tableExists); checkTableErr != nil {
 		return errors.Join(errMigrationCheckTable, checkTableErr)
