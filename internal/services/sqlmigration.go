@@ -8,6 +8,7 @@ import (
 
 const (
 	pgCountTableByNameQuery = "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = '$1';"
+	sqlite3CountTableByNameQuery = "select count(*) from sqlite_master where tbl_name = '$1';"
 )
 
 var (
@@ -93,7 +94,7 @@ func checkPgSQLTableExistenceOrCreate(ctx context.Context, scm, tbl string, tx *
 }
 
 func checkSQLite3TableExistenceOrCreate(ctx context.Context, scm, tbl string, tx *sql.Tx) error {
-	existsRow := tx.QueryRowContext(ctx, pgCountTableByNameQuery, tbl)
+	existsRow := tx.QueryRowContext(ctx, sqlite3CountTableByNameQuery, tbl)
 	var tableExists int
 	if checkTableErr := existsRow.Scan(&tableExists); checkTableErr != nil {
 		return errors.Join(errMigrationCheckTable, checkTableErr)
