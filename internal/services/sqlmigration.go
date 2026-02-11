@@ -11,12 +11,21 @@ const (
 	sqlite3CountTableByNameQuery = "select count(*) from sqlite_master where tbl_name = '$1';"
 )
 
+type dbWithMigration struct {
+	db *sql.DB
+	countTableQuery string
+}
+
 var (
 	errMigrationCheckTable          = errors.New("check table existence is failed")
 	errMigrationCreateScheme        = errors.New("create schema for table is failed")
 	errMigrationNotConnection       = errors.New("not connection for server")
 	errMigrationTransactionIsFailed = errors.New("init a migration transaction is failed")
 )
+
+func (dm *dbWithMigration) execSQLMigrationByScheme(ctx context.Context, scm, tbl string) (err error) {
+	return errors.New("not implemented")
+}
 
 func execPgSQLMigrationByScheme(ctx context.Context, scm, tbl string, db *sql.DB) (err error) {
 	if db == nil {
