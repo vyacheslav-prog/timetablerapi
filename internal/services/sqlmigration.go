@@ -11,7 +11,7 @@ const (
 	sqlite3CountTableByNameQuery = "select count(*) from sqlite_master where tbl_name = '$1';"
 )
 
-type dbWithMigration struct {
+type dbMigrate struct {
 	db *sql.DB
 	countTableQuery string
 }
@@ -23,8 +23,49 @@ var (
 	errMigrationTransactionIsFailed = errors.New("init a migration transaction is failed")
 )
 
-func (dm *dbWithMigration) execSQLMigrationByScheme(ctx context.Context, scm, tbl string) (err error) {
-	return errors.New("not implemented")
+func newDBMigrate(db *sql.DB, mode string) *dbMigrate {
+	if mode == "sqlite3" {
+		return &dbMigrate{db, sqlite3CountTableByNameQuery}
+	}
+	return &dbMigrate{db, pgCountTableByNameQuery}
+}
+
+func (dm *dbMigrate) byScheme(ctx context.Context, scm, tbl string) (err error) {
+	if dm.db == nil {
+		err = errMigrationNotConnection
+		return
+	}
+	tx, txBeginErr := dm.db.BeginTx(ctx, nil)
+	if txBeginErr != nil {
+		err = errors.Join(errMigrationTransactionIsFailed, txBeginErr)
+		return
+	}
+	defer func() {
+		if txErr := tx.Rollback(); txErr != nil {
+			txErr = errors.Join(errMigrationTransactionIsFailed, txErr)
+			if err != nil {
+				err = errors.Join(err, txErr)
+			} else {
+				err = txErr
+			}
+		}
+	}()
+	existsRow := tx.QueryRowContext(ctx, dm.countTableQuery, tbl)
+	var tableExists int
+	if checkTableErr := existsRow.Scan(&tableExists); checkTableErr != nil {
+		return errors.Join(errMigrationCheckTable, checkTableErr)
+	}
+	if tableExists == 0 {
+		_, migrateErr := tx.ExecContext(ctx, scm)
+		if migrateErr != nil {
+			return errors.Join(errMigrationCreateScheme, migrateErr)
+		}
+	}
+	if txCommitErr := tx.Commit(); txCommitErr != nil {
+		err = errors.Join(errMigrationTransactionIsFailed, txCommitErr)
+		return
+	}
+	return nil
 }
 
 func execPgSQLMigrationByScheme(ctx context.Context, scm, tbl string, db *sql.DB) (err error) {
