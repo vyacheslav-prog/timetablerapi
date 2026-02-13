@@ -40,11 +40,11 @@ func NewServices(ctx context.Context) (*Services, error) {
 		return nil, errors.Join(errInitServices, pingErr)
 	}
 	dm := newDBMigrate(db, dbMode)
-	or, orErr := newOverviewRepo(ctx, db)
+	or, orErr := newOverviewRepo(ctx, db, dm)
 	if orErr != nil {
 		return nil, orErr
 	}
-	rr, rrErr := newRegistrarRepo(ctx, db)
+	rr, rrErr := newRegistrarRepo(ctx, db, dm)
 	if rrErr != nil {
 		return nil, rrErr
 	}

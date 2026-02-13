@@ -28,8 +28,8 @@ func (r overviewRepo) FetchPerformerBoard(ctx context.Context, id string) (resul
 	return
 }
 
-func newOverviewRepo(ctx context.Context, db *sql.DB) (*overviewRepo, error) {
-	err := execPgSQLMigrationByScheme(ctx, performerBoardsSchema, "performer_boards", db)
+func newOverviewRepo(ctx context.Context, db *sql.DB, dm *dbMigrate) (*overviewRepo, error) {
+	err := dm.byScheme(ctx, performerBoardsSchema, "performer_boards")
 	if err != nil {
 		return nil, err
 	}

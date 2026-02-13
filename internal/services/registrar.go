@@ -21,8 +21,8 @@ func (rr registrarRepo) SaveAndIdentifyPerformer(name string) (string, error) {
 	return "p1", nil
 }
 
-func newRegistrarRepo(ctx context.Context, db *sql.DB) (*registrarRepo, error) {
-	err := execPgSQLMigrationByScheme(ctx, performersSchema, "performers", db)
+func newRegistrarRepo(ctx context.Context, db *sql.DB, dm *dbMigrate) (*registrarRepo, error) {
+	err := dm.byScheme(ctx, performersSchema, "performers")
 	if err != nil {
 		return nil, err
 	}
