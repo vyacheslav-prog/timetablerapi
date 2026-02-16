@@ -12,7 +12,7 @@ const (
 )
 
 type dbMigrate struct {
-	db *sql.DB
+	db              *sql.DB
 	countTableQuery string
 }
 
@@ -50,6 +50,18 @@ func (dm *dbMigrate) byScheme(ctx context.Context, scm, tbl string) (err error) 
 			}
 		}
 	}()
+	if migrateErr := dm.migrateIfNotExists(ctx, scm, tbl, tx); migrateErr != nil {
+		err = migrateErr
+		return
+	}
+	if txCommitErr := tx.Commit(); txCommitErr != nil {
+		err = errors.Join(errMigrationTransactionIsFailed, txCommitErr)
+		return
+	}
+	return nil
+}
+
+func (dm *dbMigrate) migrateIfNotExists(ctx context.Context, scm, tbl string, tx *sql.Tx) error {
 	existsRow := tx.QueryRowContext(ctx, dm.countTableQuery, tbl)
 	var tableExists int
 	if checkTableErr := existsRow.Scan(&tableExists); checkTableErr != nil {
@@ -60,10 +72,6 @@ func (dm *dbMigrate) byScheme(ctx context.Context, scm, tbl string) (err error) 
 		if migrateErr != nil {
 			return errors.Join(errMigrationCreateScheme, migrateErr)
 		}
-	}
-	if txCommitErr := tx.Commit(); txCommitErr != nil {
-		err = errors.Join(errMigrationTransactionIsFailed, txCommitErr)
-		return
 	}
 	return nil
 }
