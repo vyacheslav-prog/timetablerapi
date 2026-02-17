@@ -41,12 +41,9 @@ func (dm *dbMigrate) byScheme(ctx context.Context, scm, tbl string) (err error) 
 		return
 	}
 	defer func() {
-		if txErr := tx.Rollback(); txErr != nil {
-			txErr = errors.Join(errMigrationTransactionIsFailed, txErr)
-			if err != nil {
-				err = errors.Join(err, txErr)
-			} else {
-				err = txErr
+		if err != nil {
+			if txErr := tx.Rollback(); txErr != nil {
+				err = errors.Join(err, errMigrationTransactionIsFailed, txErr)
 			}
 		}
 	}()
