@@ -21,11 +21,13 @@ const (
 
 func main() {
 	ctx := context.Background()
+	log.Println("timetablerapi services is initializing...")
 	srvs, initErr := services.NewServices(ctx)
 	if initErr != nil {
-		log.Println("failed initialization for services:", initErr)
+		log.Println("timetablerapi services is failed:", initErr)
 		os.Exit(1)
 	}
+	log.Println("timetablerapi services is initialized")
 	httpserver.NewMux(srvs)
 	httpSrv := &http.Server{
 		Addr:              srvAddr,
@@ -34,8 +36,10 @@ func main() {
 		WriteTimeout:      srvWriteTimeout,
 		IdleTimeout:       srvIdleTimeout,
 	}
+	log.Println("timetablerapi a http server is starting...")
 	if serveErr := httpSrv.ListenAndServe(); serveErr != nil {
-		log.Println("failed serve for http-server:", serveErr)
+		log.Println("timetablerapi a http server is failed:", serveErr)
+		os.Exit(1)
 	}
-	log.Println("timetablerapi server for http listen 8080 port")
+	log.Println("timetablerapi a http server is started and listen 8080 port")
 }
