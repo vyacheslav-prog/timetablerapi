@@ -36,10 +36,9 @@ func main() {
 		WriteTimeout:      srvWriteTimeout,
 		IdleTimeout:       srvIdleTimeout,
 	}
-	log.Println("timetablerapi a http server is starting...")
+	log.Println("timetablerapi a http server is listening addr:", srvAddr)
 	if serveErr := httpSrv.ListenAndServe(); serveErr != nil {
 		log.Println("timetablerapi a http server is failed:", serveErr)
 		os.Exit(1)
 	}
-	log.Println("timetablerapi a http server is started and listen 8080 port")
 }
