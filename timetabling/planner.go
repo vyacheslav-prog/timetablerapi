@@ -10,20 +10,19 @@ type task struct {
 
 func plan(recipients []performer, tasks []task) []job {
 	var result []job
-	busyPerformers := make(map[string]string)
+	busyPrfs := make(map[string]string)
 	for _, t := range tasks {
-		perf, tp := "", t.period()
+		prf, tp := "", t.period()
 		for _, r := range recipients {
-			busyFrom, isBusy := busyPerformers[r.name]
-			isNotBusy := !isBusy || busyFrom != t.from
-			if isNotBusy && r.findAvailablePeriod(tp) != nil {
-				perf = r.name
-				busyPerformers[perf] = t.from
+			busyFrom, isBusy := busyPrfs[r.name]
+			if (!isBusy || busyFrom != t.from) && r.findAvailablePeriod(tp) != nil {
+				prf = r.name
+				busyPrfs[prf] = t.from
 				break
 			}
 		}
-		if perf != "" {
-			result = append(result, job{tp.from, perf})
+		if prf != "" {
+			result = append(result, job{tp.from, prf})
 		}
 	}
 	return result
