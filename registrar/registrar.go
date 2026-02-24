@@ -18,6 +18,10 @@ var (
 	errAddPeriod   = errors.New("unable to add a period")
 )
 
+func (r Registrar) AddLayout(mode string) (string, error) {
+	return "", fmt.Errorf("not implemented")
+}
+
 func (r Registrar) AddPerformer(name string) (string, error) {
 	identity, err := r.Repo.SaveAndIdentifyPerformer(name)
 	if err != nil {
