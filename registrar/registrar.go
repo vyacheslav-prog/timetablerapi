@@ -6,6 +6,7 @@ import (
 )
 
 type repository interface {
+	SaveAndIdentifyLayout(string) (string, error)
 	SaveAndIdentifyPerformer(string) (string, error)
 }
 
@@ -18,7 +19,11 @@ var (
 )
 
 func (r Registrar) AddLayout(mode string) (string, error) {
-	return "", fmt.Errorf("%w: not implemented", errRegistrar)
+	identity, err := r.Repo.SaveAndIdentifyLayout(mode)
+	if err != nil {
+		return "", errors.Join(errRegistrar, err)
+	}
+	return identity, nil
 }
 
 func (r Registrar) AddPerformer(name string) (string, error) {

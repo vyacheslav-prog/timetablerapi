@@ -17,6 +17,10 @@ type registrarRepo struct {
 	db *sql.DB
 }
 
+func (rr registrarRepo) SaveAndIdentifyLayout(mode string) (string, error) {
+	return "l1", nil
+}
+
 func (rr registrarRepo) SaveAndIdentifyPerformer(name string) (string, error) {
 	return "p1", nil
 }
