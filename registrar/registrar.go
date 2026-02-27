@@ -15,7 +15,7 @@ type Registrar struct {
 }
 
 var (
-	errRegistrar = errors.New("registrar error is occured")
+	errRegistrar = errors.New("registrar error is occurred")
 )
 
 func (r Registrar) AddLayout(mode string) (string, error) {
