@@ -5,6 +5,12 @@ import (
 	"database/sql"
 )
 
+const layoutsSchema = `
+	create table if not exists layouts (
+		id text primary key
+	);
+`
+
 const performersSchema = `
 	create table if not exists performers (
 		id text primary key,
