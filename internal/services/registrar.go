@@ -36,5 +36,9 @@ func newRegistrarRepo(ctx context.Context, db *sql.DB, dm *dbMigrate) (*registra
 	if err != nil {
 		return nil, err
 	}
+	err = dm.byScheme(ctx, layoutsSchema, "layouts")
+	if err != nil {
+		return nil, err
+	}
 	return &registrarRepo{db: db}, nil
 }
