@@ -37,3 +37,7 @@ func (r Registrar) AddPerformer(name string) (string, error) {
 func (r Registrar) AddPeriod(from, to string) (string, error) {
 	return "", fmt.Errorf("%w: not implemented", errRegistrar)
 }
+
+func (r Registrar) AddTask(name, from, to string) (string, error) {
+	return "", fmt.Errorf("%w: not implemented", errRegistrar)
+}
