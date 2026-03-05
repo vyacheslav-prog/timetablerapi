@@ -8,6 +8,7 @@ import (
 type repository interface {
 	SaveAndIdentifyLayout(string) (string, error)
 	SaveAndIdentifyPerformer(string) (string, error)
+	SaveAndIdentifyTask(string, string, string) (string, error)
 }
 
 type Registrar struct {
@@ -39,5 +40,9 @@ func (r Registrar) AddPeriod(from, to string) (string, error) {
 }
 
 func (r Registrar) AddTask(name, from, to string) (string, error) {
-	return "", fmt.Errorf("%w: not implemented", errRegistrar)
+	identity, err := r.Repo.SaveAndIdentifyTask(name, from, to)
+	if err != nil {
+		return "", errors.Join(errRegistrar, err)
+	}
+	return identity, nil
 }
