@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"database/sql"
+	"strconv"
 )
 
 const layoutsSchema = `
@@ -38,7 +39,16 @@ func (rr registrarRepo) SaveAndIdentifyLayout(mode string) (string, error) {
 }
 
 func (rr registrarRepo) SaveAndIdentifyPerformer(name string) (string, error) {
-	return "p1", nil
+	res, err := rr.db.Exec("insert into performers (name) values (?)", name)
+	if err != nil {
+		return "", err
+	}
+	var id int64
+	id, err = res.LastInsertId()
+	if err != nil {
+		return "", err
+	}
+	return strconv.FormatInt(id, 10), nil
 }
 
 func (rr registrarRepo) SaveAndIdentifyTask(name, from, to string) (string, error) {
