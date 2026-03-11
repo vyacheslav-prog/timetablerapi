@@ -3,7 +3,8 @@ package services
 import (
 	"context"
 	"database/sql"
-	"strconv"
+
+	"github.com/google/uuid"
 )
 
 const layoutsSchema = `
@@ -39,16 +40,12 @@ func (rr registrarRepo) SaveAndIdentifyLayout(mode string) (string, error) {
 }
 
 func (rr registrarRepo) SaveAndIdentifyPerformer(name string) (string, error) {
-	res, err := rr.db.Exec("insert into performers (name) values (?)", name)
+	id := uuid.New()
+	_, err := rr.db.Exec("insert into performers (id, name) values (?)", id, name)
 	if err != nil {
 		return "", err
 	}
-	var id int64
-	id, err = res.LastInsertId()
-	if err != nil {
-		return "", err
-	}
-	return strconv.FormatInt(id, 10), nil
+	return id, nil
 }
 
 func (rr registrarRepo) SaveAndIdentifyTask(name, from, to string) (string, error) {
