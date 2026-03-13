@@ -40,8 +40,12 @@ func (rr registrarRepo) SaveAndIdentifyLayout(mode string) (string, error) {
 }
 
 func (rr registrarRepo) SaveAndIdentifyPerformer(name string) (string, error) {
-	id := uuid.New()
-	_, err := rr.db.Exec("insert into performers (id, name) values (?)", id, name)
+	uid, err := uuid.NewRandom()
+	if err != nil {
+		return "", err
+	}
+	id := uid.String()
+	_, err = rr.db.Exec("insert into performers (id, name) values (?)", id, name)
 	if err != nil {
 		return "", err
 	}
