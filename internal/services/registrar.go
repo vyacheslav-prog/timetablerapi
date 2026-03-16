@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -42,12 +43,12 @@ func (rr registrarRepo) SaveAndIdentifyLayout(mode string) (string, error) {
 func (rr registrarRepo) SaveAndIdentifyPerformer(name string) (string, error) {
 	uid, err := uuid.NewRandom()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed for generating a performer identity: %w", err)
 	}
 	id := uid.String()
 	_, err = rr.db.Exec("insert into performers (id, name) values (?)", id, name)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed for storing a performer: %w", err)
 	}
 	return id, nil
 }
