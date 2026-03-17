@@ -1,13 +1,14 @@
 package registrar
 
 import (
+	"context"
 	"errors"
 	"fmt"
 )
 
 type repository interface {
 	SaveAndIdentifyLayout(string) (string, error)
-	SaveAndIdentifyPerformer(string) (string, error)
+	SaveAndIdentifyPerformer(context.Context, string) (string, error)
 	SaveAndIdentifyTask(string, string, string) (string, error)
 }
 
@@ -28,7 +29,7 @@ func (r Registrar) AddLayout(mode string) (string, error) {
 }
 
 func (r Registrar) AddPerformer(name string) (string, error) {
-	identity, err := r.Repo.SaveAndIdentifyPerformer(name)
+	identity, err := r.Repo.SaveAndIdentifyPerformer(context.Background(), name)
 	if err != nil {
 		return "", errors.Join(errRegistrar, err)
 	}
