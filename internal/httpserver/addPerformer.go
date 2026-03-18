@@ -22,7 +22,7 @@ func handleAddPerformer(s services.RegistrarService, w http.ResponseWriter, r *h
 	if unmarshallErr := json.Unmarshal(body, &data); unmarshallErr != nil {
 		log.Print("failed body decoding:", unmarshallErr)
 	}
-	res, regErr := s.AddPerformer(data.Name)
+	res, regErr := s.AddPerformer(r.Context(), data.Name)
 	if regErr != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		writeResponse(w, []byte(regErr.Error()))

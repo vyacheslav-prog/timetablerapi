@@ -28,8 +28,8 @@ func (r Registrar) AddLayout(mode string) (string, error) {
 	return identity, nil
 }
 
-func (r Registrar) AddPerformer(name string) (string, error) {
-	identity, err := r.Repo.SaveAndIdentifyPerformer(context.Background(), name)
+func (r Registrar) AddPerformer(ctx context.Context, name string) (string, error) {
+	identity, err := r.Repo.SaveAndIdentifyPerformer(ctx, name)
 	if err != nil {
 		return "", errors.Join(errRegistrar, err)
 	}

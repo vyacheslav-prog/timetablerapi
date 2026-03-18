@@ -17,7 +17,7 @@ type OverviewService interface {
 }
 
 type RegistrarService interface {
-	AddPerformer(string) (string, error)
+	AddPerformer(context.Context, string) (string, error)
 	AddPeriod(string, string) (string, error)
 }
 
