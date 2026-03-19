@@ -53,7 +53,7 @@ func (rr registrarRepo) SaveAndIdentifyPerformer(ctx context.Context, name strin
 	return id, nil
 }
 
-func (rr registrarRepo) SaveAndIdentifyTask(name, from, to string) (string, error) {
+func (rr registrarRepo) SaveAndIdentifyTask(ctx context.Context, name, from, to string) (string, error) {
 	return "t1", nil
 }
 
