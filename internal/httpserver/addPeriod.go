@@ -22,7 +22,7 @@ func handleAddPeriod(s services.RegistrarService, w http.ResponseWriter, r *http
 		writeResponse(w, []byte(dcdErr.Error()))
 		return
 	}
-	res, regErr := s.AddPeriod(req.From, req.To)
+	res, regErr := s.AddPeriod(r.Context(), req.From, req.To)
 	if regErr != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		writeResponse(w, []byte(regErr.Error()))

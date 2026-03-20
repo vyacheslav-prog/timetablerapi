@@ -36,7 +36,7 @@ func (r Registrar) AddPerformer(ctx context.Context, name string) (string, error
 	return identity, nil
 }
 
-func (r Registrar) AddPeriod(from, to string) (string, error) {
+func (r Registrar) AddPeriod(ctx context.Context, from, to string) (string, error) {
 	return "", fmt.Errorf("%w: not implemented", errRegistrar)
 }
 
