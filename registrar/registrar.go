@@ -7,7 +7,7 @@ import (
 )
 
 type repository interface {
-	SaveAndIdentifyLayout(string) (string, error)
+	SaveAndIdentifyLayout(context.Context, string) (string, error)
 	SaveAndIdentifyPerformer(context.Context, string) (string, error)
 	SaveAndIdentifyTask(context.Context, string, string, string) (string, error)
 }
@@ -21,7 +21,7 @@ var (
 )
 
 func (r Registrar) AddLayout(mode string) (string, error) {
-	identity, err := r.Repo.SaveAndIdentifyLayout(mode)
+	identity, err := r.Repo.SaveAndIdentifyLayout(context.Background(), mode)
 	if err != nil {
 		return "", errors.Join(errRegistrar, err)
 	}

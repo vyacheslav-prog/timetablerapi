@@ -36,7 +36,7 @@ type registrarRepo struct {
 	db *sql.DB
 }
 
-func (rr registrarRepo) SaveAndIdentifyLayout(mode string) (string, error) {
+func (rr registrarRepo) SaveAndIdentifyLayout(ctx context.Context, mode string) (string, error) {
 	return "l1", nil
 }
 
