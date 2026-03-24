@@ -6,6 +6,12 @@ import (
 	"fmt"
 )
 
+type Performer struct {
+	from string
+	name string
+	to   string
+}
+
 type repository interface {
 	SaveAndIdentifyLayout(context.Context, string) (string, error)
 	SaveAndIdentifyPerformer(context.Context, string) (string, error)
