@@ -2,7 +2,6 @@ package httpserver
 
 import (
 	"encoding/json"
-	"io"
 	"log"
 	"net/http"
 
@@ -14,13 +13,13 @@ type performerCreatingRequest struct {
 }
 
 func handleAddPerformer(s services.RegistrarService, w http.ResponseWriter, r *http.Request) {
-	body, readBodyErr := io.ReadAll(r.Body)
-	if readBodyErr != nil {
-		log.Print("failed body read:", readBodyErr)
-	}
 	var data performerCreatingRequest
-	if unmarshallErr := json.Unmarshal(body, &data); unmarshallErr != nil {
-		log.Print("failed body decoding:", unmarshallErr)
+	dcdErr := json.NewDecoder(r.Body).Decode(&data)
+	if dcdErr != nil {
+		log.Print("failed body decode:", dcdErr)
+		w.WriteHeader(http.StatusBadRequest)
+		writeResponse(w, []byte(dcdErr.Error()))
+		return
 	}
 	res, regErr := s.AddPerformer(r.Context(), data.Name)
 	if regErr != nil {
