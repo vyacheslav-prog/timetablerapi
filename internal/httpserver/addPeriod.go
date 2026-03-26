@@ -17,15 +17,12 @@ func handleAddPeriod(s services.RegistrarService, w http.ResponseWriter, r *http
 	var req addPeriodRequest
 	dcdErr := json.NewDecoder(r.Body).Decode(&req)
 	if dcdErr != nil {
-		log.Print("failed body decode:", dcdErr)
-		w.WriteHeader(http.StatusBadRequest)
-		writeResponse(w, []byte(dcdErr.Error()))
+		http.Error(w, dcdErr.Error(), http.StatusBadRequest)
 		return
 	}
 	res, regErr := s.AddPeriod(r.Context(), req.From, req.To)
 	if regErr != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		writeResponse(w, []byte(regErr.Error()))
+		http.Error(w, regErr.Error(), http.StatusBadRequest)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

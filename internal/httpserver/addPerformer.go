@@ -16,15 +16,12 @@ func handleAddPerformer(s services.RegistrarService, w http.ResponseWriter, r *h
 	var data performerCreatingRequest
 	dcdErr := json.NewDecoder(r.Body).Decode(&data)
 	if dcdErr != nil {
-		log.Print("failed body decode:", dcdErr)
-		w.WriteHeader(http.StatusBadRequest)
-		writeResponse(w, []byte(dcdErr.Error()))
+		http.Error(w, dcdErr.Error(), http.StatusBadRequest)
 		return
 	}
 	res, regErr := s.AddPerformer(r.Context(), data.Name)
 	if regErr != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		writeResponse(w, []byte(regErr.Error()))
+		http.Error(w, regErr.Error(), http.StatusBadRequest)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
