@@ -2,7 +2,6 @@ package httpserver
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"timetablerapi/internal/services"
