@@ -7,9 +7,9 @@ import (
 )
 
 type Performer struct {
-	from string
-	name string
-	to   string
+	From string
+	Name string
+	To   string
 }
 
 type repository interface {
@@ -34,8 +34,8 @@ func (r Registrar) AddLayout(mode string) (string, error) {
 	return identity, nil
 }
 
-func (r Registrar) AddPerformer(ctx context.Context, name string) (string, error) {
-	identity, err := r.Repo.SaveAndIdentifyPerformer(ctx, name)
+func (r Registrar) AddPerformer(ctx context.Context, prf Performer) (string, error) {
+	identity, err := r.Repo.SaveAndIdentifyPerformer(ctx, prf.Name)
 	if err != nil {
 		return "", errors.Join(errRegistrar, err)
 	}

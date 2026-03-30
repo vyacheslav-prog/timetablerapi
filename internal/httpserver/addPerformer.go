@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"timetablerapi/internal/services"
+	"timetablerapi/registrar"
 )
 
 type performerCreatingRequest struct {
@@ -18,7 +19,8 @@ func handleAddPerformer(s services.RegistrarService, w http.ResponseWriter, r *h
 		http.Error(w, dcdErr.Error(), http.StatusBadRequest)
 		return
 	}
-	res, regErr := s.AddPerformer(r.Context(), data.Name)
+	prf := registrar.Performer{Name: data.Name}
+	res, regErr := s.AddPerformer(r.Context(), prf)
 	if regErr != nil {
 		http.Error(w, regErr.Error(), http.StatusBadRequest)
 		return
