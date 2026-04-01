@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 )
 
 const (
@@ -37,7 +38,7 @@ func (dm *dbMigrate) byScheme(ctx context.Context, scm, tbl string) (err error) 
 	}
 	tx, txBeginErr := dm.db.BeginTx(ctx, nil)
 	if txBeginErr != nil {
-		err = errors.Join(errMigrationTransactionIsFailed, txBeginErr)
+		err = fmt.Errorf("%w: %w", errMigrationTransactionIsFailed, txBeginErr)
 		return
 	}
 	defer func() {
@@ -52,7 +53,7 @@ func (dm *dbMigrate) byScheme(ctx context.Context, scm, tbl string) (err error) 
 		return
 	}
 	if txCommitErr := tx.Commit(); txCommitErr != nil {
-		err = errors.Join(errMigrationTransactionIsFailed, txCommitErr)
+		err = fmt.Errorf("%w: %w", errMigrationTransactionIsFailed, txCommitErr)
 		return
 	}
 	return nil
@@ -62,12 +63,12 @@ func (dm *dbMigrate) migrateIfNotExists(ctx context.Context, scm, tbl string, tx
 	existsRow := tx.QueryRowContext(ctx, dm.countTableQuery, tbl)
 	var tableExists int
 	if checkTableErr := existsRow.Scan(&tableExists); checkTableErr != nil {
-		return errors.Join(errMigrationCheckTable, checkTableErr)
+		return fmt.Errorf("%w: %w", errMigrationCheckTable, checkTableErr)
 	}
 	if tableExists == 0 {
 		_, migrateErr := tx.ExecContext(ctx, scm)
 		if migrateErr != nil {
-			return errors.Join(errMigrationCreateScheme, migrateErr)
+			return fmt.Errorf("%w: %w", errMigrationCreateScheme, migrateErr)
 		}
 	}
 	return nil

@@ -4,12 +4,14 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"os"
+
+	"timetablerapi/overview"
+	"timetablerapi/registrar"
 
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
-	"timetablerapi/overview"
-	"timetablerapi/registrar"
 )
 
 type OverviewService interface {
@@ -34,10 +36,10 @@ func NewServices(ctx context.Context) (*Services, error) {
 	dbConn, dbMode := os.Getenv("DATABASE_URL"), os.Getenv("DATABASE_MODE")
 	db, openErr := sql.Open(dbMode, dbConn)
 	if openErr != nil {
-		return nil, errors.Join(errInitServices, openErr)
+		return nil, fmt.Errorf("%w: %w", errInitServices, openErr)
 	}
 	if pingErr := db.PingContext(ctx); pingErr != nil {
-		return nil, errors.Join(errInitServices, pingErr)
+		return nil, fmt.Errorf("%w: %w", errInitServices, pingErr)
 	}
 	dm := newDBMigrate(db, dbMode)
 	or, orErr := newOverviewRepo(ctx, db, dm)

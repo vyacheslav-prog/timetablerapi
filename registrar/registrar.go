@@ -29,7 +29,7 @@ var (
 func (r Registrar) AddLayout(mode string) (string, error) {
 	identity, err := r.Repo.SaveAndIdentifyLayout(context.Background(), mode)
 	if err != nil {
-		return "", errors.Join(errRegistrar, err)
+		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
 	return identity, nil
 }
@@ -37,7 +37,7 @@ func (r Registrar) AddLayout(mode string) (string, error) {
 func (r Registrar) AddPerformer(ctx context.Context, prf Performer) (string, error) {
 	identity, err := r.Repo.SaveAndIdentifyPerformer(ctx, prf.Name)
 	if err != nil {
-		return "", errors.Join(errRegistrar, err)
+		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
 	return identity, nil
 }
@@ -49,7 +49,7 @@ func (r Registrar) AddPeriod(ctx context.Context, from, to string) (string, erro
 func (r Registrar) AddTask(ctx context.Context, name, from, to string) (string, error) {
 	identity, err := r.Repo.SaveAndIdentifyTask(ctx, name, from, to)
 	if err != nil {
-		return "", errors.Join(errRegistrar, err)
+		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
 	return identity, nil
 }

@@ -3,6 +3,7 @@ package overview
 import (
 	"context"
 	"errors"
+	"fmt"
 )
 
 type repository interface {
@@ -20,7 +21,7 @@ var (
 func (s Overview) ViewPerformerBoard(ctx context.Context, id string) (string, error) {
 	result, err := s.Repo.FetchPerformerBoard(ctx, id)
 	if err != nil {
-		return "", errors.Join(errViewPerformerBoard, err)
+		return "", fmt.Errorf("%w: %w", errViewPerformerBoard, err)
 	}
 	return result.id, nil
 }
