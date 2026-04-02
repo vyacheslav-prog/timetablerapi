@@ -45,6 +45,8 @@ func (dm *dbMigrate) byScheme(ctx context.Context, scm, tbl string) (err error) 
 		if err != nil {
 			if txErr := tx.Rollback(); txErr != nil {
 				err = errors.Join(err, errMigrationTransactionIsFailed, txErr)
+			} else {
+				err = fmt.Errorf("%w: %w", errMigrationTransactionIsFailed, err)
 			}
 		}
 	}()
@@ -53,7 +55,7 @@ func (dm *dbMigrate) byScheme(ctx context.Context, scm, tbl string) (err error) 
 		return
 	}
 	if txCommitErr := tx.Commit(); txCommitErr != nil {
-		err = fmt.Errorf("%w: %w", errMigrationTransactionIsFailed, txCommitErr)
+		err = txCommitErr
 		return
 	}
 	return nil
