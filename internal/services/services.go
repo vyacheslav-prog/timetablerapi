@@ -7,11 +7,10 @@ import (
 	"fmt"
 	"os"
 
-	"timetablerapi/overview"
-	"timetablerapi/registrar"
-
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
+	"timetablerapi/overview"
+	"timetablerapi/registrar"
 )
 
 type OverviewService interface {

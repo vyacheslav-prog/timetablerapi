@@ -20,7 +20,7 @@ type dbMigrate struct {
 var (
 	errMigrationCheckTable          = errors.New("check table existence is failed")
 	errMigrationCreateScheme        = errors.New("create schema for table is failed")
-	errMigrationNotConnection       = errors.New("not connection for server")
+	errMigrationNotConnection       = errors.New("not connection to sql-server")
 	errMigrationTransactionIsFailed = errors.New("init a migration transaction is failed")
 )
 
@@ -44,18 +44,16 @@ func (dm *dbMigrate) byScheme(ctx context.Context, scm, tbl string) (err error) 
 	defer func() {
 		if err != nil {
 			if txErr := tx.Rollback(); txErr != nil {
-				err = errors.Join(err, errMigrationTransactionIsFailed, txErr)
-			} else {
-				err = fmt.Errorf("%w: %w", errMigrationTransactionIsFailed, err)
+				err = fmt.Errorf("%w; %w", err, txErr)
 			}
 		}
 	}()
 	if migrateErr := dm.migrateIfNotExists(ctx, scm, tbl, tx); migrateErr != nil {
-		err = migrateErr
+		err = fmt.Errorf("%w: %w", errMigrationTransactionIsFailed, migrateErr)
 		return
 	}
 	if txCommitErr := tx.Commit(); txCommitErr != nil {
-		err = txCommitErr
+		err = fmt.Errorf("%w: %w", errMigrationTransactionIsFailed, txCommitErr)
 		return
 	}
 	return nil
