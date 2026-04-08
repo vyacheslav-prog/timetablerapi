@@ -1,23 +1,19 @@
 package httpserver
 
 import (
-	"context"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 	"timetablerapi/internal/services"
-	"timetablerapi/registrar"
 )
 
 func TestEmptyAddPerformerRequest(t *testing.T) {
-	rg := struct {
-		AddPerformer func(context.Context, registrar.Performer) (string, error)
-	}{
-		AddPerformer: func(_ context.Context, _ registrar.Performer) (string, error) {
-			return "", nil
-		},
-	}
 	mux := http.NewServeMux()
-	registerHandlers(mux, &services.Services{Registrar: rg})
-	req := http.NewRequest("POST", "/performers")
-	mux.ServeHTTP()
+	registerHandlers(mux, &services.Services{})
+	w := httptest.NewRecorder()
+	mux.ServeHTTP(w, httptest.NewRequest("POST", "/performers", nil))
+	resp := w.Result()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Error("response must have status 400 on empty body, given:", resp.StatusCode)
+	}
 }
