@@ -13,13 +13,13 @@ type performerCreatingRequest struct {
 }
 
 func handleAddPerformer(s services.RegistrarService, w http.ResponseWriter, r *http.Request) {
-	var data performerCreatingRequest
-	dcdErr := json.NewDecoder(r.Body).Decode(&data)
+	var pcr performerCreatingRequest
+	dcdErr := json.NewDecoder(r.Body).Decode(&pcr)
 	if dcdErr != nil {
 		http.Error(w, dcdErr.Error(), http.StatusBadRequest)
 		return
 	}
-	prf := registrar.Performer{Name: data.Name}
+	prf := registrar.Performer{Name: pcr.Name}
 	res, regErr := s.AddPerformer(r.Context(), prf)
 	if regErr != nil {
 		http.Error(w, regErr.Error(), http.StatusBadRequest)
