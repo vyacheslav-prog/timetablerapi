@@ -13,5 +13,5 @@ func handleViewPerformerBoard(s services.OverviewService, w http.ResponseWriter,
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	writeResponse(w, []byte(res))
+	writeResponse(w, []byte(res.Title()))
 }

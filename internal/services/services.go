@@ -14,7 +14,7 @@ import (
 )
 
 type OverviewService interface {
-	ViewPerformerBoard(context.Context, string) (string, error)
+	ViewPerformerBoard(context.Context, string) (*overview.PerformerBoard, error)
 }
 
 type RegistrarService interface {
