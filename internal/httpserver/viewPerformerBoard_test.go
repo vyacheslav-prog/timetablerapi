@@ -13,5 +13,7 @@ func TestViewPerformerBoardIsError(t *testing.T) {
 	w := httptest.NewRecorder()
 	mux.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/performer-boards/", http.NoBody))
 	resp := w.Result()
-	t.Log("status code of view performer board:", resp.StatusCode)
+	if resp.StatusCode != http.StatusNotFound {
+		t.Error("expected status code 404, given:", resp.StatusCode)
+	}
 }
