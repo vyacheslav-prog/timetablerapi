@@ -2,6 +2,7 @@ package httpserver
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -13,7 +14,7 @@ type overviewStub struct {
 }
 
 func (os overviewStub) ViewPerformerBoard(context.Context, string) (*overview.PerformerBoard, error) {
-	return &overview.PerformerBoard{}, nil
+	return &overview.PerformerBoard{title: "board"}, nil
 }
 
 func TestViewPerformerBoardIsError(t *testing.T) {
@@ -36,4 +37,9 @@ func TestViewPerformerBoardIsSuccess(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Error("expected status code 200, given:", resp.StatusCode)
 	}
+	bb, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Error("failed body reading:", err)
+	}
+	t.Log(string(bb))
 }
