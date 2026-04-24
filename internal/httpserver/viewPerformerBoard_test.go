@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"timetablerapi/internal/services"
@@ -15,7 +16,7 @@ type overviewStub struct {
 }
 
 func (os overviewStub) ViewPerformerBoard(context.Context, string) (*overview.PerformerBoard, error) {
-	return &overview.PerformerBoard{title: "board"}, nil
+	return overview.NewPerformerBoard("", "", "board"), nil
 }
 
 func TestViewPerformerBoardIsError(t *testing.T) {
@@ -42,5 +43,8 @@ func TestViewPerformerBoardIsSuccess(t *testing.T) {
 	if err != nil {
 		t.Error("failed body reading:", err)
 	}
-	t.Log(string(bb))
+	bs := string(bb)
+	if !strings.Contains(bs, "board") {
+		t.Error("performer board must contains into title [board], given body:", bs)
+	}
 }
