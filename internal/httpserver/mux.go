@@ -22,9 +22,6 @@ func registerHandlers(mux *http.ServeMux, s *services.Services) {
 	mux.HandleFunc("POST /performers", func(w http.ResponseWriter, r *http.Request) {
 		handleAddPerformer(s.Registrar, w, r)
 	})
-	mux.HandleFunc("POST /periods", func(w http.ResponseWriter, r *http.Request) {
-		handleAddPeriod(s.Registrar, w, r)
-	})
 }
 
 func writeResponse(w http.ResponseWriter, b []byte) {

@@ -42,10 +42,6 @@ func (r Registrar) AddPerformer(ctx context.Context, prf Performer) (string, err
 	return identity, nil
 }
 
-func (r Registrar) AddPeriod(ctx context.Context, from, to string) (string, error) {
-	return "", fmt.Errorf("%w: not implemented", errRegistrar)
-}
-
 func (r Registrar) AddTask(ctx context.Context, name, from, to string) (string, error) {
 	identity, err := r.Repo.SaveAndIdentifyTask(ctx, name, from, to)
 	if err != nil {

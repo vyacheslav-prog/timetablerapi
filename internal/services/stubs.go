@@ -21,7 +21,3 @@ func (os OverviewStub) ViewPerformerBoard(context.Context, string) (*overview.Pe
 func (rs RegistrarStub) AddPerformer(context.Context, registrar.Performer) (string, error) {
 	return rs.Result, nil
 }
-
-func (rs RegistrarStub) AddPeriod(context.Context, string, string) (string, error) {
-	return "", nil
-}
