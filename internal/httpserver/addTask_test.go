@@ -17,3 +17,14 @@ func TestAddTaskIsError(t *testing.T) {
 		t.Error("response must have 400 status for empty body, given:", resp.Status)
 	}
 }
+
+func TestAddTaskIsSuccess(t *testing.T) {
+	mux := http.NewServeMux()
+	registerHandlers(mux, &services.Services{Registrar: services.RegistrarStub{}})
+	w := httptest.NewRecorder()
+	mux.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/tasks", nil))
+	resp := w.Result()
+	if resp.StatusCode != http.StatusCreated {
+		t.Error("response must have 201 status, given:", resp.Status)
+	}
+}
