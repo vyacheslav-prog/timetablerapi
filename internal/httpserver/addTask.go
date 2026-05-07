@@ -1,7 +1,21 @@
 package httpserver
 
-import "net/http"
+import (
+	"encoding/json"
+	"net/http"
+	"timetablerapi/internal/services"
+)
 
-func handleAddTask (w http.ResponseWriter, _ *http.Request) {
-	w.WriteHeader(400)
+type taskCreatingRequest struct {
+	Name string `json:"name"`
+}
+
+func handleAddTask(_ services.RegistrarService, w http.ResponseWriter, r *http.Request) {
+	var tcr taskCreatingRequest
+	dcdErr := json.NewDecoder(r.Body).Decode(&tcr)
+	if dcdErr != nil {
+		w.WriteHeader(400)
+		return
+	}
+	w.WriteHeader(201)
 }

@@ -3,6 +3,7 @@ package httpserver
 import (
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"timetablerapi/internal/services"
 )
@@ -20,9 +21,9 @@ func TestAddTaskIsError(t *testing.T) {
 
 func TestAddTaskIsSuccess(t *testing.T) {
 	mux := http.NewServeMux()
-	registerHandlers(mux, &services.Services{Registrar: services.RegistrarStub{}})
+	registerHandlers(mux, &services.Services{Registrar: services.RegistrarStub{Result: "ok"}})
 	w := httptest.NewRecorder()
-	mux.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/tasks", nil))
+	mux.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(`{"name":"do it"}`)))
 	resp := w.Result()
 	if resp.StatusCode != http.StatusCreated {
 		t.Error("response must have 201 status, given:", resp.Status)
