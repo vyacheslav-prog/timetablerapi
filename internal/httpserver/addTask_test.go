@@ -1,6 +1,7 @@
 package httpserver
 
 import (
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -27,5 +28,12 @@ func TestAddTaskIsSuccess(t *testing.T) {
 	resp := w.Result()
 	if resp.StatusCode != http.StatusCreated {
 		t.Error("response must have 201 status, given:", resp.Status)
+	}
+	bb, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Error("can not read a response:", err)
+	}
+	if !strings.Contains(string(bb), "ok") {
+		t.Error("response must contain result from registrar")
 	}
 }

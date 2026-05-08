@@ -12,6 +12,10 @@ type Performer struct {
 	To   string
 }
 
+type Task struct {
+	Name string
+}
+
 type repository interface {
 	SaveAndIdentifyLayout(context.Context, string) (string, error)
 	SaveAndIdentifyPerformer(context.Context, string) (string, error)
@@ -42,8 +46,8 @@ func (r Registrar) AddPerformer(ctx context.Context, prf Performer) (string, err
 	return identity, nil
 }
 
-func (r Registrar) AddTask(ctx context.Context, name, from, to string) (string, error) {
-	identity, err := r.Repo.SaveAndIdentifyTask(ctx, name, from, to)
+func (r Registrar) AddTask(ctx context.Context, tsk Task) (string, error) {
+	identity, err := r.Repo.SaveAndIdentifyTask(ctx, tsk.Name, "", "")
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
