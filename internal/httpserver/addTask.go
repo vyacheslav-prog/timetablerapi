@@ -3,6 +3,7 @@ package httpserver
 import (
 	"encoding/json"
 	"net/http"
+
 	"timetablerapi/internal/services"
 	"timetablerapi/registrar"
 )
@@ -15,14 +16,14 @@ func handleAddTask(s services.RegistrarService, w http.ResponseWriter, r *http.R
 	var tcr taskCreatingRequest
 	dcdErr := json.NewDecoder(r.Body).Decode(&tcr)
 	if dcdErr != nil {
-		w.WriteHeader(400)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 	res, regErr := s.AddTask(r.Context(), registrar.Task{Name: tcr.Name})
 	if regErr != nil {
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(201)
+	w.WriteHeader(http.StatusCreated)
 	writeResponse(w, []byte(res))
 }
