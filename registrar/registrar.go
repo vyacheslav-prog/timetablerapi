@@ -13,7 +13,9 @@ type Performer struct {
 }
 
 type Task struct {
+	From string
 	Name string
+	To   string
 }
 
 type repository interface {

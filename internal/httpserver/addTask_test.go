@@ -25,7 +25,7 @@ func TestAddTaskIsSuccess(t *testing.T) {
 	mux := http.NewServeMux()
 	registerHandlers(mux, &services.Services{Registrar: services.RegistrarStub{Result: "ok"}})
 	w := httptest.NewRecorder()
-	mux.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(`{"name":"do it"}`)))
+	mux.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(`{"name":"do it","from":"08:00","to":"08:30"}`)))
 	resp := w.Result()
 	if resp.StatusCode != http.StatusCreated {
 		t.Error("response must have 201 status, given:", resp.Status)
