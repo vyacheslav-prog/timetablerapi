@@ -49,7 +49,7 @@ func (r Registrar) AddPerformer(ctx context.Context, prf Performer) (string, err
 }
 
 func (r Registrar) AddTask(ctx context.Context, tsk Task) (string, error) {
-	identity, err := r.Repo.SaveAndIdentifyTask(ctx, tsk.Name, "", "")
+	identity, err := r.Repo.SaveAndIdentifyTask(ctx, tsk.Name, tsk.From, tsk.To)
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
