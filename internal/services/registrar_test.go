@@ -9,8 +9,11 @@ import (
 func TestIdentifiesPerformerForAdding(t *testing.T) {
 	dbConn := openDBConnect(t)
 	defer dbConn.Close()
-	repo := newRegistrarRepo(t.Context(), dbConn)
-	id, repoErr := repo.SaveAndIdentifyPerformer("John")
+	repo, migrErr := newRegistrarRepo(t.Context(), dbConn, newDBMigrate(dbConn, "sqlite3"))
+	if migrErr != nil {
+		t.Error("couldn't migrate for registrar repo")
+	}
+	id, repoErr := repo.SaveAndIdentifyPerformer(t.Context(), "John")
 	if repoErr != nil {
 		t.Error("couldn't identify new performer:", repoErr)
 	}
