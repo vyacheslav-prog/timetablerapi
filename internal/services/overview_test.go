@@ -4,7 +4,6 @@ package services
 
 import (
 	"database/sql"
-	"os"
 	"testing"
 
 	_ "github.com/lib/pq"
@@ -49,8 +48,7 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 }
 
 func openDBConnect(t *testing.T) *sql.DB {
-	connStr := os.Getenv("DATABASE_URL")
-	db, err := sql.Open("postgres", connStr)
+	db, err := sql.Open("sqlite3", "db.sql")
 	if err != nil {
 		t.Error("failed connection to database:", err)
 	}
