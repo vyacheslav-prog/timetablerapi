@@ -17,6 +17,7 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 	sut, err := newOverviewRepo(t.Context(), db, newDBMigrate(db, "sqlite3"))
 	if err != nil {
 		t.Error("failed init overview repo:", err)
+		return
 	}
 	result, _ := sut.FetchPerformerBoard(t.Context(), "")
 	if nil != result {
@@ -30,17 +31,20 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 	sut, err := newOverviewRepo(t.Context(), db, newDBMigrate(db, "sqlite3"))
 	if err != nil {
 		t.Error("failed init overview repo:", err)
+		return
 	}
 	var deleteBoard func()
 	deleteBoard, err = seedFakePerformerBoard(db, id, title)
 	if err != nil {
 		t.Error("Could not be seed a fake performer board:", err)
+		return
 	}
 	defer deleteBoard()
 	var result *overview.PerformerBoard
 	result, err = sut.FetchPerformerBoard(t.Context(), id)
 	if err != nil {
 		t.Error("Could not fetch a performer board:", err)
+		return
 	}
 	if title != result.Title() {
 		t.Errorf("Result for board fetching must have title [%v], actual board is [%v]", title, result)

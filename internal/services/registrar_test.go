@@ -12,13 +12,16 @@ func TestIdentifiesPerformerForAdding(t *testing.T) {
 	repo, migrErr := newRegistrarRepo(t.Context(), dbConn, newDBMigrate(dbConn, "sqlite3"))
 	if migrErr != nil {
 		t.Error("couldn't migrate for registrar repo")
+		return
 	}
 	id, repoErr := repo.SaveAndIdentifyPerformer(t.Context(), "John")
 	if repoErr != nil {
 		t.Error("couldn't identify new performer:", repoErr)
+		return
 	}
 	if "" == id {
 		t.Error("identity must be not empty string")
+		return
 	}
 	existsRow := dbConn.QueryRowContext(t.Context(), "select id from performers where id = $1", id)
 	if rowErr := existsRow.Err(); rowErr != nil {
