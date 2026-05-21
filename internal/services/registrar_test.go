@@ -11,7 +11,7 @@ func TestIdentifiesPerformerForAdding(t *testing.T) {
 	defer dbConn.Close()
 	repo, migrErr := newRegistrarRepo(t.Context(), dbConn, newDBMigrate(dbConn, "sqlite3"))
 	if migrErr != nil {
-		t.Error("couldn't migrate for registrar repo")
+		t.Error("couldn't migrate for registrar repo:", migrErr)
 		return
 	}
 	id, repoErr := repo.SaveAndIdentifyPerformer(t.Context(), "John")
