@@ -9,26 +9,26 @@ import (
 )
 
 const layoutsSchema = `
-	create table if not exists layouts (
-		id text primary key
+	create table if not exists "layouts" (
+		"id" text primary key
 	);
 `
 
 const performersSchema = `
-	create table if not exists performers (
-		id text primary key,
-		created_at timestamp default current_timestamp,
-		name text
+	create table if not exists "performers" (
+		"id" text primary key,
+		"created_at" timestamp default current_timestamp,
+		"name" text
 	);
 `
 
 const taskSchema = `
-	create table if not exists tasks (
-		id text primary key,
-		created_at timestamp default current_timestamp,
-		name text,
-		from text,
-		to text
+	create table if not exists "tasks" (
+		"id" text primary key,
+		"created_at" timestamp default current_timestamp,
+		"name" text,
+		"from" text,
+		"to" text
 	);
 `
 
