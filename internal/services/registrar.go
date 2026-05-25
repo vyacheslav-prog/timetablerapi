@@ -46,7 +46,7 @@ func (rr registrarRepo) SaveAndIdentifyPerformer(ctx context.Context, name strin
 		return "", fmt.Errorf("failed for generating a performer identity: %w", err)
 	}
 	id := uid.String()
-	_, err = rr.db.ExecContext(ctx, "insert into performers (id, name) values (?)", id, name)
+	_, err = rr.db.ExecContext(ctx, "insert into performers (id, name) values (?, ?)", id, name)
 	if err != nil {
 		return "", fmt.Errorf("failed for storing a performer: %w", err)
 	}
