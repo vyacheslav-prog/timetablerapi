@@ -30,3 +30,13 @@ func TestNoFiresEventWhenPerformerAddingIsFail(t *testing.T) {
 		return
 	}
 }
+
+func TestFiresEventWhenPerformerAddingIsDone(t *testing.T) {
+	reg := &Registrar{Repo: stubRepository{}}
+	_, err := reg.AddPerformer(t.Context(), Performer{})
+	if err != nil {
+		t.Error("failed a performer adding:", err)
+		return
+	}
+	e := reg.Events()
+}
