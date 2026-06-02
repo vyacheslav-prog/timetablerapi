@@ -55,3 +55,7 @@ func (r Registrar) AddTask(ctx context.Context, tsk Task) (string, error) {
 	}
 	return identity, nil
 }
+
+func (r Registrar) Events() []uint {
+	return []uint{eventPerformerAdded}
+}
