@@ -39,8 +39,8 @@ func TestFiresEventWhenPerformerAddingIsDone(t *testing.T) {
 		return
 	}
 	e := reg.Events()
-	if len(e) == 0 {
-		t.Error("registar no contains events when performer is added")
+	if len(e) == 0 || e[0] != eventPerformerAdded {
+		t.Error("registar no contains events when performer is added, given:", e)
 	}
 }
 

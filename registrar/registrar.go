@@ -25,7 +25,8 @@ type repository interface {
 }
 
 type Registrar struct {
-	Repo repository
+	Repo   repository
+	events []uint
 }
 
 var (
@@ -40,22 +41,24 @@ func (r Registrar) AddLayout(mode string) (string, error) {
 	return identity, nil
 }
 
-func (r Registrar) AddPerformer(ctx context.Context, prf Performer) (string, error) {
+func (r *Registrar) AddPerformer(ctx context.Context, prf Performer) (string, error) {
 	identity, err := r.Repo.SaveAndIdentifyPerformer(ctx, prf.Name)
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
+	r.events = append(r.events, eventPerformerAdded)
 	return identity, nil
 }
 
-func (r Registrar) AddTask(ctx context.Context, tsk Task) (string, error) {
+func (r *Registrar) AddTask(ctx context.Context, tsk Task) (string, error) {
 	identity, err := r.Repo.SaveAndIdentifyTask(ctx, tsk.Name, tsk.From, tsk.To)
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
+	r.events = append(r.events, eventTaskAdded)
 	return identity, nil
 }
 
 func (r Registrar) Events() []uint {
-	return []uint{eventPerformerAdded}
+	return r.events
 }
