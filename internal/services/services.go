@@ -51,6 +51,6 @@ func NewServices(ctx context.Context) (*Services, error) {
 	}
 	return &Services{
 		overview.Overview{Repo: or},
-		registrar.Registrar{Repo: rr},
+		&registrar.Registrar{Repo: rr},
 	}, nil
 }
