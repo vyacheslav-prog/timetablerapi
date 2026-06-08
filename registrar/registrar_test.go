@@ -10,6 +10,8 @@ type stubRepository struct {
 	err error
 }
 
+var errStub = errors.New("something wrong")
+
 func (r stubRepository) SaveAndIdentifyLayout(context.Context, string) (string, error) {
 	return "", r.err
 }
@@ -23,7 +25,7 @@ func (r stubRepository) SaveAndIdentifyTask(context.Context, string, string, str
 }
 
 func TestNoFiresEventWhenPerformerAddingIsFail(t *testing.T) {
-	reg := &Registrar{Repo: stubRepository{err: errors.New("something wrong")}}
+	reg := &Registrar{Repo: stubRepository{err: errStub}}
 	_, err := reg.AddPerformer(t.Context(), Performer{})
 	if err == nil {
 		t.Error("failed try must return error, given nil")
