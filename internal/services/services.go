@@ -54,3 +54,7 @@ func NewServices(ctx context.Context) (*Services, error) {
 		&registrar.Registrar{Repo: rr},
 	}, nil
 }
+
+func (s Services) FlushEvents() error {
+	return nil
+}
