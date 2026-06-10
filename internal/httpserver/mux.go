@@ -21,9 +21,11 @@ func registerHandlers(mux *http.ServeMux, s *services.Services) {
 	})
 	mux.HandleFunc("POST /performers", func(w http.ResponseWriter, r *http.Request) {
 		handleAddPerformer(s.Registrar, w, r)
+		s.FlushEvents()
 	})
 	mux.HandleFunc("POST /tasks", func(w http.ResponseWriter, r *http.Request) {
 		handleAddTask(s.Registrar, w, r)
+		s.FlushEvents()
 	})
 }
 
