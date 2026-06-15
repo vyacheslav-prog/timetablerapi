@@ -1,9 +1,11 @@
 package services
 
+type Event uint
+
 type EventsSource interface {
-	Events() []uint
+	Events() []Event
 }
 
-func FlushEvents(sources []EventsSource) error {
+func AppendEvents(sources []EventsSource) error {
 	return nil
 }
