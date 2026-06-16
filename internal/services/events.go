@@ -6,6 +6,9 @@ type EventsSource interface {
 	Events() []Event
 }
 
-func AppendEvents(sources []EventsSource) error {
+type EventsLog struct {
+}
+
+func (l EventsLog) Collect(sources []EventsSource) error {
 	return nil
 }
