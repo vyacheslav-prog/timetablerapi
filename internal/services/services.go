@@ -23,6 +23,7 @@ type RegistrarService interface {
 }
 
 type Services struct {
+	Events    EventsLog
 	Overview  OverviewService
 	Registrar RegistrarService
 }
@@ -50,6 +51,7 @@ func NewServices(ctx context.Context) (*Services, error) {
 		return nil, rrErr
 	}
 	return &Services{
+		EventsLog{},
 		overview.Overview{Repo: or},
 		&registrar.Registrar{Repo: rr},
 	}, nil
