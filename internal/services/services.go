@@ -20,6 +20,7 @@ type OverviewService interface {
 type RegistrarService interface {
 	AddPerformer(context.Context, registrar.Performer) (string, error)
 	AddTask(context.Context, registrar.Task) (string, error)
+	Events() []Event
 }
 
 type Services struct {
@@ -58,5 +59,5 @@ func NewServices(ctx context.Context) (*Services, error) {
 }
 
 func (s Services) FlushEvents() error {
-	return nil
+	return s.Events.Collect([]EventsSource{s.Registrar})
 }
