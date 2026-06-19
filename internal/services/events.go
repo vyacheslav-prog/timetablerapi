@@ -1,9 +1,7 @@
 package services
 
-type Event uint
-
 type EventsSource interface {
-	Events() []Event
+	Events() []uint
 }
 
 type EventsLog struct {
