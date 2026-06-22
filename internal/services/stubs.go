@@ -25,3 +25,7 @@ func (rs RegistrarStub) AddPerformer(context.Context, registrar.Performer) (stri
 func (rs RegistrarStub) AddTask(context.Context, registrar.Task) (string, error) {
 	return rs.Result, nil
 }
+
+func (rs RegistrarStub) Events() []uint {
+	return nil
+}

@@ -20,7 +20,7 @@ type OverviewService interface {
 type RegistrarService interface {
 	AddPerformer(context.Context, registrar.Performer) (string, error)
 	AddTask(context.Context, registrar.Task) (string, error)
-	Events() []Event
+	Events() []uint
 }
 
 type Services struct {
