@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 
 	_ "github.com/lib/pq"
@@ -58,6 +59,9 @@ func NewServices(ctx context.Context) (*Services, error) {
 	}, nil
 }
 
-func (s Services) FlushEvents() error {
-	return s.Events.Collect([]EventsSource{s.Registrar})
+func (s Services) FlushEvents() {
+	err := s.Events.Collect([]EventsSource{s.Registrar})
+	if err != nil {
+		log.Print(err)
+	}
 }
