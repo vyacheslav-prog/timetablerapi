@@ -1,6 +1,6 @@
 package registrar
 
 const (
-	eventPerformerAdded = iota
+	eventPerformerAdded = iota + 1
 	eventTaskAdded
 )
