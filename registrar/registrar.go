@@ -46,7 +46,7 @@ func (r *Registrar) AddPerformer(ctx context.Context, prf Performer) (string, er
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
-	r.events = append(r.events, eventPerformerAdded)
+	r.Repo.PushEvent(eventPerformerAdded)
 	return identity, nil
 }
 
@@ -55,7 +55,7 @@ func (r *Registrar) AddTask(ctx context.Context, tsk Task) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
-	r.events = append(r.events, eventTaskAdded)
+	r.Repo.PushEvent(eventTaskAdded)
 	return identity, nil
 }
 
