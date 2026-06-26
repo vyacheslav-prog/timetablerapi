@@ -19,6 +19,7 @@ type Task struct {
 }
 
 type repository interface {
+	SaveEvent(context.Context, uint) error
 	SaveAndIdentifyLayout(context.Context, string) (string, error)
 	SaveAndIdentifyPerformer(context.Context, string) (string, error)
 	SaveAndIdentifyTask(context.Context, string, string, string) (string, error)
@@ -46,7 +47,7 @@ func (r *Registrar) AddPerformer(ctx context.Context, prf Performer) (string, er
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
-	r.Repo.PushEvent(eventPerformerAdded)
+	r.Repo.SaveEvent(ctx, eventPerformerAdded)
 	return identity, nil
 }
 
@@ -55,7 +56,7 @@ func (r *Registrar) AddTask(ctx context.Context, tsk Task) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
-	r.Repo.PushEvent(eventTaskAdded)
+	r.Repo.SaveEvent(ctx, eventTaskAdded)
 	return identity, nil
 }
 
