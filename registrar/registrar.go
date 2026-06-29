@@ -27,7 +27,6 @@ type repository interface {
 
 type Registrar struct {
 	Repo   repository
-	events []uint
 }
 
 var (
@@ -58,8 +57,4 @@ func (r *Registrar) AddTask(ctx context.Context, tsk Task) (string, error) {
 	}
 	r.Repo.SaveEvent(ctx, eventTaskAdded)
 	return identity, nil
-}
-
-func (r Registrar) Events() []uint {
-	return r.events
 }
