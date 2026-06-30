@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 
 	_ "github.com/lib/pq"
@@ -21,7 +20,6 @@ type OverviewService interface {
 type RegistrarService interface {
 	AddPerformer(context.Context, registrar.Performer) (string, error)
 	AddTask(context.Context, registrar.Task) (string, error)
-	Events() []uint
 }
 
 type Services struct {
@@ -55,13 +53,6 @@ func NewServices(ctx context.Context) (*Services, error) {
 	return &Services{
 		EventsLog{},
 		overview.Overview{Repo: or},
-		&registrar.Registrar{Repo: rr},
+		registrar.Registrar{Repo: rr},
 	}, nil
-}
-
-func (s Services) FlushEvents() {
-	err := s.Events.Collect([]EventsSource{s.Registrar})
-	if err != nil {
-		log.Print(err)
-	}
 }
