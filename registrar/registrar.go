@@ -41,7 +41,7 @@ func (r Registrar) AddLayout(mode string) (string, error) {
 	return identity, nil
 }
 
-func (r *Registrar) AddPerformer(ctx context.Context, prf Performer) (string, error) {
+func (r Registrar) AddPerformer(ctx context.Context, prf Performer) (string, error) {
 	identity, err := r.Repo.SaveAndIdentifyPerformer(ctx, prf.Name)
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
@@ -50,7 +50,7 @@ func (r *Registrar) AddPerformer(ctx context.Context, prf Performer) (string, er
 	return identity, nil
 }
 
-func (r *Registrar) AddTask(ctx context.Context, tsk Task) (string, error) {
+func (r Registrar) AddTask(ctx context.Context, tsk Task) (string, error) {
 	identity, err := r.Repo.SaveAndIdentifyTask(ctx, tsk.Name, tsk.From, tsk.To)
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
