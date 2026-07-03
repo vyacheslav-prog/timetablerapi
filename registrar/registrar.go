@@ -26,7 +26,7 @@ type repository interface {
 }
 
 type Registrar struct {
-	Repo   repository
+	Repo repository
 }
 
 var (
