@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 )
 
 type Performer struct {
@@ -46,7 +47,10 @@ func (r Registrar) AddPerformer(ctx context.Context, prf Performer) (string, err
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
-	r.Repo.SaveEvent(ctx, eventPerformerAdded)
+	err = r.Repo.SaveEvent(ctx, eventPerformerAdded)
+	if err != nil {
+		log.Println("storing event for performer added is failed:", err)
+	}
 	return identity, nil
 }
 
@@ -55,6 +59,9 @@ func (r Registrar) AddTask(ctx context.Context, tsk Task) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("%w: %w", errRegistrar, err)
 	}
-	r.Repo.SaveEvent(ctx, eventTaskAdded)
+	err = r.Repo.SaveEvent(ctx, eventTaskAdded)
+	if err != nil {
+		log.Println("storing event for task added is failed:", err)
+	}
 	return identity, nil
 }
