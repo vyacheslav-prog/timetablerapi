@@ -37,7 +37,7 @@ type registrarRepo struct {
 }
 
 func (rr registrarRepo) SaveEvent(ctx context.Context, event uint) error {
-	return nil
+	return fmt.Errorf("event saving is not implemented")
 }
 
 func (rr registrarRepo) SaveAndIdentifyLayout(ctx context.Context, mode string) (string, error) {
