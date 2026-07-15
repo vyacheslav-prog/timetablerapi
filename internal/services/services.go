@@ -39,7 +39,7 @@ func NewServices(ctx context.Context) (*Services, error) {
 	if pingErr := db.PingContext(ctx); pingErr != nil {
 		return nil, fmt.Errorf("%w: %w", errInitServices, pingErr)
 	}
-	dm := newDBMigrate(db, dbMode)
+	dm := &dbMigrate{db, countTableByNameQuery}
 	or, orErr := newOverviewRepo(ctx, db, dm)
 	if orErr != nil {
 		return nil, orErr

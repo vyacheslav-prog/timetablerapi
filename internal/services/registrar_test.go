@@ -9,7 +9,7 @@ import (
 func TestIdentifiesPerformerForAdding(t *testing.T) {
 	dbConn := openDBConnect(t)
 	defer dbConn.Close()
-	repo, migrErr := newRegistrarRepo(t.Context(), dbConn, newDBMigrate(dbConn, sqlDriver))
+	repo, migrErr := newRegistrarRepo(t.Context(), dbConn, &dbMigrate{db, countTableByNameQuery})
 	if migrErr != nil {
 		t.Error("couldn't migrate for registrar repo:", migrErr)
 		return

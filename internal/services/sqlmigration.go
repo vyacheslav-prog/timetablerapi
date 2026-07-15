@@ -24,13 +24,6 @@ var (
 	errMigrationTransactionIsFailed = errors.New("init a migration transaction is failed")
 )
 
-func newDBMigrate(db *sql.DB, mode string) *dbMigrate {
-	if mode == "sqlite3" {
-		return &dbMigrate{db, sqlite3CountTableByNameQuery}
-	}
-	return &dbMigrate{db, pgCountTableByNameQuery}
-}
-
 func (dm *dbMigrate) byScheme(ctx context.Context, scm, tbl string) (err error) {
 	if dm.db == nil {
 		err = errMigrationNotConnection

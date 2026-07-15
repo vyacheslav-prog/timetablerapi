@@ -12,7 +12,7 @@ import (
 func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 	db := openDBConnect(t)
 	defer db.Close()
-	sut, err := newOverviewRepo(t.Context(), db, newDBMigrate(db, sqlDriver))
+	sut, err := newOverviewRepo(t.Context(), db, &dbMigrate{db, countTableByNameQuery})
 	if err != nil {
 		t.Error("failed init overview repo:", err)
 		return
@@ -26,7 +26,7 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 	db, id, title := openDBConnect(t), "2861ff45-526f-4618-9b7a-09e581cb2113", "my board"
 	defer db.Close()
-	sut, err := newOverviewRepo(t.Context(), db, newDBMigrate(db, sqlDriver))
+	sut, err := newOverviewRepo(t.Context(), db, &dbMigrate{db, countTableByNameQuery})
 	if err != nil {
 		t.Error("failed init overview repo:", err)
 		return
