@@ -1,3 +1,5 @@
+//go:build pgsql
+
 package services
 
 import _ "github.com/lib/pq"

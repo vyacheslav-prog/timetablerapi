@@ -1,3 +1,5 @@
+//go:build sqlite3
+
 package services
 
 import _ "github.com/mattn/go-sqlite3"
