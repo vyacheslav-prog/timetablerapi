@@ -7,11 +7,6 @@ import (
 	"fmt"
 )
 
-const (
-	pgCountTableByNameQuery      = "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = '$1';"
-	sqlite3CountTableByNameQuery = "select count(*) from sqlite_master where tbl_name = '$1';"
-)
-
 type dbMigrate struct {
 	db              *sql.DB
 	countTableQuery string
