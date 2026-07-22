@@ -21,7 +21,7 @@ const (
 			"name" text
 		);
 	`
-	taskSchema = `
+	tasksSchema = `
 		create table if not exists "tasks" (
 			"id" text primary key,
 			"created_at" timestamp default current_timestamp,
@@ -70,7 +70,7 @@ func newRegistrarRepo(ctx context.Context, db *sql.DB, dm *dbMigrate) (*registra
 	if err != nil {
 		return nil, err
 	}
-	err = dm.byScheme(ctx, taskSchema, "tasks")
+	err = dm.byScheme(ctx, tasksSchema, "tasks")
 	if err != nil {
 		return nil, err
 	}
