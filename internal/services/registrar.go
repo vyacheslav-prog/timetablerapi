@@ -36,8 +36,10 @@ type registrarRepo struct {
 	db *sql.DB
 }
 
+var errSaveEventIsNotImplemented = fmt.Errorf("event saving is not implemented")
+
 func (rr registrarRepo) SaveEvent(ctx context.Context, event uint) error {
-	return fmt.Errorf("event saving is not implemented")
+	return errSaveEventIsNotImplemented
 }
 
 func (rr registrarRepo) SaveAndIdentifyLayout(ctx context.Context, mode string) (string, error) {
