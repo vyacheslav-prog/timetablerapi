@@ -31,8 +31,8 @@ var (
 )
 
 func NewServices(ctx context.Context) (*Services, error) {
-	dbConn, dbMode := os.Getenv("DATABASE_URL"), os.Getenv("DATABASE_MODE")
-	db, openErr := sql.Open(dbMode, dbConn)
+	dbConn := os.Getenv("DATABASE_URL")
+	db, openErr := sql.Open(sqlDriver, dbConn)
 	if openErr != nil {
 		return nil, fmt.Errorf("%w: %w", errInitServices, openErr)
 	}
