@@ -7,9 +7,9 @@ import (
 )
 
 func TestIdentifiesPerformerForAdding(t *testing.T) {
-	dbConn := openDBConnect(t)
-	defer dbConn.Close()
-	repo, migrErr := newRegistrarRepo(t.Context(), dbConn, &dbMigrate{db, countTableByNameQuery})
+	db := openDBConnect(t)
+	defer db.Close()
+	repo, migrErr := newRegistrarRepo(t.Context(), db, &dbMigrate{db, countTableByNameQuery})
 	if migrErr != nil {
 		t.Error("couldn't migrate for registrar repo:", migrErr)
 		return
@@ -23,7 +23,7 @@ func TestIdentifiesPerformerForAdding(t *testing.T) {
 		t.Error("identity must be not empty string")
 		return
 	}
-	existsRow := dbConn.QueryRowContext(t.Context(), "select id from performers where id = $1", id)
+	existsRow := db.QueryRowContext(t.Context(), "select id from performers where id = $1", id)
 	if rowErr := existsRow.Err(); rowErr != nil {
 		t.Error("couldn't check existing for a saved performer:", rowErr)
 	}
