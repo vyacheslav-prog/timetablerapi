@@ -52,7 +52,7 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 func openDBConnect(t *testing.T) *sql.DB {
 	db, err := sql.Open(sqlDriver, "db.sql")
 	if err != nil {
-		t.Error("failed connection to database:", err)
+		t.Fatal("failed connection to database:", err)
 	}
 	return db
 }
