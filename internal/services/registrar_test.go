@@ -7,7 +7,11 @@ import (
 )
 
 func TestIdentifiesPerformerForAdding(t *testing.T) {
-	db := openDBConnect(t)
+	db, err := openDBConnect("db.sql")
+	if err != nil {
+		t.Error("failed connection to database:", err)
+		return
+	}
 	defer db.Close()
 	repo, migrErr := newRegistrarRepo(t.Context(), db, &dbMigrate{db, countTableByNameQuery})
 	if migrErr != nil {
