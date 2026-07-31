@@ -2,7 +2,11 @@
 
 package services
 
-import _ "github.com/lib/pq"
+import (
+	"database/sql"
+
+	_ "github.com/lib/pq"
+)
 
 const (
 	countTableByNameQuery = "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = '$1';"
