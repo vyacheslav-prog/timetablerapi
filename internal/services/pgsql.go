@@ -10,7 +10,7 @@ import (
 
 const (
 	countTableByNameQuery = "select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_name = '$1';"
-	sqlDriver             = "pq"
+	sqlDriver             = "postgres"
 )
 
 func openDBConnect(dsn string) (*sql.DB, error) {
