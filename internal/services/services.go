@@ -32,7 +32,7 @@ var (
 
 func NewServices(ctx context.Context) (*Services, error) {
 	dbConn := os.Getenv("DATABASE_URL")
-	db, openErr := sql.Open(sqlDriver, dbConn)
+	db, openErr := openDBConnect(dbConn)
 	if openErr != nil {
 		return nil, fmt.Errorf("%w: %w", errInitServices, openErr)
 	}
