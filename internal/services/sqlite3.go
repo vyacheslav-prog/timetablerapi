@@ -6,9 +6,8 @@ import _ "github.com/mattn/go-sqlite3"
 
 const (
 	countTableByNameQuery = "select count(*) from sqlite_master where tbl_name = '$1';"
-	sqlDriver             = "sqlite3"
 )
 
 func openDBConnect(dsn string) (*sql.DB, error) {
-	return sql.Open(sqlDriver, dsn)
+	return sql.Open("sqlite3", dsn)
 }
