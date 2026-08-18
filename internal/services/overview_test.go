@@ -10,7 +10,7 @@ import (
 )
 
 func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
-	db, err := openDBConnect("db.sql")
+	db, err := openDBConnect("postgres://testuser:testpassword@postgres:5432/testdb?sslmode=disable")
 	if err != nil {
 		t.Error("failed connection to database:", err)
 		return
@@ -28,7 +28,7 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 }
 
 func TestFetchsPerformerBoardByIdentity(t *testing.T) {
-	db, err := openDBConnect("db.sql")
+	db, err := openDBConnect("postgres://testuser:testpassword@postgres:5432/testdb?sslmode=disable")
 	if err != nil {
 		t.Error("failed connection to database:", err)
 		return
