@@ -7,7 +7,7 @@ import (
 )
 
 func TestIdentifiesPerformerForAdding(t *testing.T) {
-	db, err := openDBConnect("postgres://testuser:testpassword@postgres.svc.cluster.local:5432/testdb?sslmode=disable")
+	db, err := openDBConnect("postgres://testuser:testpassword@postgres.default.svc.cluster.local:5432/testdb?sslmode=disable")
 	if err != nil {
 		t.Error("failed connection to database:", err)
 		return
