@@ -3,11 +3,12 @@
 package services
 
 import (
+	"os"
 	"testing"
 )
 
 func TestIdentifiesPerformerForAdding(t *testing.T) {
-	db, err := openDBConnect("postgres://testuser:testpassword@postgres:5432/testdb?sslmode=disable")
+	db, err := openDBConnect(os.Getenv("DATABASE_URL"))
 	if err != nil {
 		t.Error("failed connection to database:", err)
 		return
