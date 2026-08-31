@@ -14,6 +14,10 @@ func handleHome(w http.ResponseWriter, _ *http.Request) {
 		{
 			"http": "GET /performer-boards/{boardId}",
 			"title": "view a performer board"
+		},
+		{
+			"http": "POST /tasks",
+			"title": "add task"
 		}
 	]
 }
