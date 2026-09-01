@@ -1,18 +1,22 @@
 package httpserver
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 
-	"timetablerapi/internal/services"
 	"timetablerapi/registrar"
 )
+
+type addPerformerService interface {
+	AddPerformer(context.Context, registrar.Performer) (string, error)
+}
 
 type performerCreatingRequest struct {
 	Name string `json:"name"`
 }
 
-func handleAddPerformer(s services.RegistrarService, w http.ResponseWriter, r *http.Request) {
+func handleAddPerformer(s addPerformerService, w http.ResponseWriter, r *http.Request) {
 	var pcr performerCreatingRequest
 	dcdErr := json.NewDecoder(r.Body).Decode(&pcr)
 	if dcdErr != nil {
