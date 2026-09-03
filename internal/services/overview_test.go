@@ -12,17 +12,25 @@ import (
 func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 	db, err := openDBConnect("postgres://testuser:testpassword@postgres:5432/testdb?sslmode=disable")
 	if err != nil {
-		t.Error("failed connection to database:", err)
+		t.Error("failed open connection to database:", err)
 		return
 	}
-	defer db.Close()
+	defer func() {
+		if err = db.Close(); err != nil {
+			t.Error("failed close connection to database:", err)
+		}
+	}()
 	sut, err := newOverviewRepo(t.Context(), db, &dbMigrate{db, countTableByNameQuery})
 	if err != nil {
 		t.Error("failed init overview repo:", err)
 		return
 	}
-	result, _ := sut.FetchPerformerBoard(t.Context(), "")
-	if nil != result {
+	result, err := sut.FetchPerformerBoard(t.Context(), "")
+	if err != nil {
+		t.Error("failed fetch performer board:", err)
+		return
+	}
+	if result != nil {
 		t.Errorf("Result must be nil for empty performer request, actual is [%v]", *result)
 	}
 }
@@ -30,22 +38,21 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 	db, err := openDBConnect("postgres://testuser:testpassword@postgres:5432/testdb?sslmode=disable")
 	if err != nil {
-		t.Error("failed connection to database:", err)
+		t.Error("failed open connection to database:", err)
 		return
 	}
 	id, title := "2861ff45-526f-4618-9b7a-09e581cb2113", "my board"
-	defer db.Close()
+	defer func() {
+		if err = db.Close(); err != nil {
+			t.Error("failed close connection to database:", err)
+		}
+	}()
 	sut, err := newOverviewRepo(t.Context(), db, &dbMigrate{db, countTableByNameQuery})
 	if err != nil {
 		t.Error("failed init overview repo:", err)
 		return
 	}
-	var deleteBoard func()
-	deleteBoard, err = seedFakePerformerBoard(db, id, title)
-	if err != nil {
-		t.Error("Could not be seed a fake performer board:", err)
-		return
-	}
+	deleteBoard := seedFakePerformerBoard(t, db, id, title)
 	defer deleteBoard()
 	var result *overview.PerformerBoard
 	result, err = sut.FetchPerformerBoard(t.Context(), id)
@@ -58,9 +65,15 @@ func TestFetchsPerformerBoardByIdentity(t *testing.T) {
 	}
 }
 
-func seedFakePerformerBoard(db *sql.DB, boardId, title string) (func(), error) {
-	_, err := db.Exec("insert into performer_boards (id, title) values ($1, $2);", boardId, title)
+func seedFakePerformerBoard(t *testing.T, db *sql.DB, boardId, title string) func() {
+	_, err := db.ExecContext(t.Context(), "insert into performer_boards (id, title) values ($1, $2);", boardId, title)
+	if err != nil {
+		t.Fatal("Could not be seed a fake performer board:", err)
+	}
 	return func() {
-		db.Exec("delete from performer_boards where id = $1;", boardId)
-	}, err
+		_, err = db.ExecContext(t.Context(), "delete from performer_boards where id = $1;", boardId)
+		if err != nil {
+			t.Fatal("Could not be delete a fake performer board:", err)
+		}
+	}
 }
