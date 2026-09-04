@@ -10,10 +10,14 @@ import (
 func TestIdentifiesPerformerForAdding(t *testing.T) {
 	db, err := openDBConnect(os.Getenv("DATABASE_URL"))
 	if err != nil {
-		t.Error("failed connection to database:", err)
+		t.Error("failed open connection to database:", err)
 		return
 	}
-	defer db.Close()
+	defer func() {
+		if err = db.Close(); err != nil {
+			t.Error("failed close connection to database:", err)
+		}
+	}()
 	repo, migrErr := newRegistrarRepo(t.Context(), db, &dbMigrate{db, countTableByNameQuery})
 	if migrErr != nil {
 		t.Error("couldn't migrate for registrar repo:", migrErr)
@@ -24,7 +28,7 @@ func TestIdentifiesPerformerForAdding(t *testing.T) {
 		t.Error("couldn't identify new performer:", repoErr)
 		return
 	}
-	if "" == id {
+	if id == "" {
 		t.Error("identity must be not empty string")
 		return
 	}
