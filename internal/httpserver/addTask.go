@@ -1,12 +1,16 @@
 package httpserver
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 
-	"timetablerapi/internal/services"
 	"timetablerapi/registrar"
 )
+
+type addTaskService interface {
+	AddTask(context.Context, registrar.Task) (string, error)
+}
 
 type taskCreatingRequest struct {
 	From string `json:"from"`
@@ -14,7 +18,7 @@ type taskCreatingRequest struct {
 	To   string `json:"to"`
 }
 
-func handleAddTask(s services.RegistrarService, w http.ResponseWriter, r *http.Request) {
+func handleAddTask(s addTaskService, w http.ResponseWriter, r *http.Request) {
 	var tcr taskCreatingRequest
 	dcdErr := json.NewDecoder(r.Body).Decode(&tcr)
 	if dcdErr != nil {
