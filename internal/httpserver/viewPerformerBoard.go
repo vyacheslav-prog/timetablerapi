@@ -8,7 +8,7 @@ import (
 )
 
 type viewPerformerService interface {
-	ViewPerformerBoard(context.Context, string) (overview.PerformerBoard, error)
+	ViewPerformerBoard(context.Context, string) (*overview.PerformerBoard, error)
 }
 
 func handleViewPerformerBoard(s viewPerformerService, w http.ResponseWriter, r *http.Request) {
