@@ -10,10 +10,6 @@ import (
 	"timetablerapi/registrar"
 )
 
-type OverviewService interface {
-	ViewPerformerBoard(context.Context, string) (*overview.PerformerBoard, error)
-}
-
 type RegistrarService interface {
 	AddPerformer(context.Context, registrar.Performer) (string, error)
 	AddTask(context.Context, registrar.Task) (string, error)
@@ -21,7 +17,7 @@ type RegistrarService interface {
 
 type Services struct {
 	Events    EventsLog
-	Overview  OverviewService
+	Overview  overview.Overview
 	Registrar RegistrarService
 }
 
