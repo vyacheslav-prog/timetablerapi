@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"timetablerapi/internal/services"
+	"timetablerapi/overview"
 )
 
 func TestViewPerformerBoardIsError(t *testing.T) {
@@ -23,7 +24,7 @@ func TestViewPerformerBoardIsError(t *testing.T) {
 
 func TestViewPerformerBoardIsSuccess(t *testing.T) {
 	mux := http.NewServeMux()
-	registerHandlers(mux, &services.Services{Overview: &services.OverviewStub{}})
+	registerHandlers(mux, &services.Services{Overview: overview.Overview{Repo: services.OverviewRepoStub{}}})
 	w := httptest.NewRecorder()
 	mux.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/performer-boards/x1", http.NoBody))
 	resp := w.Result()

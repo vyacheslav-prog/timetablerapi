@@ -10,8 +10,15 @@ import (
 type OverviewStub struct {
 }
 
+type OverviewRepoStub struct {
+}
+
 type RegistrarStub struct {
 	Result string
+}
+
+func (s OverviewRepoStub) FetchPerformerBoard(context.Context, string) (result *overview.PerformerBoard, err error) {
+	return nil, nil
 }
 
 func (os OverviewStub) ViewPerformerBoard(context.Context, string) (*overview.PerformerBoard, error) {
