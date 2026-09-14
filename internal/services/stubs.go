@@ -18,7 +18,7 @@ type RegistrarStub struct {
 }
 
 func (s OverviewRepoStub) FetchPerformerBoard(context.Context, string) (result *overview.PerformerBoard, err error) {
-	return nil, nil
+	return overview.NewPerformerBoard("", "", "board"), nil
 }
 
 func (os OverviewStub) ViewPerformerBoard(context.Context, string) (*overview.PerformerBoard, error) {
