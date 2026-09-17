@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"timetablerapi/internal/services"
+	"timetablerapi/registrar"
 )
 
 func TestAddTaskIsError(t *testing.T) {
@@ -23,7 +24,7 @@ func TestAddTaskIsError(t *testing.T) {
 
 func TestAddTaskIsSuccess(t *testing.T) {
 	mux := http.NewServeMux()
-	registerHandlers(mux, &services.Services{Registrar: services.RegistrarStub{Result: "ok"}})
+	registerHandlers(mux, &services.Services{Registrar: registrar.Registrar{}})
 	w := httptest.NewRecorder()
 	mux.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(`{"name":"do it","from":"08:00","to":"08:30"}`)))
 	resp := w.Result()
