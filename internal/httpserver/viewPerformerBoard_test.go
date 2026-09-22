@@ -1,6 +1,7 @@
 package httpserver
 
 import (
+	"context"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -10,6 +11,13 @@ import (
 	"timetablerapi/internal/services"
 	"timetablerapi/overview"
 )
+
+type OverviewRepoStub struct {
+}
+
+func (s OverviewRepoStub) FetchPerformerBoard(context.Context, string) (result *overview.PerformerBoard, err error) {
+	return overview.NewPerformerBoard("", "", "board"), nil
+}
 
 func TestViewPerformerBoardIsError(t *testing.T) {
 	mux := http.NewServeMux()
@@ -24,7 +32,7 @@ func TestViewPerformerBoardIsError(t *testing.T) {
 
 func TestViewPerformerBoardIsSuccess(t *testing.T) {
 	mux := http.NewServeMux()
-	registerHandlers(mux, &services.Services{Overview: overview.Overview{Repo: services.OverviewRepoStub{}}})
+	registerHandlers(mux, &services.Services{Overview: overview.Overview{Repo: OverviewRepoStub{}}})
 	w := httptest.NewRecorder()
 	mux.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/performer-boards/x1", http.NoBody))
 	resp := w.Result()
