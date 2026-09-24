@@ -4,6 +4,7 @@ package services
 
 import (
 	"database/sql"
+	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -13,5 +14,9 @@ const (
 )
 
 func openDBConnect(dsn string) (*sql.DB, error) {
-	return sql.Open("sqlite3", dsn)
+	db, err := sql.Open("sqlite3", dsn)
+	if err != nil {
+		return nil, fmt.Errorf("sqlite3 connect is failed: %w", err)
+	}
+	return db, nil
 }
