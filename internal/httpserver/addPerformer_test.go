@@ -1,6 +1,7 @@
 package httpserver
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -9,6 +10,13 @@ import (
 	"timetablerapi/internal/services"
 	"timetablerapi/registrar"
 )
+
+type registrarRepoStub struct {
+}
+
+func (s registrarRepoStub) SaveAndIdentifyPerformer(context.Context, string) (string, error) {
+	return "", nil
+}
 
 func TestAddPerformerIsError(t *testing.T) {
 	mux := http.NewServeMux()
@@ -23,7 +31,7 @@ func TestAddPerformerIsError(t *testing.T) {
 
 func TestAddPerformerIsSuccess(t *testing.T) {
 	mux := http.NewServeMux()
-	registerHandlers(mux, &services.Services{Registrar: registrar.Registrar{}})
+	registerHandlers(mux, &services.Services{Registrar: registrar.Registrar{Repo: registrarRepoStub{}}})
 	w := httptest.NewRecorder()
 	mux.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/performers", strings.NewReader(`{"name":"John"}`)))
 	resp := w.Result()
