@@ -14,7 +14,19 @@ import (
 type registrarRepoStub struct {
 }
 
+func (s registrarRepoStub) SaveEvent(context.Context, uint) error {
+	return nil
+}
+
+func (s registrarRepoStub) SaveAndIdentifyLayout(context.Context, string) (string, error) {
+	return "", nil
+}
+
 func (s registrarRepoStub) SaveAndIdentifyPerformer(context.Context, string) (string, error) {
+	return "", nil
+}
+
+func (s registrarRepoStub) SaveAndIdentifyTask(context.Context, string, string, string) (string, error) {
 	return "", nil
 }
 
