@@ -12,6 +12,7 @@ import (
 )
 
 type registrarRepoStub struct {
+	res string
 }
 
 func (s registrarRepoStub) SaveEvent(context.Context, uint) error {
@@ -27,7 +28,7 @@ func (s registrarRepoStub) SaveAndIdentifyPerformer(context.Context, string) (st
 }
 
 func (s registrarRepoStub) SaveAndIdentifyTask(context.Context, string, string, string) (string, error) {
-	return "", nil
+	return s.res, nil
 }
 
 func TestAddPerformerIsError(t *testing.T) {
