@@ -4,13 +4,14 @@ package services
 
 import (
 	"database/sql"
+	"os"
 	"testing"
 
 	"timetablerapi/overview"
 )
 
 func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
-	db, err := openDBConnect("postgres://testuser:testpassword@postgres:5432/testdb?sslmode=disable")
+	db, err := openDBConnect(os.Getenv("DATABASE_URL"))
 	if err != nil {
 		t.Error("failed open connection to database:", err)
 		return
@@ -36,7 +37,7 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 }
 
 func TestFetchsPerformerBoardByIdentity(t *testing.T) {
-	db, err := openDBConnect("postgres://testuser:testpassword@postgres:5432/testdb?sslmode=disable")
+	db, err := openDBConnect(os.Getenv("DATABASE_URL"))
 	if err != nil {
 		t.Error("failed open connection to database:", err)
 		return
