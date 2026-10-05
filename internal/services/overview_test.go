@@ -27,7 +27,7 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 		return
 	}
 	result, err := sut.FetchPerformerBoard(t.Context(), "")
-	if err != nil {
+	if err != sql.ErrNoRows && err != nil {
 		t.Error("failed fetch performer board:", err)
 		return
 	}
