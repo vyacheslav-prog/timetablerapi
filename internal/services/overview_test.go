@@ -4,6 +4,7 @@ package services
 
 import (
 	"database/sql"
+	"errors"
 	"os"
 	"testing"
 
@@ -27,7 +28,7 @@ func TestFetchsNoPerformerBoardForEmptyRequest(t *testing.T) {
 		return
 	}
 	result, err := sut.FetchPerformerBoard(t.Context(), "")
-	if err != sql.ErrNoRows && err != nil {
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		t.Error("failed fetch performer board:", err)
 		return
 	}
