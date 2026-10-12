@@ -9,11 +9,6 @@ import (
 )
 
 const (
-	layoutsSchema = `
-		create table if not exists "layouts" (
-			"id" text primary key
-		);
-	`
 	performersSchema = `
 		create table if not exists "performers" (
 			"id" text primary key,
@@ -65,10 +60,6 @@ func (rr registrarRepo) SaveAndIdentifyTask(ctx context.Context, name, from, to 
 
 func newRegistrarRepo(ctx context.Context, db *sql.DB, dm *dbMigrate) (*registrarRepo, error) {
 	err := dm.byScheme(ctx, performersSchema, "performers")
-	if err != nil {
-		return nil, err
-	}
-	err = dm.byScheme(ctx, layoutsSchema, "layouts")
 	if err != nil {
 		return nil, err
 	}
