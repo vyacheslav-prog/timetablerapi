@@ -34,14 +34,6 @@ var (
 	errRegistrar = errors.New("registrar error is occurred")
 )
 
-func (r Registrar) AddLayout(mode string) (string, error) {
-	identity, err := r.Repo.SaveAndIdentifyLayout(context.Background(), mode)
-	if err != nil {
-		return "", fmt.Errorf("%w: %w", errRegistrar, err)
-	}
-	return identity, nil
-}
-
 func (r Registrar) AddPerformer(ctx context.Context, prf Performer) (string, error) {
 	identity, err := r.Repo.SaveAndIdentifyPerformer(ctx, prf.Name)
 	if err != nil {
