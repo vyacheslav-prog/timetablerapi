@@ -37,10 +37,6 @@ func (rr registrarRepo) SaveEvent(ctx context.Context, event uint) error {
 	return errSaveEventIsNotImplemented
 }
 
-func (rr registrarRepo) SaveAndIdentifyLayout(ctx context.Context, mode string) (string, error) {
-	return "l1", nil
-}
-
 func (rr registrarRepo) SaveAndIdentifyPerformer(ctx context.Context, name string) (string, error) {
 	uid, err := uuid.NewRandom()
 	if err != nil {
