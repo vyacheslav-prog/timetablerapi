@@ -21,7 +21,6 @@ type Task struct {
 
 type repository interface {
 	SaveEvent(context.Context, uint) error
-	SaveAndIdentifyLayout(context.Context, string) (string, error)
 	SaveAndIdentifyPerformer(context.Context, string) (string, error)
 	SaveAndIdentifyTask(context.Context, string, string, string) (string, error)
 }
