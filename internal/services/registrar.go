@@ -31,7 +31,10 @@ type registrarRepo struct {
 	db *sql.DB
 }
 
-var errSaveEventIsNotImplemented = fmt.Errorf("event saving is not implemented")
+var (
+	errSaveEventIsNotImplemented = fmt.Errorf("event saving is not implemented")
+	errSaveTaskIsNotImplemented  = fmt.Errorf("task saving is not implemented")
+)
 
 func (rr registrarRepo) SaveEvent(ctx context.Context, event uint) error {
 	return errSaveEventIsNotImplemented
@@ -51,7 +54,7 @@ func (rr registrarRepo) SaveAndIdentifyPerformer(ctx context.Context, name strin
 }
 
 func (rr registrarRepo) SaveAndIdentifyTask(ctx context.Context, name, from, to string) (string, error) {
-	return "t1", nil
+	return "", errSaveTaskIsNotImplemented
 }
 
 func newRegistrarRepo(ctx context.Context, db *sql.DB, dm *dbMigrate) (*registrarRepo, error) {
