@@ -37,3 +37,34 @@ func TestIdentifiesPerformerForAdding(t *testing.T) {
 		t.Error("couldn't check existing for a saved performer:", rowErr)
 	}
 }
+
+func TestIdentifiesTaskWhenIsSaved(t *testing.T) {
+	db, err := openDBConnect(os.Getenv("DATABASE_URL"))
+	if err != nil {
+		t.Error("failed open connection to database:", err)
+		return
+	}
+	defer func() {
+		if err = db.Close(); err != nil {
+			t.Error("failed close connection to database:", err)
+		}
+	}()
+	repo, migrErr := newRegistrarRepo(t.Context(), db, &dbMigrate{db, countTableByNameQuery})
+	if migrErr != nil {
+		t.Error("couldn't migrate for registrar repo:", migrErr)
+		return
+	}
+	id, repoErr := repo.SaveAndIdentifyTask(t.Context(), "Do it", "08:00", "08:30")
+	if repoErr != nil {
+		t.Error("couldn't identify new task:", repoErr)
+		return
+	}
+	if id == "" {
+		t.Error("identity must be not empty string")
+		return
+	}
+	existsRow := db.QueryRowContext(t.Context(), "select id from tasks where id = $1", id)
+	if rowErr := existsRow.Err(); rowErr != nil {
+		t.Error("couldn't check existing for a saved task:", rowErr)
+	}
+}
