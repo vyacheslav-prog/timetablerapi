@@ -54,7 +54,8 @@ func (rr registrarRepo) SaveAndIdentifyPerformer(ctx context.Context, name strin
 }
 
 func (rr registrarRepo) SaveAndIdentifyTask(ctx context.Context, name, from, to string) (string, error) {
-	return "", errSaveTaskIsNotImplemented
+	uid, err := uuid.NewRandom()
+	return uid.String(), err
 }
 
 func newRegistrarRepo(ctx context.Context, db *sql.DB, dm *dbMigrate) (*registrarRepo, error) {
