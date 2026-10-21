@@ -33,7 +33,6 @@ type registrarRepo struct {
 
 var (
 	errSaveEventIsNotImplemented = fmt.Errorf("event saving is not implemented")
-	errSaveTaskIsNotImplemented  = fmt.Errorf("task saving is not implemented")
 )
 
 func (rr registrarRepo) SaveEvent(ctx context.Context, event uint) error {
