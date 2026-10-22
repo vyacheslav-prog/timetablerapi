@@ -1,5 +1,3 @@
-//go:build testdb
-
 package services
 
 import (

@@ -1,5 +1,3 @@
-//go:build pgsql
-
 package services
 
 import (
