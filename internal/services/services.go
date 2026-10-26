@@ -20,6 +20,15 @@ var (
 	errInitServices = errors.New("failed init services")
 )
 
+func init() {
+	mode := os.Getenv("DATABASE_MODE")
+	if mode == "postgres" {
+		fmt.Print("init for postgres sql")
+		return
+	}
+	fmt.Print("init for sqlite3 sql")
+}
+
 func NewServices(ctx context.Context) (*Services, error) {
 	dbConn := os.Getenv("DATABASE_URL")
 	db, openErr := openDBConnect(dbConn)
