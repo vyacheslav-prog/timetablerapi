@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	countTableByNameQuery = "select count(*) from sqlite_master where tbl_name = '$1';"
+	countTableByNameQuerySqlite3 = "select count(*) from sqlite_master where tbl_name = '$1';"
 )
 
 func openDBConnect(dsn string) (*sql.DB, error) {
