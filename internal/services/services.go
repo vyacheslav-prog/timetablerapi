@@ -24,11 +24,14 @@ var countTableByNameQuery string
 
 func init() {
 	mode := os.Getenv("DATABASE_MODE")
-	if mode == "postgres" {
+	switch mode {
+	case "postgres":
 		countTableByNameQuery = countTableByNameQueryPg
-		return
+	case "sqlite3", "":
+		countTableByNameQuery = countTableByNameQuerySqlite3
+	default:
+		panic(fmt.Errorf("%w: not recognized db mode", errInitServices))
 	}
-	countTableByNameQuery = countTableByNameQuerySqlite3
 }
 
 func NewServices(ctx context.Context) (*Services, error) {
