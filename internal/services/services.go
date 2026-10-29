@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 	"os"
@@ -57,4 +58,18 @@ func NewServices(ctx context.Context) (*Services, error) {
 		overview.Overview{Repo: or},
 		registrar.Registrar{Repo: rr},
 	}, nil
+}
+
+func openDBConnect(dsn string) (db *sql.DB, err error) {
+	mode := os.Getenv("DATABASE_MODE")
+	switch mode {
+	case "postgres":
+		db, err = sql.Open("postgres", dsn)
+	case "sqlite3", "":
+		db, err = sql.Open("sqlite3", dsn)
+	default:
+		panic(fmt.Errorf("%w: not recognized db mode", errInitServices))
+	}
+
+	return db, err
 }
