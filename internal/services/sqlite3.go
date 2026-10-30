@@ -1,20 +1,5 @@
 package services
 
-import (
-	"database/sql"
-	"fmt"
-
-	_ "github.com/mattn/go-sqlite3"
-)
-
 const (
 	countTableByNameQuerySqlite3 = "select count(*) from sqlite_master where tbl_name = '$1';"
 )
-
-func openDBConnect(dsn string) (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", dsn)
-	if err != nil {
-		return nil, fmt.Errorf("sqlite3 connect is failed: %w", err)
-	}
-	return db, nil
-}
