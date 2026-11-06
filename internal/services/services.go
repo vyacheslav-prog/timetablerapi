@@ -70,6 +70,9 @@ func openDBConnect(dsn string) (db *sql.DB, err error) {
 	default:
 		panic(fmt.Errorf("%w: not recognized db mode", errInitServices))
 	}
+	if err != nil {
+		return nil, fmt.Errorf("open db connect: %w", err)
+	}
 
-	return db, err
+	return db, nil
 }
