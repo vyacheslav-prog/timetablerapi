@@ -65,4 +65,9 @@ func TestIdentifiesTaskWhenIsSaved(t *testing.T) {
 	if rowErr := existsRow.Err(); rowErr != nil {
 		t.Error("couldn't check existing for a saved task:", rowErr)
 	}
+	var ids string
+	scanErr := existsRow.Scan(&ids)
+	if scanErr != nil {
+		t.Error("couldn't check existing for a saved task:", scanErr)
+	}
 }
