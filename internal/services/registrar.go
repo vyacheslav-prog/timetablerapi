@@ -55,12 +55,12 @@ func (rr registrarRepo) SaveAndIdentifyPerformer(ctx context.Context, name strin
 func (rr registrarRepo) SaveAndIdentifyTask(ctx context.Context, name, from, to string) (string, error) {
 	uid, err := uuid.NewRandom()
 	if err != nil {
-		return "", fmt.Errorf("failed for generating a perfomer identity: %w", err)
+		return "", fmt.Errorf("failed for generating a task identity: %w", err)
 	}
 	id := uid.String()
 	_, err = rr.db.ExecContext(ctx, "insert into tasks (id, name, from, to) values ($1, $2, $3, $4)", id, name, from, to)
 	if err != nil {
-		return "", fmt.Errorf("failed for storing a performer: %w", err)
+		return "", fmt.Errorf("failed for storing a task: %w", err)
 	}
 	return id, err
 }
