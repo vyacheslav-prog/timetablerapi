@@ -34,6 +34,11 @@ func TestIdentifiesPerformerForAdding(t *testing.T) {
 	if rowErr := existsRow.Err(); rowErr != nil {
 		t.Error("couldn't check existing for a saved performer:", rowErr)
 	}
+	var ids string
+	scanErr := existsRow.Scan(&ids)
+	if scanErr != nil {
+		t.Error("couldn't check existing for a saved performer:", scanErr)
+	}
 }
 
 func TestIdentifiesTaskWhenIsSaved(t *testing.T) {
