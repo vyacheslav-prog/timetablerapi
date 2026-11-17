@@ -7,5 +7,9 @@ import (
 )
 
 func NewClient() (*kgo.Client, error) {
-	return nil, fmt.Errorf("kafka connection is not implemented")
+	client, err := kgo.NewClient()
+	if err != nil {
+		return nil, fmt.Errorf("failed to create kafka client: %w", err)
+	}
+	return client, nil
 }
