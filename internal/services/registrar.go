@@ -62,7 +62,7 @@ func (rr registrarRepo) SaveAndIdentifyTask(ctx context.Context, name, from, to 
 	if err != nil {
 		return "", fmt.Errorf("failed for storing a task: %w", err)
 	}
-	return id, err
+	return id, nil
 }
 
 func newRegistrarRepo(ctx context.Context, db *sql.DB, dm *dbMigrate) (*registrarRepo, error) {
