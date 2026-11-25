@@ -15,7 +15,7 @@ func TestAddTaskIsError(t *testing.T) {
 	mux := http.NewServeMux()
 	registerHandlers(mux, &services.Services{})
 	w := httptest.NewRecorder()
-	mux.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/tasks", http.NoBody))
+	mux.ServeHTTP(w, httptest.NewRequestWithContext(t.Context(), http.MethodPost, "/tasks", http.NoBody))
 	resp := w.Result()
 	if resp.StatusCode != http.StatusBadRequest {
 		t.Error("response must have 400 status for empty body, given:", resp.Status)
@@ -26,7 +26,7 @@ func TestAddTaskIsSuccess(t *testing.T) {
 	mux := http.NewServeMux()
 	registerHandlers(mux, &services.Services{Registrar: registrar.Registrar{Repo: registrarRepoStub{"ok"}}})
 	w := httptest.NewRecorder()
-	mux.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(`{"name":"do it","from":"08:00","to":"08:30"}`)))
+	mux.ServeHTTP(w, httptest.NewRequestWithContext(t.Context(), http.MethodPost, "/tasks", strings.NewReader(`{"name":"do it","from":"08:00","to":"08:30"}`)))
 	resp := w.Result()
 	if resp.StatusCode != http.StatusCreated {
 		t.Error("response must have 201 status, given:", resp.Status)
