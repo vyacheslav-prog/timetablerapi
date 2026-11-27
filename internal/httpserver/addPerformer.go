@@ -3,6 +3,7 @@ package httpserver
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"timetablerapi/registrar"
@@ -31,5 +32,8 @@ func handleAddPerformer(s addPerformerService, w http.ResponseWriter, r *http.Re
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	writeResponse(w, []byte(res))
+	_, resErr := w.Write([]byte(res))
+	if resErr != nil {
+		log.Print("can not to write a response:", resErr)
+	}
 }
